@@ -1,10 +1,11 @@
 package asg.Controller;
 
+import asg.Model.Staff;
+import asg.Constants.StaffConstants;
+
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
-import asg.Model.Staff;
 
 public class StaffManagementSystem {
 
@@ -26,17 +27,23 @@ public class StaffManagementSystem {
         int option;
 
         do {
-            System.out.println("====================================");
-            System.out.println("         STAFF MANAGEMENT MENU      ");
-            System.out.println("====================================");
-            System.out.println(" 1 -> Display Staff Details");
-            System.out.println(" 2 -> Add Staff Information");
-            System.out.println(" 3 -> Modify Staff Information");
-            System.out.println(" 4 -> Delete Staff Information");
-            System.out.println(" 5 -> Search Staff Information");
-            System.out.println(" 6 -> Report Staff Information");
-            System.out.println(" 0 -> Exit\n");
-            System.out.println("====================================");
+            /**
+             * Use the fixed variables from StaffConstants to display the staff menu
+             */
+            // Staff Menu Header
+            System.out.print(StaffConstants.STAFF_MENU_HEADER);
+            System.out.print(StaffConstants.STAFF_MENU_TITLE);
+            System.out.print(StaffConstants.STAFF_MENU_HEADER);
+            // Staff Menu Options
+            System.out.print(StaffConstants.STAFF_MENU_OPTION_1);
+            System.out.print(StaffConstants.STAFF_MENU_OPTION_2);
+            System.out.print(StaffConstants.STAFF_MENU_OPTION_3);
+            System.out.print(StaffConstants.STAFF_MENU_OPTION_4);
+            System.out.print(StaffConstants.STAFF_MENU_OPTION_5);
+            System.out.print(StaffConstants.STAFF_MENU_OPTION_6);
+            System.out.print(StaffConstants.STAFF_MENU_OPTION_0);
+            // Staff Menu Ender
+            System.out.print(StaffConstants.STAFF_MENU_ENDER);
 
             while (true) {
                 System.out.print("Enter your choice: ");
