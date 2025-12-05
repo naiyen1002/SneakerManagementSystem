@@ -2,6 +2,8 @@ package asg;
 
 import java.util.Scanner;
 
+import asg.Controller.StaffManagementSystem;
+
 public class SneakerMainSystem {
     private static Scanner scanner = new Scanner(System.in);
 

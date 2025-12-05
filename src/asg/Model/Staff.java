@@ -1,4 +1,6 @@
-package asg;
+package asg.Model;
+
+import asg.SMdetails;
 
 public class Staff extends SMdetails {
 

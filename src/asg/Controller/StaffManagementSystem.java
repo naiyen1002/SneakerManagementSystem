@@ -1,8 +1,10 @@
-package asg;
+package asg.Controller;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import asg.Model.Staff;
 
 public class StaffManagementSystem {
 
@@ -75,7 +77,7 @@ public class StaffManagementSystem {
             }
         } while (option != 0);
 
-        //scanner.close();
+        // scanner.close();
     }
 
     public void displayStaff() {
