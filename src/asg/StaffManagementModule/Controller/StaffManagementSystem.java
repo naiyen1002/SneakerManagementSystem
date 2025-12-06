@@ -1,7 +1,9 @@
 package asg.StaffManagementModule.Controller;
 
 import asg.StaffManagementModule.Constants.StaffConstants;
+import asg.StaffManagementModule.Constants.StaffData;
 import asg.StaffManagementModule.Model.Staff;
+import asg.StaffManagementModule.View.StaffView;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -9,84 +11,81 @@ import java.util.Scanner;
 
 public class StaffManagementSystem {
 
-    public static void main() {
-        StaffManagementSystem staffSystem = new StaffManagementSystem();
-        staffSystem.initializeStaff();
-        staffSystem.staffMenu();
-    }
-
     public final ArrayList<Staff> staffList;
     public final Scanner scanner;
+    private final StaffView view;
 
     public StaffManagementSystem() {
         this.staffList = new ArrayList<>();
         this.scanner = new Scanner(System.in);
+        // Initialise the StaffView for Staff Module UI display
+        this.view = new StaffView();
+    }
+
+    public static void main() {
+        StaffManagementSystem staffSystem = new StaffManagementSystem();
+        staffSystem.initialiseStaff();
+        staffSystem.staffMenu();
     }
 
     public void staffMenu() {
         int option;
 
         do {
-            /**
-             * Use the fixed variables from StaffConstants to display the staff menu
-             */
-            // Staff Menu Header
-            System.out.print(StaffConstants.STAFF_MENU_HEADER);
-            System.out.print(StaffConstants.STAFF_MENU_TITLE);
-            System.out.print(StaffConstants.STAFF_MENU_HEADER);
-            // Staff Menu Options
-            System.out.print(StaffConstants.STAFF_MENU_OPTION_1);
-            System.out.print(StaffConstants.STAFF_MENU_OPTION_2);
-            System.out.print(StaffConstants.STAFF_MENU_OPTION_3);
-            System.out.print(StaffConstants.STAFF_MENU_OPTION_4);
-            System.out.print(StaffConstants.STAFF_MENU_OPTION_5);
-            System.out.print(StaffConstants.STAFF_MENU_OPTION_6);
-            System.out.print(StaffConstants.STAFF_MENU_OPTION_0);
-            // Staff Menu Ender
-            System.out.print(StaffConstants.STAFF_MENU_ENDER);
+            // Display the menu
+            view.displayMenu();
+            option = getMenuChoice();
 
-            while (true) {
-                System.out.print("Enter your choice: ");
-                try {
-                    option = scanner.nextInt();
-                    scanner.nextLine();
-                    break;
-                } catch (InputMismatchException e) {
-                    scanner.nextLine();
-                    System.out.println("Invalid choice. Please enter again...\n");
-                }
-            }
-
+            // Use constants instead of original magic numbers (For the option, may need to
+            // change follow like practical 2)
             switch (option) {
-                case 1:
+                case StaffConstants.DISPLAY_STAFF:
                     displayStaff();
                     break;
-                case 2:
+                case StaffConstants.ADD_STAFF:
                     addStaff();
                     break;
-                case 3:
+                case StaffConstants.UPDATE_STAFF:
                     modifyStaff();
                     break;
-                case 4:
+                case StaffConstants.DELETE_STAFF:
                     deleteStaff();
                     break;
-                case 5:
+                case StaffConstants.SEARCH_STAFF:
                     searchStaff();
                     break;
-                case 6:
+                case StaffConstants.REPORT_STAFF:
                     reportDepartment();
                     break;
-                case 0:
+                case StaffConstants.EXIT_STAFF_MODULE:
                     closeSystem();
                     break;
                 default:
-                    System.out.println("\nInvalid choice...\n");
+                    view.displayErrorMessage(StaffConstants.ERROR_INVALID_CHOICE);
             }
-        } while (option != 0);
-
-        // scanner.close();
+        } while (option != StaffConstants.EXIT_STAFF_MODULE);
     }
 
+    /**
+     * Get the choice input by user
+     * 
+     * @return choice
+     */
+    private int getMenuChoice() {
+        while (true) {
+            view.displayPrompt(StaffConstants.ENTER_CHOICE);
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+                return choice;
+            } catch (InputMismatchException e) {
+                System.out.println(StaffConstants.ERROR_INVALID_CHOICE);
+                scanner.nextLine();
+            }
+        }
+    }
+
+    // Pending changes!!!
     public void displayStaff() {
         if (staffList.isEmpty()) {
             System.out.println("No staff information available.");
@@ -105,6 +104,7 @@ public class StaffManagementSystem {
         }
     }
 
+    // Pending changes!!!
     public void addStaff() {
         String id;
         while (true) {
@@ -174,6 +174,7 @@ public class StaffManagementSystem {
         System.out.println("Staff added successfully.");
     }
 
+    // Pending changes!!!
     public void modifyStaff() {
         System.out.print("Enter ID of staff to modify: ");
         String staffIdToModify = scanner.nextLine();
@@ -259,6 +260,7 @@ public class StaffManagementSystem {
         }
     }
 
+    // Pending changes!!!
     public void deleteStaff() {
         System.out.print("Enter ID of staff to delete: ");
         String staffIdToDelete = scanner.nextLine();
@@ -279,23 +281,30 @@ public class StaffManagementSystem {
     }
 
     public void searchStaff() {
-        System.out.print("Enter ID or Name of staff to search: ");
+        // Display the search prompt
+        view.displayPrompt(StaffConstants.SEARCH_QUERY);
         String searchQuery = scanner.nextLine();
         boolean found = false;
 
-        System.out.println("Search Results:");
+        // Search header display
+        view.displaySearchResultsHeader();
+
         for (Staff staff : staffList) {
-            if (staff.id.equalsIgnoreCase(searchQuery) || staff.name.contains(searchQuery)) {
-                displayStaffDetails(staff);
+            // Modified id and name to getId() and getName() because of encapsulation
+            // changes made in Staff.java
+            if (staff.getId().equalsIgnoreCase(searchQuery) || staff.getName().contains(searchQuery)) {
+                view.displayStaffDetails(staff);
                 found = true;
             }
         }
 
         if (!found) {
-            System.out.println("No matching staff found.");
+            // Display no matching staff found message
+            view.displayErrorMessage(StaffConstants.ERROR_NO_MATCHING_STAFF);
         }
     }
 
+    // Pending changes!!!
     public void reportDepartment() {
         System.out.print("Enter Department to report: ");
         String departmentToReport = scanner.nextLine();
@@ -318,28 +327,26 @@ public class StaffManagementSystem {
         }
     }
 
+    /**
+     * Display single staff details
+     * 
+     * @param staff
+     */
     public void displayStaffDetails(Staff staff) {
-        System.out.println("ID: " + staff.id);
-        System.out.println("Name: " + staff.name);
-        System.out.println("Gender: " + staff.gender);
-        System.out.println("Position: " + staff.position);
-        System.out.println("Salary: " + staff.salary);
-        System.out.println("Department: " + staff.department);
+        view.displayStaffDetails(staff);
     }
 
-    public void initializeStaff() {
-        Staff staff1 = new Staff("1", "js", "male", "Manager", 5000.0, "HR");
-        Staff staff2 = new Staff("2", "edwin", "female", "Engineer", 4000.0, "IT");
-        Staff staff3 = new Staff("3", "gw", "male", "Accountant", 4500.0, "Finance");
-        Staff staff4 = new Staff("4", "wh", "male", "Accountant", 4000.0, "Finance");
-
-        staffList.add(staff1);
-        staffList.add(staff2);
-        staffList.add(staff3);
-        staffList.add(staff4);
+    /**
+     * Add the staffby intilise them here through StaffData
+     */
+    public void initialiseStaff() {
+        staffList.addAll(StaffData.getInitialStaffData());
     }
 
+    /**
+     * Exit the system
+     */
     public void closeSystem() {
-        System.out.println("\nThank you for using the staff management system. Goodbye!\n");
+        view.displayExitMessage();
     }
 }
