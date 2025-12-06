@@ -2,6 +2,8 @@ package asg;
 
 import java.util.Scanner;
 
+import view.MakeOrder_refactor;
+
 public class SneakerMainSystem {
     private static Scanner scanner = new Scanner(System.in);
 
@@ -69,7 +71,7 @@ public class SneakerMainSystem {
                     Stock.main();
                     break;
                 case 5:
-                    MakeOrder.main();
+                    MakeOrder_refactor.main();
                     break;
                 case 6:
                     System.out.println("\nEXITING PROGRAM...\n");
