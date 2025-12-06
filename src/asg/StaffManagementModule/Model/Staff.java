@@ -1,12 +1,15 @@
-package asg.Model;
+package asg.StaffManagementModule.Model;
 
 import asg.SMdetails;
 
 public class Staff extends SMdetails {
 
-    protected String position;
-    protected double salary;
-    protected String department;
+    /***
+     * Originality protected change to private for better encapsulation
+     */
+    private String position;
+    private double salary;
+    private String department;
 
     public Staff(String ID, String name, String gender, String position, double salary, String department) {
         super(ID, name, gender);
@@ -37,5 +40,20 @@ public class Staff extends SMdetails {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    /**
+     * For easier debugging and logging
+     */
+    @Override
+    public String toString() {
+        return "Staff{" +
+                "id='" + getId() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", gender='" + getGender() + '\'' +
+                ", position='" + position + '\'' +
+                ", salary=" + salary +
+                ", department='" + department + '\'' +
+                '}';
     }
 }

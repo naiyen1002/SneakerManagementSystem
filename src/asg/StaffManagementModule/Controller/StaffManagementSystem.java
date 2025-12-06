@@ -1,7 +1,7 @@
-package asg.Controller;
+package asg.StaffManagementModule.Controller;
 
-import asg.Model.Staff;
-import asg.Constants.StaffConstants;
+import asg.StaffManagementModule.Constants.StaffConstants;
+import asg.StaffManagementModule.Model.Staff;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
