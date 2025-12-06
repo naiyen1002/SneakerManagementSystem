@@ -4,6 +4,8 @@
  */
 package asg;
 
+import model.SSdetails;
+
 /**
  *
  * @author ginwe
