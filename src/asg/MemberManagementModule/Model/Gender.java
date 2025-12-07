@@ -1,4 +1,4 @@
-package asg.Model;
+package asg.MemberManagementModule.Model;
 
 /**
  * Gender Enum
