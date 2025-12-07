@@ -127,7 +127,7 @@ public class StaffManagementSystem {
             return;
         }
 
-        // If no issue, then can add the staf
+        // If no issue, then can add the staff
         Staff newStaff = new Staff(id, name, gender, position, salary, department);
         staffList.add(newStaff);
 
@@ -213,91 +213,56 @@ view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_ADDED);
         }
     }
 
-    // Pending changes!!!
+    // Modify the staff details
     public void modifyStaff() {
-        // System.out.print("Enter ID of staff to modify: ");
-        // String staffIdToModify = scanner.nextLine();
-        // boolean found = false;
+        view.displayPrompt(StaffConstants.ENTER_ID);
+        String staffToModify = scanner.nextLine();
+        boolean found = false;
 
-        // for (Staff staff : staffList) {
-        // if (staff.id.equals(staffIdToModify)) {
-        // System.out.println("Current Staff Details:");
-        // displayStaffDetails(staff);
+        for(Staff staff: staffList){
 
-        // System.out.print("Enter new Name: ");
-        // String name = scanner.nextLine();
+            // If the staff is being founded, then execute the modification
+            if(staff.getId().equals(staffToModify)){
+                view.displayCurrentStaffHeader();
+                displayStaffDetails(staff);
 
-        // String gender;
-        // while (true) {
-        // System.out.print("Enter new Gender (male/female): ");
-        // gender = scanner.nextLine().toLowerCase();
-        // if (gender.equals("male") || gender.equals("female")) {
-        // break;
-        // } else {
-        // System.out.println("Gender must be 'male' or 'female'. Please try again.");
-        // }
-        // }
+                // Name
+                view.displayPrompt(StaffConstants.NEW_NAME);
+                String name = scanner.nextLine();
 
-        // String position;
-        // while (true) {
-        // System.out.print("Enter new Position: ");
-        // position = scanner.nextLine();
-        // if (!position.matches(".*\\d+.*")) {
-        // break;
-        // } else {
-        // System.out.println("Position cannot contain numbers. Please try again.");
-        // }
-        // }
+                String gender = getValidGender(true);   
+                String position = getValidPosition(true);
 
-        // double salary;
-        // while (true) {
-        // System.out.print("Enter new Salary: ");
-        // try {
-        // salary = scanner.nextDouble();
-        // if (salary >= 0) {
-        // break;
-        // } else {
-        // System.out.println("Salary cannot be negative. Please try again.");
-        // }
-        // } catch (InputMismatchException e) {
-        // System.out.println("Invalid input. Please enter a valid number.");
-        // scanner.nextLine();
-        // }
-        // }
-        // scanner.nextLine();
+                Double salary = getValidSalary(true);
+                if(salary == null){
+                    return;
+                }
+                
+                String department = getValidDepartment(true);
 
-        // String department;
-        // while (true) {
-        // System.out.print("Enter new Department: ");
-        // department = scanner.nextLine();
-        // if (!department.matches(".*\\d+.*")) {
-        // break;
-        // } else {
-        // System.out.println("Department cannot contain numbers. Please try again.");
-        // }
-        // }
+                // Checking required fields
+                if(name.isEmpty() || position.isEmpty() || department.isEmpty()) {
+                    view.displayErrorMessage(StaffConstants.ERROR_MANDATORY_FIELDS_MODIFY);
+                    return;
+                }
 
-        // if (name.isEmpty() || position.isEmpty() || department.isEmpty()) {
-        // System.out.println("Name, Position, and Department are mandatory fields and
-        // cannot be empty.");
-        // return;
-        // }
+                // If everything is fine, then modify the staff details
+                staff.setName(name);
+                staff.setGender(gender);
+                staff.setPosition(position);
+                staff.setSalary(salary);
+                staff.setDepartment(department);
 
-        // staff.name = name;
-        // staff.gender = gender;
-        // staff.position = position;
-        // staff.salary = salary;
-        // staff.department = department;
+                view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_MODIFIED);
+                found = true;
+                break;
+            }
+        }
 
-        // System.out.println("Staff modified successfully.");
-        // found = true;
-        // break;
-        // }
-        // }
-
-        // if (!found) {
-        // System.out.println("Staff with ID " + staffIdToModify + " not found.");
-        // }
+        // If the input staff is not exist
+        if (!found) {
+            view.displayErrorMessage(String.format(StaffConstants.ERROR_STAFF_NOT_FOUND, staffToModify));
+        }
     }
 
     // Pending changes!!!
