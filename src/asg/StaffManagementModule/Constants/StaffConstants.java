@@ -11,7 +11,7 @@ public class StaffConstants {
     public static final int UPDATE_STAFF = 3;
     public static final int DELETE_STAFF = 4;
     public static final int SEARCH_STAFF = 5;
-    public static final int REPORT_STAFF = 6;
+    public static final int SALARY_REPORT = 6;
     public static final int EXIT_STAFF_MODULE = 0;
 
     /**

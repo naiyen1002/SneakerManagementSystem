@@ -7,6 +7,7 @@ import asg.StaffManagementModule.View.StaffView;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class StaffManagementSystem {
@@ -28,6 +29,9 @@ public class StaffManagementSystem {
         staffSystem.staffMenu();
     }
 
+    /**
+     * Staff main menu
+     */
     public void staffMenu() {
         int option;
 
@@ -54,8 +58,8 @@ public class StaffManagementSystem {
                 case StaffConstants.SEARCH_STAFF:
                     searchStaff();
                     break;
-                case StaffConstants.REPORT_STAFF:
-                    reportDepartment();
+                case StaffConstants.SALARY_REPORT:
+                    departmentSalaryReport();
                     break;
                 case StaffConstants.EXIT_STAFF_MODULE:
                     closeSystem();
@@ -92,7 +96,9 @@ public class StaffManagementSystem {
         view.displayAllStaff(staffList);
     }
 
-    // Add a new staff
+    /**
+     * Add a new staff
+     */
     public void addStaff() {
         String id = getValidStaffId();
 
@@ -115,14 +121,14 @@ public class StaffManagementSystem {
             return;
         }
 
-        // Department   
+        // Department
         String department = getValidDepartment(false);
         if (department == null) {
             return;
         }
 
         // Checking required fields
-        if(id.isEmpty() || name.isEmpty() || position.isEmpty() || department.isEmpty()) {
+        if (id.isEmpty() || name.isEmpty() || position.isEmpty() || department.isEmpty()) {
             view.displayErrorMessage(StaffConstants.ERROR_MANDATORY_FIELDS);
             return;
         }
@@ -131,7 +137,7 @@ public class StaffManagementSystem {
         Staff newStaff = new Staff(id, name, gender, position, salary, department);
         staffList.add(newStaff);
 
-view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_ADDED);
+        view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_ADDED);
     }
 
     // Move to services file later - Not sure yet, still thinking
@@ -213,16 +219,18 @@ view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_ADDED);
         }
     }
 
-    // Modify the staff details
+    /**
+     * Modify staff details
+     */
     public void modifyStaff() {
         view.displayPrompt(StaffConstants.ENTER_ID);
         String staffToModify = scanner.nextLine();
         boolean found = false;
 
-        for(Staff staff: staffList){
+        for (Staff staff : staffList) {
 
             // If the staff is being founded, then execute the modification
-            if(staff.getId().equals(staffToModify)){
+            if (staff.getId().equals(staffToModify)) {
                 view.displayCurrentStaffHeader();
                 displayStaffDetails(staff);
 
@@ -230,18 +238,18 @@ view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_ADDED);
                 view.displayPrompt(StaffConstants.NEW_NAME);
                 String name = scanner.nextLine();
 
-                String gender = getValidGender(true);   
+                String gender = getValidGender(true);
                 String position = getValidPosition(true);
 
                 Double salary = getValidSalary(true);
-                if(salary == null){
+                if (salary == null) {
                     return;
                 }
-                
+
                 String department = getValidDepartment(true);
 
                 // Checking required fields
-                if(name.isEmpty() || position.isEmpty() || department.isEmpty()) {
+                if (name.isEmpty() || position.isEmpty() || department.isEmpty()) {
                     view.displayErrorMessage(StaffConstants.ERROR_MANDATORY_FIELDS_MODIFY);
                     return;
                 }
@@ -265,27 +273,31 @@ view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_ADDED);
         }
     }
 
-    // Pending changes!!!
+    /**
+     * Delete staff
+     */
     public void deleteStaff() {
-        // System.out.print("Enter ID of staff to delete: ");
-        // String staffIdToDelete = scanner.nextLine();
-        // boolean found = false;
+        view.displayPrompt(StaffConstants.ID_TO_DELETE);
+        String staffToDelete = scanner.nextLine();
+        boolean found = false;
 
-        // for (Staff staff : staffList) {
-        // if (staff.id.equals(staffIdToDelete)) {
-        // staffList.remove(staff);
-        // System.out.println("Staff with ID " + staffIdToDelete + " deleted
-        // successfully.");
-        // found = true;
-        // break;
-        // }
-        // }
+        for (Staff staff : staffList) {
+            if (staff.getId().equals(staffToDelete)) {
+                staffList.remove(staff);
+                view.displaySuccessMessage(String.format(StaffConstants.SUCCESS_STAFF_DELETED, staffToDelete));
+                found = true;
+                break;
+            }
 
-        // if (!found) {
-        // System.out.println("Staff with ID " + staffIdToDelete + " not found.");
-        // }
+            if (!found) {
+                view.displayErrorMessage(String.format(StaffConstants.ERROR_STAFF_NOT_FOUND, staffToDelete));
+            }
+        }
     }
 
+    /**
+     * Search a staff
+     */
     public void searchStaff() {
         // Display the search prompt
         view.displayPrompt(StaffConstants.SEARCH_QUERY);
@@ -310,28 +322,25 @@ view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_ADDED);
         }
     }
 
-    // Pending changes!!!
-    public void reportDepartment() {
-        // System.out.print("Enter Department to report: ");
-        // String departmentToReport = scanner.nextLine();
-        // double totalSalary = 0;
+    /**
+     * Make salary report of the whole department
+     */
+    public void departmentSalaryReport() {
 
-        // System.out.println("Staff Report for Department: " + departmentToReport);
+        view.displayPrompt(StaffConstants.DEPARTMENT_REPORT);
+        String departmentSalaryReport = scanner.nextLine();
+        double totalSalary = 0;
 
-        // for (Staff staff : staffList) {
-        // if (staff.department.equalsIgnoreCase(departmentToReport)) {
-        // displayStaffDetails(staff);
-        // totalSalary += staff.salary;
-        // System.out.println("-----------------------------");
-        // }
-        // }
+        List<Staff> staffInDepartment = new ArrayList<>();
 
-        // if (totalSalary > 0) {
-        // System.out.println("Total Salary for Department " + departmentToReport + ": "
-        // + totalSalary);
-        // } else {
-        // System.out.println("No staff found in Department " + departmentToReport);
-        // }
+        for (Staff staff : staffList) {
+            if (staff.getDepartment().equalsIgnoreCase(departmentSalaryReport)) {
+                staffInDepartment.add(staff);
+                totalSalary += staff.getSalary();
+            }
+        }
+
+        view.displayDepartmentReport(departmentSalaryReport, staffInDepartment, totalSalary);
     }
 
     /**
