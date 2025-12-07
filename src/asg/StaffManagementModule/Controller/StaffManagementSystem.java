@@ -24,7 +24,7 @@ public class StaffManagementSystem {
 
     public static void main() {
         StaffManagementSystem staffSystem = new StaffManagementSystem();
-        staffSystem.initialiseStaff();
+        staffSystem.retrieveStaff();
         staffSystem.staffMenu();
     }
 
@@ -85,199 +85,240 @@ public class StaffManagementSystem {
         }
     }
 
-    // Pending changes!!!
+    /**
+     * Display all staff
+     */
     public void displayStaff() {
-        if (staffList.isEmpty()) {
-            System.out.println("No staff information available.");
-        } else {
-            System.out.println("Staff Details:");
-            for (Staff staff : staffList) {
+        view.displayAllStaff(staffList);
+    }
 
-                System.out.println("ID: " + staff.getId());
-                System.out.println("Name: " + staff.getName());
-                System.out.println("Gender: " + staff.getGender());
-                System.out.println("Position: " + staff.getPosition());
-                System.out.println("Salary: " + staff.getSalary());
-                System.out.println("Department: " + staff.getDepartment());
-                System.out.println("-----------------------------");
+    // Add a new staff
+    public void addStaff() {
+        String id = getValidStaffId();
+
+        // Name
+        view.displayPrompt(StaffConstants.ENTER_NAME);
+        String name = scanner.nextLine();
+
+        // Gender
+        String gender = getValidGender(false);
+
+        // Position
+        String position = getValidPosition(false);
+        if (position == null) {
+            return;
+        }
+
+        // Salary
+        Double salary = getValidSalary(false);
+        if (salary == null) {
+            return;
+        }
+
+        // Department   
+        String department = getValidDepartment(false);
+        if (department == null) {
+            return;
+        }
+
+        // Checking required fields
+        if(id.isEmpty() || name.isEmpty() || position.isEmpty() || department.isEmpty()) {
+            view.displayErrorMessage(StaffConstants.ERROR_MANDATORY_FIELDS);
+            return;
+        }
+
+        // If no issue, then can add the staf
+        Staff newStaff = new Staff(id, name, gender, position, salary, department);
+        staffList.add(newStaff);
+
+view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_ADDED);
+    }
+
+    // Move to services file later - Not sure yet, still thinking
+    private String getValidStaffId() {
+        String id;
+        while (true) {
+            view.displayPrompt(StaffConstants.ENTER_ID);
+            id = scanner.nextLine();
+            if (id.matches(StaffConstants.REGEX_NUMERIC)) {
+                break;
+            } else {
+                view.displayErrorMessage(StaffConstants.ERROR_ID_NUMERIC);
+            }
+        }
+        return id;
+    }
+
+    // Move to services file later - Not sure yet, still thinking
+    private String getValidGender(boolean isModify) {
+        String gender;
+        while (true) {
+            view.displayPrompt(isModify ? StaffConstants.NEW_GENDER : StaffConstants.ENTER_GENDER);
+            gender = scanner.nextLine().toLowerCase();
+            if (gender.equals(StaffConstants.GENDER_MALE) || gender.equals(StaffConstants.GENDER_FEMALE)) {
+                return gender;
+            } else {
+                view.displayErrorMessage(StaffConstants.ERROR_GENDER_INVALID);
             }
         }
     }
 
-    // Pending changes!!!
-    public void addStaff() {
-        String id;
+    // Move to services file later - Not sure yet, still thinking
+    private String getValidPosition(boolean isModify) {
+        String position;
         while (true) {
-            System.out.print("Enter ID: ");
-            id = scanner.nextLine();
-            if (id.matches("\\d+")) {
-                break;
+            view.displayPrompt(isModify ? StaffConstants.NEW_POSITION : StaffConstants.ENTER_POSITION);
+            position = scanner.nextLine();
+            if (!position.matches(StaffConstants.REGEX_CONTAINS_NUMBERS)) {
+                return position;
             } else {
-                System.out.println("ID must contain numbers only. Please try again.");
+                view.displayErrorMessage(StaffConstants.ERROR_POSITION_CONTAINS_NUMBERS);
             }
         }
+    }
 
-        System.out.print("Enter Name: ");
-        String name = scanner.nextLine();
-
-        String gender;
+    // Move to services file later - Not sure yet, still thinking
+    private Double getValidSalary(boolean isNewStaff) {
         while (true) {
-            System.out.print("Enter Gender (male/female): ");
-            gender = scanner.nextLine().toLowerCase();
-            if (gender.equals("male") || gender.equals("female")) {
-                break;
-            } else {
-                System.out.println("Gender must be 'male' or 'female'. Please try again.");
-            }
-        }
-
-        System.out.print("Enter Position: ");
-        String position = scanner.nextLine();
-
-        if (position.matches(".*\\d+.*")) {
-            System.out.println("Position cannot contain numbers. Please try again.");
-            return;
-        }
-
-        double salary;
-        while (true) {
-            System.out.print("Enter Salary: ");
+            view.displayPrompt(isNewStaff ? StaffConstants.NEW_SALARY : StaffConstants.ENTER_SALARY);
             try {
-                salary = scanner.nextDouble();
-                if (salary > 0) {
-                    break;
+                double salary = scanner.nextDouble();
+                scanner.nextLine();
+                if (isNewStaff && salary >= StaffData.MIN_SALARY) {
+                    return salary;
+                } else if (!isNewStaff && salary >= StaffData.MIN_SALARY) {
+                    return salary;
                 } else {
-                    System.out.println("Salary cannot less than zero. Please try again.");
+                    view.displayErrorMessage(
+                            isNewStaff ? StaffConstants.ERROR_SALARY_ZERO : StaffConstants.ERROR_SALARY_NEGATIVE);
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
+                view.displayErrorMessage(StaffConstants.ERROR_INVALID_INPUT);
                 scanner.nextLine();
             }
         }
-        scanner.nextLine();
+    }
 
-        System.out.print("Enter Department: ");
-        String department = scanner.nextLine();
-
-        if (department.matches(".*\\d+.*")) {
-            System.out.println("Department cannot contain numbers. Please try again.");
-            return;
+    // Move to services file later - Not sure yet, still thinking
+    private String getValidDepartment(boolean isModify) {
+        String department;
+        while (true) {
+            view.displayPrompt(isModify ? StaffConstants.NEW_DEPARTMENT : StaffConstants.ENTER_DEPARTMENT);
+            department = scanner.nextLine();
+            if (!department.matches(StaffConstants.REGEX_CONTAINS_NUMBERS)) {
+                return department;
+            } else {
+                view.displayErrorMessage(StaffConstants.ERROR_DEPARTMENT_CONTAINS_NUMBERS);
+            }
         }
-
-        if (id.isEmpty() || name.isEmpty() || position.isEmpty() || department.isEmpty()) {
-            System.out.println("ID, Name, Position, and Department are mandatory fields and cannot be empty.");
-            return;
-        }
-
-        Staff newStaff = new Staff(id, name, gender, position, salary, department);
-        staffList.add(newStaff);
-        System.out.println("Staff added successfully.");
     }
 
     // Pending changes!!!
     public void modifyStaff() {
-        System.out.print("Enter ID of staff to modify: ");
-        String staffIdToModify = scanner.nextLine();
-        boolean found = false;
+        // System.out.print("Enter ID of staff to modify: ");
+        // String staffIdToModify = scanner.nextLine();
+        // boolean found = false;
 
-        for (Staff staff : staffList) {
-            if (staff.id.equals(staffIdToModify)) {
-                System.out.println("Current Staff Details:");
-                displayStaffDetails(staff);
+        // for (Staff staff : staffList) {
+        // if (staff.id.equals(staffIdToModify)) {
+        // System.out.println("Current Staff Details:");
+        // displayStaffDetails(staff);
 
-                System.out.print("Enter new Name: ");
-                String name = scanner.nextLine();
+        // System.out.print("Enter new Name: ");
+        // String name = scanner.nextLine();
 
-                String gender;
-                while (true) {
-                    System.out.print("Enter new Gender (male/female): ");
-                    gender = scanner.nextLine().toLowerCase();
-                    if (gender.equals("male") || gender.equals("female")) {
-                        break;
-                    } else {
-                        System.out.println("Gender must be 'male' or 'female'. Please try again.");
-                    }
-                }
+        // String gender;
+        // while (true) {
+        // System.out.print("Enter new Gender (male/female): ");
+        // gender = scanner.nextLine().toLowerCase();
+        // if (gender.equals("male") || gender.equals("female")) {
+        // break;
+        // } else {
+        // System.out.println("Gender must be 'male' or 'female'. Please try again.");
+        // }
+        // }
 
-                String position;
-                while (true) {
-                    System.out.print("Enter new Position: ");
-                    position = scanner.nextLine();
-                    if (!position.matches(".*\\d+.*")) {
-                        break;
-                    } else {
-                        System.out.println("Position cannot contain numbers. Please try again.");
-                    }
-                }
+        // String position;
+        // while (true) {
+        // System.out.print("Enter new Position: ");
+        // position = scanner.nextLine();
+        // if (!position.matches(".*\\d+.*")) {
+        // break;
+        // } else {
+        // System.out.println("Position cannot contain numbers. Please try again.");
+        // }
+        // }
 
-                double salary;
-                while (true) {
-                    System.out.print("Enter new Salary: ");
-                    try {
-                        salary = scanner.nextDouble();
-                        if (salary >= 0) {
-                            break;
-                        } else {
-                            System.out.println("Salary cannot be negative. Please try again.");
-                        }
-                    } catch (InputMismatchException e) {
-                        System.out.println("Invalid input. Please enter a valid number.");
-                        scanner.nextLine();
-                    }
-                }
-                scanner.nextLine();
+        // double salary;
+        // while (true) {
+        // System.out.print("Enter new Salary: ");
+        // try {
+        // salary = scanner.nextDouble();
+        // if (salary >= 0) {
+        // break;
+        // } else {
+        // System.out.println("Salary cannot be negative. Please try again.");
+        // }
+        // } catch (InputMismatchException e) {
+        // System.out.println("Invalid input. Please enter a valid number.");
+        // scanner.nextLine();
+        // }
+        // }
+        // scanner.nextLine();
 
-                String department;
-                while (true) {
-                    System.out.print("Enter new Department: ");
-                    department = scanner.nextLine();
-                    if (!department.matches(".*\\d+.*")) {
-                        break;
-                    } else {
-                        System.out.println("Department cannot contain numbers. Please try again.");
-                    }
-                }
+        // String department;
+        // while (true) {
+        // System.out.print("Enter new Department: ");
+        // department = scanner.nextLine();
+        // if (!department.matches(".*\\d+.*")) {
+        // break;
+        // } else {
+        // System.out.println("Department cannot contain numbers. Please try again.");
+        // }
+        // }
 
-                if (name.isEmpty() || position.isEmpty() || department.isEmpty()) {
-                    System.out.println("Name, Position, and Department are mandatory fields and cannot be empty.");
-                    return;
-                }
+        // if (name.isEmpty() || position.isEmpty() || department.isEmpty()) {
+        // System.out.println("Name, Position, and Department are mandatory fields and
+        // cannot be empty.");
+        // return;
+        // }
 
-                staff.name = name;
-                staff.gender = gender;
-                staff.position = position;
-                staff.salary = salary;
-                staff.department = department;
+        // staff.name = name;
+        // staff.gender = gender;
+        // staff.position = position;
+        // staff.salary = salary;
+        // staff.department = department;
 
-                System.out.println("Staff modified successfully.");
-                found = true;
-                break;
-            }
-        }
+        // System.out.println("Staff modified successfully.");
+        // found = true;
+        // break;
+        // }
+        // }
 
-        if (!found) {
-            System.out.println("Staff with ID " + staffIdToModify + " not found.");
-        }
+        // if (!found) {
+        // System.out.println("Staff with ID " + staffIdToModify + " not found.");
+        // }
     }
 
     // Pending changes!!!
     public void deleteStaff() {
-        System.out.print("Enter ID of staff to delete: ");
-        String staffIdToDelete = scanner.nextLine();
-        boolean found = false;
+        // System.out.print("Enter ID of staff to delete: ");
+        // String staffIdToDelete = scanner.nextLine();
+        // boolean found = false;
 
-        for (Staff staff : staffList) {
-            if (staff.id.equals(staffIdToDelete)) {
-                staffList.remove(staff);
-                System.out.println("Staff with ID " + staffIdToDelete + " deleted successfully.");
-                found = true;
-                break;
-            }
-        }
+        // for (Staff staff : staffList) {
+        // if (staff.id.equals(staffIdToDelete)) {
+        // staffList.remove(staff);
+        // System.out.println("Staff with ID " + staffIdToDelete + " deleted
+        // successfully.");
+        // found = true;
+        // break;
+        // }
+        // }
 
-        if (!found) {
-            System.out.println("Staff with ID " + staffIdToDelete + " not found.");
-        }
+        // if (!found) {
+        // System.out.println("Staff with ID " + staffIdToDelete + " not found.");
+        // }
     }
 
     public void searchStaff() {
@@ -306,25 +347,26 @@ public class StaffManagementSystem {
 
     // Pending changes!!!
     public void reportDepartment() {
-        System.out.print("Enter Department to report: ");
-        String departmentToReport = scanner.nextLine();
-        double totalSalary = 0;
+        // System.out.print("Enter Department to report: ");
+        // String departmentToReport = scanner.nextLine();
+        // double totalSalary = 0;
 
-        System.out.println("Staff Report for Department: " + departmentToReport);
+        // System.out.println("Staff Report for Department: " + departmentToReport);
 
-        for (Staff staff : staffList) {
-            if (staff.department.equalsIgnoreCase(departmentToReport)) {
-                displayStaffDetails(staff);
-                totalSalary += staff.salary;
-                System.out.println("-----------------------------");
-            }
-        }
+        // for (Staff staff : staffList) {
+        // if (staff.department.equalsIgnoreCase(departmentToReport)) {
+        // displayStaffDetails(staff);
+        // totalSalary += staff.salary;
+        // System.out.println("-----------------------------");
+        // }
+        // }
 
-        if (totalSalary > 0) {
-            System.out.println("Total Salary for Department " + departmentToReport + ": " + totalSalary);
-        } else {
-            System.out.println("No staff found in Department " + departmentToReport);
-        }
+        // if (totalSalary > 0) {
+        // System.out.println("Total Salary for Department " + departmentToReport + ": "
+        // + totalSalary);
+        // } else {
+        // System.out.println("No staff found in Department " + departmentToReport);
+        // }
     }
 
     /**
@@ -339,8 +381,8 @@ public class StaffManagementSystem {
     /**
      * Add the staffby intilise them here through StaffData
      */
-    public void initialiseStaff() {
-        staffList.addAll(StaffData.getInitialStaffData());
+    public void retrieveStaff() {
+        staffList.addAll(StaffData.getStaffData());
     }
 
     /**

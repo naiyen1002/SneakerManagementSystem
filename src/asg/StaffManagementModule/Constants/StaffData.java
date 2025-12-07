@@ -12,7 +12,7 @@ public class StaffData {
      * 
      * @return List of staff members
      */
-    public static List<Staff> getInitialStaffData() {
+    public static List<Staff> getStaffData() {
         List<Staff> staffList = new ArrayList<>();
 
         staffList.add(new Staff("1", "JiaHui", "male", "Manager", 5000.0, "HR"));

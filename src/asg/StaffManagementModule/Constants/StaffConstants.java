@@ -100,7 +100,7 @@ public class StaffConstants {
     public static final String SUCCESS_STAFF_DELETED = "Staff with ID %s deleted successfully.";
 
     /**
-     * Not found messages
+     * Error messages - Not found messages
      */
     public static final String ERROR_NO_STAFF_AVAILABLE = "No staff information available. ";
     public static final String ERROR_STAFF_NOT_FOUND = "Staff with ID %s not found.";

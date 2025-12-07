@@ -49,6 +49,7 @@ public class StaffView {
         } else {
             System.out.println(StaffConstants.LABEL_STAFF_DETAILS);
             for (Staff staff : staffList) {
+                // Use the fucntion above to display staff details
                 displayStaffDetails(staff);
                 System.out.println(StaffConstants.LABEL_SEPARATOR);
             }
