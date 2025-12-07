@@ -327,7 +327,7 @@ public class MemberView {
     public boolean askContinue(String message) {
         while (true) {
             System.out.printf(MemberConstants.ASK_CONTINUE_FORMAT, message);
-            String input = scanner.nextLine().trim().toUpperCase();
+            String input = scanner.nextLine().toUpperCase();
 
             if (input.isEmpty()) {
                 showErrorMessage(MemberConstants.NO_INPUT_PROVIDED);

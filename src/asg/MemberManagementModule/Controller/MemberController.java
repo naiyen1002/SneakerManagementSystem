@@ -26,6 +26,11 @@ public class MemberController {
         this.memberView = memberView;
     }
 
+    public MemberController(MemberView memberView, List<Member> initialMembers) {
+        this.memberView = memberView;
+        this.memberList = new ArrayList<>(initialMembers);
+    }
+
     // ==================== DISPLAY OPERATIONS ====================
 
     /**
