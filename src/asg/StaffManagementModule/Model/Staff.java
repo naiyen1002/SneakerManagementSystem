@@ -41,19 +41,4 @@ public class Staff extends SMdetails {
     public void setDepartment(String department) {
         this.department = department;
     }
-
-    /**
-     * For easier debugging and logging
-     */
-    @Override
-    public String toString() {
-        return "Staff{" +
-                "id='" + getId() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", gender='" + getGender() + '\'' +
-                ", position='" + position + '\'' +
-                ", salary=" + salary +
-                ", department='" + department + '\'' +
-                '}';
-    }
 }

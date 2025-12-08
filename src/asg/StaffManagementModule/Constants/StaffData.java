@@ -29,10 +29,4 @@ public class StaffData {
      */
     public static final double MIN_SALARY = 0.0;
 
-    /**
-     * Private constructor to prevent instantiation
-     */
-    private StaffData() {
-        throw new UnsupportedOperationException("This is a data utility class and cannot be instantiated");
-    }
 }

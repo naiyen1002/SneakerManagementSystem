@@ -4,6 +4,7 @@ import asg.StaffManagementModule.Constants.StaffConstants;
 import asg.StaffManagementModule.Constants.StaffData;
 import asg.StaffManagementModule.Model.Staff;
 import asg.StaffManagementModule.View.StaffView;
+// import asg.StaffManagementModule.Service.StaffService;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -15,12 +16,14 @@ public class StaffManagementSystem {
     public final ArrayList<Staff> staffList;
     public final Scanner scanner;
     private final StaffView view;
+    // private final StaffService staffService;
 
     public StaffManagementSystem() {
         this.staffList = new ArrayList<>();
         this.scanner = new Scanner(System.in);
         // Initialise the StaffView for Staff Module UI display
         this.view = new StaffView();
+        // this.staffService = new StaffService(view);
     }
 
     public static void main() {

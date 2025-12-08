@@ -73,8 +73,8 @@ public class StaffView {
     /**
      * Display department report
      * 
-     * @param department
-     * @param staffInDepartment
+     * @param department 
+     * @param staffInDepartment 
      * @param totalSalary
      */
     public void displayDepartmentReport(String department, List<Staff> staffInDepartment, double totalSalary) {
