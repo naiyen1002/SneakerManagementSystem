@@ -151,6 +151,24 @@ public class MemberController {
         } while (memberView.askContinue(MemberConstants.MSG_CONTINUE_ADD));
     }
 
+    /**
+     * Add member programmatically (for testing or batch import)
+     * 
+     * @param member Member to add
+     * @return true if added successfully, false if duplicate ID exists
+     */
+    public boolean addMemberDirect(Member member) {
+        if (member == null) {
+            throw new IllegalArgumentException("Member cannot be null");
+        }
+
+        if (isMemberIdExists(member.getId())) {
+            return false;
+        }
+
+        return memberList.add(member);
+    }
+
     // ==================== SEARCH OPERATIONS ====================
 
     /**
@@ -450,6 +468,33 @@ public class MemberController {
             }
 
         } while (memberView.askContinue(MemberConstants.MSG_CONTINUE_DELETE));
+    }
+
+    /**
+     * Get total number of members
+     * 
+     * @return Member count
+     */
+    public int getMemberCount() {
+        return memberList.size();
+    }
+
+    /**
+     * Get member at specific index (for testing)
+     * 
+     * @param index Index of member
+     * @return Member at index
+     * @throws IndexOutOfBoundsException if index is invalid
+     */
+    public Member getMemberAt(int index) {
+        return memberList.get(index);
+    }
+
+    /**
+     * Clear all members (for testing)
+     */
+    public void clearAllMembers() {
+        memberList.clear();
     }
 
 }
