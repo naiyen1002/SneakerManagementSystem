@@ -37,16 +37,16 @@ public class StaffConstants {
     /**
      * Added regex patterns for input validation
      */
-    public static final String REGEX_NUMERIC = "\\d+";
-    public static final String REGEX_CONTAINS_NUMBERS = ".*\\d+.*";
+    public static final String REGEX_STAFFID = "ST\\d+";
+    public static final String REGEX_POSITION_DEPT = ".*\\d+.*";
 
     /**
      * Fixed input prompts
      */
     public static final String ENTER_CHOICE = "Enter your choice: ";
-    public static final String ENTER_ID = "Enter ID: ";
+    public static final String ENTER_ID = "Enter ID (Exp: ST001): ";
     public static final String ENTER_NAME = "Enter Name: ";
-    public static final String ENTER_GENDER = "Enter Gender (male/female): ";
+    public static final String ENTER_GENDER = "Enter Gender (Male/Female): ";
     public static final String ENTER_POSITION = "Enter Position: ";
     public static final String ENTER_SALARY = "Enter Salary: ";
     public static final String ENTER_DEPARTMENT = "Enter Department: ";
@@ -63,7 +63,7 @@ public class StaffConstants {
     /**
      * Fixed validation message
      */
-    public static final String ERROR_ID_NUMERIC = "ID must contain numbers only.  Please try again.";
+    public static final String ERROR_ID_NUMERIC = "ID must start with ST and follow with index number only.  Please try again.";
     public static final String ERROR_GENDER_INVALID = "Gender must be 'male' or 'female'. Please try again.";
     public static final String ERROR_POSITION_CONTAINS_NUMBERS = "Position cannot contain numbers. Please try again.";
     public static final String ERROR_DEPARTMENT_CONTAINS_NUMBERS = "Department cannot contain numbers. Please try again.";
@@ -90,7 +90,7 @@ public class StaffConstants {
     public static final String LABEL_DEPARTMENT = "Department: ";
     // Labels for Staff report
     public static final String LABEL_DEPARTMENT_REPORT = "Staff Report for Department: %s";
-    public static final String LABEL_TOTAL_SALARY = "Total Salary for Department %s: %. 2f";
+    public static final String LABEL_TOTAL_SALARY = "Total Salary for Department %s: %.2f";
 
     /**
      * Success messages

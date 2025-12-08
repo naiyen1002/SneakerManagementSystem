@@ -15,11 +15,11 @@ public class StaffData {
     public static List<Staff> getStaffData() {
         List<Staff> staffList = new ArrayList<>();
 
-        staffList.add(new Staff("1", "JiaHui", "male", "Manager", 5000.0, "HR"));
-        staffList.add(new Staff("2", "NaiYen", "female", "Engineer", 4800.0, "IT"));
-        staffList.add(new Staff("3", "Edwin", "male", "Accountant", 4800.0, "Finance"));
-        staffList.add(new Staff("4", "July", "female", "Creator", 4800.0, "Multimedia"));
-        staffList.add(new Staff("5", "ShiYee", "female", "Designer", 4800.0, "Design"));
+        staffList.add(new Staff("ST001", "JiaHui", "Male", "Manager", 5000.0, "HR"));
+        staffList.add(new Staff("ST002", "NaiYen", "Female", "Engineer", 4800.0, "IT"));
+        staffList.add(new Staff("ST003", "Edwin", "Male", "Accountant", 4800.0, "Finance"));
+        staffList.add(new Staff("ST004", "July", "Female", "Creator", 4800.0, "Multimedia"));
+        staffList.add(new Staff("ST005", "ShiYee", "Female", "Designer", 4800.0, "Design"));
 
         return staffList;
     }

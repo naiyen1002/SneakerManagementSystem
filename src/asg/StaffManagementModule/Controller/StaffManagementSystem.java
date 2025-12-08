@@ -149,7 +149,7 @@ public class StaffManagementSystem {
         while (true) {
             view.displayPrompt(StaffConstants.ENTER_ID);
             id = scanner.nextLine();
-            if (id.matches(StaffConstants.REGEX_NUMERIC)) {
+            if (id.matches(StaffConstants.REGEX_STAFFID)) {
                 break;
             } else {
                 view.displayErrorMessage(StaffConstants.ERROR_ID_NUMERIC);
@@ -165,7 +165,7 @@ public class StaffManagementSystem {
             view.displayPrompt(isModify ? StaffConstants.NEW_GENDER : StaffConstants.ENTER_GENDER);
             gender = scanner.nextLine().toLowerCase();
             if (gender.equals(StaffConstants.GENDER_MALE) || gender.equals(StaffConstants.GENDER_FEMALE)) {
-                return gender;
+                return gender.substring(0, 1).toUpperCase() + gender.substring(1);
             } else {
                 view.displayErrorMessage(StaffConstants.ERROR_GENDER_INVALID);
             }
@@ -178,7 +178,7 @@ public class StaffManagementSystem {
         while (true) {
             view.displayPrompt(isModify ? StaffConstants.NEW_POSITION : StaffConstants.ENTER_POSITION);
             position = scanner.nextLine();
-            if (!position.matches(StaffConstants.REGEX_CONTAINS_NUMBERS)) {
+            if (!position.matches(StaffConstants.REGEX_POSITION_DEPT)) {
                 return position;
             } else {
                 view.displayErrorMessage(StaffConstants.ERROR_POSITION_CONTAINS_NUMBERS);
@@ -214,7 +214,7 @@ public class StaffManagementSystem {
         while (true) {
             view.displayPrompt(isModify ? StaffConstants.NEW_DEPARTMENT : StaffConstants.ENTER_DEPARTMENT);
             department = scanner.nextLine();
-            if (!department.matches(StaffConstants.REGEX_CONTAINS_NUMBERS)) {
+            if (!department.matches(StaffConstants.REGEX_POSITION_DEPT)) {
                 return department;
             } else {
                 view.displayErrorMessage(StaffConstants.ERROR_DEPARTMENT_CONTAINS_NUMBERS);

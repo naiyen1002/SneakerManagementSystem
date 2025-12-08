@@ -38,11 +38,11 @@ public class TestStaff {
     }
 
     /**
-     * Add new staff --> all fields correct
+     * Add new staff --> All fields correct
      */
     @Test
     public void testAddStaff() {
-        simulateInput("6\nAlice\nfemale\nDeveloper\n4500\nIT\n");
+        simulateInput("ST006\nAlice\nFemale\nDeveloper\n4500\nIT\n");
 
         int initialSize = staffSystem.staffList.size();
         staffSystem.addStaff();
@@ -51,9 +51,9 @@ public class TestStaff {
                 "Staff list should increase by 1 after adding staff");
 
         Staff addedStaff = staffSystem.staffList.get(staffSystem.staffList.size() - 1);
-        assertEquals("6", addedStaff.getId(), "ID should be 6");
+        assertEquals("ST006", addedStaff.getId(), "ID should be ST006");
         assertEquals("Alice", addedStaff.getName(), "Name should be Alice");
-        assertEquals("female", addedStaff.getGender(), "Gender should be female");
+        assertEquals("Female", addedStaff.getGender(), "Gender should be Female");
         assertEquals("Developer", addedStaff.getPosition(), "Position should be Developer");
         assertEquals(4500.0, addedStaff.getSalary(), 0.001, "Salary should be 4500");
         assertEquals("IT", addedStaff.getDepartment(), "Department should be IT");
@@ -63,21 +63,66 @@ public class TestStaff {
                 "Should display success message");
     }
 
-    // /**
-    // * Delete staff
-    // */
-    // @Test
-    // public void testDeleteStaff() {
-    // // Delete staff with ID "2"
-    // staffSystem.staffList.removeIf(staff -> staff.getId().equals("2"));
+    /**
+    * Delete staff --> With valid ID and exist
+    */
+    @Test
+    public void testDeleteStaff() {
+        simulateInput("ST002\n");
 
-    // // Verify staff with ID "2" is gone
-    // boolean found = staffSystem.staffList.stream()
-    // .anyMatch(staff -> staff.getId().equals("2"));
+        int initialSize = staffSystem.staffList.size();
 
-    // assertFalse(found, "Staff with ID 2 should not exist anymore after
-    // deletion.");
-    // }
+        // Verify staff with ID "2" exists before deletion
+        Staff staffToDelete = staffSystem.staffList.stream()
+                .filter(s -> s.getId().equals("ST002"))
+                .findFirst()
+                .orElse(null);
+        assertNotNull(staffToDelete, "Staff with ID ST002 should exist before deletion");
+        assertEquals("NaiYen", staffToDelete.getName());
+
+        staffSystem.deleteStaff();
+
+        // Verify staff list size decreased by 1
+        assertEquals(initialSize - 1, staffSystem.staffList.size(),
+                "Staff list should decrease by 1 after deletion");
+
+        // Verify staff with ID "2" no longer exists
+        boolean found = staffSystem.staffList.stream()
+                .anyMatch(s -> s.getId().equals("2"));
+        assertFalse(found, "Staff with ID ST002 should not exist after deletion");
+
+        String output = outputStream.toString();
+        assertTrue(output.contains("deleted successfully"),
+                "Should display success message");
+    }
+
+    /**
+     * Modify staff --> All fields correct
+     */
+    @Test
+    public void testModifyStaff() {
+        simulateInput("ST002\nUpdatedName\nMale\nContent Creator\n5500\nMultimedia\n");
+
+        staffSystem.modifyStaff();
+
+        // Find the modified staff
+        Staff modifiedStaff = staffSystem.staffList.stream()
+                .filter(s -> s.getId().equals("ST002"))
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(modifiedStaff, "Staff with ID ST002 should exist");
+        assertEquals("UpdatedName", modifiedStaff.getName(), "Name should be updated");
+        assertEquals("Male", modifiedStaff.getGender(), "Gender should be updated to Male");
+        assertEquals("Content Creator", modifiedStaff.getPosition(), "Position should be updated");
+        assertEquals(5500.0, modifiedStaff.getSalary(), 0.001, "Salary should be updated");
+        assertEquals("Multimedia", modifiedStaff.getDepartment(), "Department should be updated");
+
+        String output = outputStream.toString();
+        assertTrue(output.contains("Staff modified successfully"),
+                "Should display success message");
+    }
+
 
     // /**
     // * Delete non-exist staff
@@ -139,7 +184,7 @@ public class TestStaff {
     // Modify staff
     // Modify staff --> invalid input
     // Delete staff --> with name
-    // Modify staf --> change department
+    // Modify staff --> change department
     // Report --> total up salary
 
 }
