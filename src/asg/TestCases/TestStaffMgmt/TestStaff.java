@@ -18,8 +18,6 @@ public class TestStaff {
 
     @BeforeEach
     public void setUp() {
-        // staffSystem = new StaffManagementSystem();
-        // staffSystem.retrieveStaff(); // Load initial staff data
         System.setOut(new PrintStream(outputStream));
     }
 
@@ -64,8 +62,48 @@ public class TestStaff {
     }
 
     /**
-    * Delete staff --> With valid ID and exist
-    */
+     * Modify staff --> All fields correct
+     */
+    @Test
+    public void testModifyStaff() {
+        simulateInput("ST002\nUpdatedName\nMale\nContent Creator\n5500\nMultimedia\n");
+
+        staffSystem.modifyStaff();
+
+        // Find the modified staff
+        Staff modifiedStaff = staffSystem.staffList.stream()
+                .filter(s -> s.getId().equals("ST002"))
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(modifiedStaff, "Staff with ID ST002 should exist");
+        assertEquals("UpdatedName", modifiedStaff.getName(), "Name should be updated");
+        assertEquals("Male", modifiedStaff.getGender(), "Gender should be updated to Male");
+        assertEquals("Content Creator", modifiedStaff.getPosition(), "Position should be updated");
+        assertEquals(5500.0, modifiedStaff.getSalary(), 0.001, "Salary should be updated");
+        assertEquals("Multimedia", modifiedStaff.getDepartment(), "Department should be updated");
+
+        String output = outputStream.toString();
+        assertTrue(output.contains("Staff modified successfully"),
+                "Should display success message");
+    }
+
+    // /**
+    // * Modify non-exist staff information
+    // */
+    // @Test
+    // public void testModifyNotExistStaff() {
+    // Staff staff = staffSystem.staffList.stream()
+    // .filter(s -> s.getId().equals("10"))
+    // .findFirst()
+    // .orElse(null);
+
+    // assertNull(staff, "Staff with ID 10 should not exist");
+    // }
+
+    /**
+     * Delete staff --> With valid ID and exist
+     */
     @Test
     public void testDeleteStaff() {
         simulateInput("ST002\n");
@@ -96,34 +134,6 @@ public class TestStaff {
                 "Should display success message");
     }
 
-    /**
-     * Modify staff --> All fields correct
-     */
-    @Test
-    public void testModifyStaff() {
-        simulateInput("ST002\nUpdatedName\nMale\nContent Creator\n5500\nMultimedia\n");
-
-        staffSystem.modifyStaff();
-
-        // Find the modified staff
-        Staff modifiedStaff = staffSystem.staffList.stream()
-                .filter(s -> s.getId().equals("ST002"))
-                .findFirst()
-                .orElse(null);
-
-        assertNotNull(modifiedStaff, "Staff with ID ST002 should exist");
-        assertEquals("UpdatedName", modifiedStaff.getName(), "Name should be updated");
-        assertEquals("Male", modifiedStaff.getGender(), "Gender should be updated to Male");
-        assertEquals("Content Creator", modifiedStaff.getPosition(), "Position should be updated");
-        assertEquals(5500.0, modifiedStaff.getSalary(), 0.001, "Salary should be updated");
-        assertEquals("Multimedia", modifiedStaff.getDepartment(), "Department should be updated");
-
-        String output = outputStream.toString();
-        assertTrue(output.contains("Staff modified successfully"),
-                "Should display success message");
-    }
-
-
     // /**
     // * Delete non-exist staff
     // */
@@ -138,53 +148,46 @@ public class TestStaff {
     // should remain the same");
     // }
 
-    // /**
-    // * Modify non-exist staff information
-    // */
-    // @Test
-    // public void testModifyNotExistStaff() {
-    // Staff staff = staffSystem.staffList.stream()
-    // .filter(s -> s.getId().equals("10"))
-    // .findFirst()
-    // .orElse(null);
+    /**
+     * Search staff by ID
+     */
+    @Test
+    public void testSearchStaffById() {
+        simulateInput("ST001\n");
 
-    // assertNull(staff, "Staff with ID 10 should not exist");
-    // }
+        staffSystem.searchStaff();
 
-    // /**
-    // * Search staff by ID
-    // */
-    // @Test
-    // public void testSearchStaffById() {
-    // Staff staff = staffSystem.staffList.stream()
-    // .filter(s -> s.getId().equals("1"))
-    // .findFirst()
-    // .orElse(null);
+        String output = outputStream.toString();
+        assertTrue(output.contains("Search Results"),
+                "Should display search results header");
+        assertTrue(output.contains("JiaHui"),
+                "Should find staff with ID ST001");
+        assertTrue(output.contains("ID: ST001") || output.contains("ST001"),
+                "Should display staff ID");
+        assertTrue(output.contains("Manager"),
+                "Should display staff position");
+        assertTrue(output.contains("HR"),
+                "Should display staff department");
+    }
 
-    // assertNotNull(staff, "Staff with ID 1 should exist");
-    // assertEquals("JiaHui", staff.getName());
-    // }
+    /**
+     * Search staff by Name
+     */
+    @Test
+    public void testSearchStaffByName() {
+        simulateInput("NaiYen\n");
 
-    // /**
-    // * Search staff by Name
-    // */
-    // @Test
-    // public void testSearchStaff_ByName() {
-    // Staff staff = staffSystem.staffList.stream()
-    // .filter(s -> s.getName().contains("NaiYen"))
-    // .findFirst()
-    // .orElse(null);
+        staffSystem.searchStaff();
 
-    // assertNotNull(staff, "Staff with name NaiYen should exist");
-    // assertEquals("2", staff.getId());
-    // }
-
-    // Ideas
-    // Add new staff --> invalid input
-    // Modify staff
-    // Modify staff --> invalid input
-    // Delete staff --> with name
-    // Modify staff --> change department
-    // Report --> total up salary
+        String output = outputStream.toString();
+        assertTrue(output.contains("NaiYen"),
+                "Should find staff by exact name");
+        assertTrue(output.contains("ST002"),
+                "Should display correct ID");
+        assertTrue(output.contains("Engineer"),
+                "Should display staff position");
+        assertTrue(output.contains("IT"),
+                "Should display staff department");
+    }
 
 }
