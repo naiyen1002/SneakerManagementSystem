@@ -439,6 +439,35 @@ public class MemberController {
         } while (memberView.askContinue(MemberConstants.MSG_CONTINUE_UPDATE));
     }
 
+    /**
+     * Update member for testing
+     * 
+     * @param memberId      ID of member to update
+     * @param updatedMember Member with updated information
+     * @return true if updated successfully, false if member not found
+     */
+    public boolean updateMemberDirect(String memberId, Member updatedMember) {
+        if (memberId == null || updatedMember == null) {
+            throw new IllegalArgumentException("Member ID and updated member cannot be null");
+        }
+
+        Member existing = findMemberById(memberId);
+        if (existing == null) {
+            return false;
+        }
+
+        // Update mutable fields
+        existing.setName(updatedMember.getName());
+        existing.setGender(updatedMember.getGender());
+        existing.setIcNumber(updatedMember.getIcNumber());
+        existing.setContactNumber(updatedMember.getContactNumber());
+        existing.setJoinDate(updatedMember.getJoinDate());
+        existing.setMembershipTier(updatedMember.getMembershipTier());
+        existing.setTotalSpending(updatedMember.getTotalSpending());
+
+        return true;
+    }
+
     // ==================== DELETE OPERATION ====================
 
     /**
@@ -471,6 +500,25 @@ public class MemberController {
     }
 
     /**
+     * Delete member by ID programmatically (for testing)
+     * 
+     * @param memberId ID of member to delete
+     * @return true if deleted successfully, false if member not found
+     */
+    public boolean deleteMemberById(String memberId) {
+        if (memberId == null || memberId.trim().isEmpty()) {
+            return false;
+        }
+
+        Member member = findMemberById(memberId);
+        if (member == null) {
+            return false;
+        }
+
+        return memberList.remove(member);
+    }
+
+    /**
      * Get total number of members
      * 
      * @return Member count
@@ -488,13 +536,6 @@ public class MemberController {
      */
     public Member getMemberAt(int index) {
         return memberList.get(index);
-    }
-
-    /**
-     * Clear all members (for testing)
-     */
-    public void clearAllMembers() {
-        memberList.clear();
     }
 
 }

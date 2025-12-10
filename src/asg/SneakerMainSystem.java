@@ -62,13 +62,13 @@ public class SneakerMainSystem {
                     StaffManagementSystem.main();
                     break;
                 case 2:
-                    OldMemberManagement.main();
+                    // OldMemberManagement.main();
                     break;
                 case 3:
-                    NewSales.main();
+                    // NewSales.main();
                     break;
                 case 4:
-                    Stock.main();
+                    // Stock.main();
                     break;
                 case 5:
                     MakeOrder_refactor.main();
