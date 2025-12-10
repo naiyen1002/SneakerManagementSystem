@@ -24,9 +24,6 @@ public class StaffData {
         return staffList;
     }
 
-    /**
-     * Minimum salary for staff members
-     */
     public static final double MIN_SALARY = 0.0;
 
 }

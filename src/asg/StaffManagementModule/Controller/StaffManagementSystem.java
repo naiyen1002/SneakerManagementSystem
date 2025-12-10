@@ -7,7 +7,6 @@ import asg.StaffManagementModule.View.StaffView;
 // import asg.StaffManagementModule.Service.StaffService;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -81,13 +80,18 @@ public class StaffManagementSystem {
     private int getMenuChoice() {
         while (true) {
             view.displayPrompt(StaffConstants.ENTER_CHOICE);
+            String input = scanner.nextLine();
+
+            // Check for blank input
+            if (input.trim().isEmpty()) {
+                view.displayErrorMessage(StaffConstants.ERROR_BLANK_INPUT);
+                continue;
+            }
+
             try {
-                int choice = scanner.nextInt();
-                scanner.nextLine();
-                return choice;
-            } catch (InputMismatchException e) {
-                System.out.println(StaffConstants.ERROR_INVALID_CHOICE);
-                scanner.nextLine();
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                view.displayErrorMessage(StaffConstants.ERROR_INVALID_CHOICE);
             }
         }
     }
@@ -104,35 +108,21 @@ public class StaffManagementSystem {
      */
     public void addStaff() {
         String id = getValidStaffId();
-
-        // Name
-        view.displayPrompt(StaffConstants.ENTER_NAME);
-        String name = scanner.nextLine();
-
-        // Gender
+        String name = getValidName(false);
         String gender = getValidGender(false);
 
-        // Position
         String position = getValidPosition(false);
         if (position == null) {
             return;
         }
 
-        // Salary
         Double salary = getValidSalary(false);
         if (salary == null) {
             return;
         }
 
-        // Department
         String department = getValidDepartment(false);
         if (department == null) {
-            return;
-        }
-
-        // Checking required fields
-        if (id.isEmpty() || name.isEmpty() || position.isEmpty() || department.isEmpty()) {
-            view.displayErrorMessage(StaffConstants.ERROR_MANDATORY_FIELDS);
             return;
         }
 
@@ -143,22 +133,58 @@ public class StaffManagementSystem {
         view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_ADDED);
     }
 
-    // Move to services file later - Not sure yet, still thinking
+    // Validation for staff id
     private String getValidStaffId() {
         String id;
         while (true) {
             view.displayPrompt(StaffConstants.ENTER_ID);
             id = scanner.nextLine();
-            if (id.matches(StaffConstants.REGEX_STAFFID)) {
-                break;
-            } else {
+            if (!id.matches(StaffConstants.REGEX_STAFFID)) {
                 view.displayErrorMessage(StaffConstants.ERROR_ID_NUMERIC);
+                continue;
             }
+            // Check if ID already exists
+            if (isStaffIdExists(id)) {
+                view.displayErrorMessage(String.format(StaffConstants.ERROR_ID_EXISTS, id));
+                continue;
+            }
+            break;
         }
         return id;
     }
 
-    // Move to services file later - Not sure yet, still thinking
+    // Check if staff ID already exists in the system
+    private boolean isStaffIdExists(String id) {
+        for (Staff staff : staffList) {
+            if (staff.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Validate staff name
+    private String getValidName(boolean isModify) {
+        String name;
+        while (true) {
+            view.displayPrompt(isModify ? StaffConstants.NEW_NAME : StaffConstants.ENTER_NAME);
+            name = scanner.nextLine();
+
+            if (name.trim().isEmpty()) {
+                view.displayErrorMessage(StaffConstants.ERROR_NAME_BLANK);
+                continue;
+            }
+
+            if (name.matches(StaffConstants.REGEX_POSITION_DEPT)) {
+                view.displayErrorMessage(StaffConstants.ERROR_NAME_CONTAINS_NUMBERS);
+                continue;
+            }
+
+            return name;
+        }
+    }
+
+    // Validate gender
     private String getValidGender(boolean isModify) {
         String gender;
         while (true) {
@@ -172,53 +198,69 @@ public class StaffManagementSystem {
         }
     }
 
-    // Move to services file later - Not sure yet, still thinking
+    // Validate position
     private String getValidPosition(boolean isModify) {
         String position;
         while (true) {
             view.displayPrompt(isModify ? StaffConstants.NEW_POSITION : StaffConstants.ENTER_POSITION);
             position = scanner.nextLine();
-            if (!position.matches(StaffConstants.REGEX_POSITION_DEPT)) {
-                return position;
-            } else {
-                view.displayErrorMessage(StaffConstants.ERROR_POSITION_CONTAINS_NUMBERS);
+
+            if (position.trim().isEmpty()) {
+                view.displayErrorMessage(StaffConstants.ERROR_POSITION_BLANK);
+                continue;
             }
+
+            if (position.matches(StaffConstants.REGEX_POSITION_DEPT)) {
+                view.displayErrorMessage(StaffConstants.ERROR_POSITION_CONTAINS_NUMBERS);
+                continue;
+            }
+
+            return position;
         }
     }
 
-    // Move to services file later - Not sure yet, still thinking
-    private Double getValidSalary(boolean isNewStaff) {
+    // Validate salary
+    private Double getValidSalary(boolean isModify) {
         while (true) {
-            view.displayPrompt(isNewStaff ? StaffConstants.NEW_SALARY : StaffConstants.ENTER_SALARY);
+            view.displayPrompt(isModify ? StaffConstants.NEW_SALARY : StaffConstants.ENTER_SALARY);
+            String input = scanner.nextLine();
+
+            if (input.trim().isEmpty()) {
+                view.displayErrorMessage(StaffConstants.ERROR_SALARY_BLANK);
+                continue;
+            }
+
             try {
-                double salary = scanner.nextDouble();
-                scanner.nextLine();
-                if (isNewStaff && salary >= StaffData.MIN_SALARY) {
-                    return salary;
-                } else if (!isNewStaff && salary >= StaffData.MIN_SALARY) {
+                double salary = Double.parseDouble(input);
+                if (salary >= StaffData.MIN_SALARY) {
                     return salary;
                 } else {
-                    view.displayErrorMessage(
-                            isNewStaff ? StaffConstants.ERROR_SALARY_ZERO : StaffConstants.ERROR_SALARY_NEGATIVE);
+                    view.displayErrorMessage(StaffConstants.ERROR_SALARY_ZERO);
                 }
-            } catch (InputMismatchException e) {
-                view.displayErrorMessage(StaffConstants.ERROR_INVALID_INPUT);
-                scanner.nextLine();
+            } catch (NumberFormatException e) {
+                view.displayErrorMessage(StaffConstants.ERROR_SALARY_NUMERIC);
             }
         }
     }
 
-    // Move to services file later - Not sure yet, still thinking
+    // Validate department
     private String getValidDepartment(boolean isModify) {
         String department;
         while (true) {
             view.displayPrompt(isModify ? StaffConstants.NEW_DEPARTMENT : StaffConstants.ENTER_DEPARTMENT);
             department = scanner.nextLine();
-            if (!department.matches(StaffConstants.REGEX_POSITION_DEPT)) {
-                return department;
-            } else {
-                view.displayErrorMessage(StaffConstants.ERROR_DEPARTMENT_CONTAINS_NUMBERS);
+
+            if (department.trim().isEmpty()) {
+                view.displayErrorMessage(StaffConstants.ERROR_DEPARTMENT_BLANK);
+                continue;
             }
+
+            if (department.matches(StaffConstants.REGEX_POSITION_DEPT)) {
+                view.displayErrorMessage(StaffConstants.ERROR_DEPARTMENT_CONTAINS_NUMBERS);
+                continue;
+            }
+
+            return department;
         }
     }
 
@@ -226,62 +268,123 @@ public class StaffManagementSystem {
      * Modify staff details
      */
     public void modifyStaff() {
-        view.displayPrompt(StaffConstants.ENTER_ID);
-        String staffToModify = scanner.nextLine();
-        boolean found = false;
+        Staff staffToModify = null;
 
-        for (Staff staff : staffList) {
+        while (staffToModify == null) {
+            view.displayPrompt(StaffConstants.ENTER_ID);
+            String staffId = scanner.nextLine();
 
-            // If the staff is being founded, then execute the modification
-            if (staff.getId().equals(staffToModify)) {
-                view.displayCurrentStaffHeader();
-                displayStaffDetails(staff);
+            if (staffId.trim().isEmpty()) {
+                view.displayErrorMessage(StaffConstants.ERROR_ID_BLANK);
+                continue;
+            }
 
-                // Name
-                view.displayPrompt(StaffConstants.NEW_NAME);
-                String name = scanner.nextLine();
-
-                String gender = getValidGender(true);
-                String position = getValidPosition(true);
-
-                Double salary = getValidSalary(true);
-                if (salary == null) {
-                    return;
+            // Search for staff
+            for (Staff staff : staffList) {
+                if (staff.getId().equals(staffId)) {
+                    staffToModify = staff;
+                    break;
                 }
+            }
 
-                String department = getValidDepartment(true);
-
-                // Checking required fields
-                if (name.isEmpty() || position.isEmpty() || department.isEmpty()) {
-                    view.displayErrorMessage(StaffConstants.ERROR_MANDATORY_FIELDS_MODIFY);
-                    return;
-                }
-
-                // If everything is fine, then modify the staff details
-                staff.setName(name);
-                staff.setGender(gender);
-                staff.setPosition(position);
-                staff.setSalary(salary);
-                staff.setDepartment(department);
-
-                view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_MODIFIED);
-                found = true;
-                break;
+            if (staffToModify == null) {
+                view.displayErrorMessage(String.format(StaffConstants.ERROR_STAFF_NOT_FOUND, staffId));
             }
         }
 
-        // If the input staff is not exist
-        if (!found) {
-            view.displayErrorMessage(String.format(StaffConstants.ERROR_STAFF_NOT_FOUND, staffToModify));
-        }
+        // Staff found, proceed modification
+        view.displayCurrentStaffHeader();
+        displayStaffDetails(staffToModify);
+
+        int choice;
+        boolean modified = false;
+
+        do {
+            view.displayModifyMenu();
+            choice = getMenuChoice();
+
+            // May require switch to enum
+            switch (choice) {
+                case StaffConstants.MODIFY_NAME:
+                    String name = getValidName(true);
+                    if (!name.isEmpty()) {
+                        staffToModify.setName(name);
+                        view.displaySuccessMessage("Name updated successfully.");
+                        modified = true;
+                    } else {
+                        view.displayErrorMessage("Name cannot be empty.");
+                    }
+                    break;
+
+                case StaffConstants.MODIFY_GENDER:
+                    String gender = getValidGender(true);
+                    staffToModify.setGender(gender);
+                    view.displaySuccessMessage("Gender updated successfully.");
+                    modified = true;
+                    break;
+
+                case StaffConstants.MODIFY_POSITION:
+                    String position = getValidPosition(true);
+                    if (position != null && !position.isEmpty()) {
+                        staffToModify.setPosition(position);
+                        view.displaySuccessMessage("Position updated successfully.");
+                        modified = true;
+                    } else {
+                        view.displayErrorMessage("Position cannot be empty.");
+                    }
+                    break;
+
+                case StaffConstants.MODIFY_SALARY:
+                    Double salary = getValidSalary(true);
+                    if (salary != null) {
+                        staffToModify.setSalary(salary);
+                        view.displaySuccessMessage("Salary updated successfully.");
+                        modified = true;
+                    }
+                    break;
+
+                case StaffConstants.MODIFY_DEPARTMENT:
+                    String department = getValidDepartment(true);
+                    if (department != null && !department.isEmpty()) {
+                        staffToModify.setDepartment(department);
+                        view.displaySuccessMessage("Department updated successfully.");
+                        modified = true;
+                    } else {
+                        view.displayErrorMessage("Department cannot be empty.");
+                    }
+                    break;
+
+                case StaffConstants.FINISH_MODIFICATION:
+                    if (modified) {
+                        view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_MODIFIED);
+                    } else {
+                        view.displayErrorMessage("No modifications were made.");
+                    }
+                    break;
+
+                default:
+                    view.displayErrorMessage(StaffConstants.ERROR_INVALID_CHOICE);
+            }
+
+        } while (choice != StaffConstants.FINISH_MODIFICATION);
     }
 
     /**
      * Delete staff
      */
     public void deleteStaff() {
-        view.displayPrompt(StaffConstants.ID_TO_DELETE);
-        String staffToDelete = scanner.nextLine();
+        String staffToDelete;
+
+        while (true) {
+            view.displayPrompt(StaffConstants.ID_TO_DELETE);
+            staffToDelete = scanner.nextLine();
+            if (staffToDelete.trim().isEmpty()) {
+                view.displayErrorMessage(StaffConstants.ERROR_ID_BLANK);
+            } else {
+                break;
+            }
+        }
+
         boolean found = false;
 
         for (Staff staff : staffList) {
@@ -291,10 +394,10 @@ public class StaffManagementSystem {
                 found = true;
                 break;
             }
+        }
 
-            if (!found) {
-                view.displayErrorMessage(String.format(StaffConstants.ERROR_STAFF_NOT_FOUND, staffToDelete));
-            }
+        if (!found) {
+            view.displayErrorMessage(String.format(StaffConstants.ERROR_STAFF_NOT_FOUND, staffToDelete));
         }
     }
 
@@ -302,25 +405,44 @@ public class StaffManagementSystem {
      * Search a staff
      */
     public void searchStaff() {
-        // Display the search prompt
-        view.displayPrompt(StaffConstants.SEARCH_QUERY);
-        String searchQuery = scanner.nextLine();
+        String searchQuery;
+
+        while (true) {
+            view.displayPrompt(StaffConstants.SEARCH_QUERY);
+            searchQuery = scanner.nextLine();
+
+            if (searchQuery.trim().isEmpty()) {
+                view.displayErrorMessage(StaffConstants.ERROR_SEARCH_BLANK);
+                continue;
+            }
+
+            if (searchQuery.trim().length() < 2) {
+                view.displayErrorMessage(StaffConstants.ERROR_SEARCH_MIN_LENGTH);
+                continue;
+            }
+
+            if (!searchQuery.matches(StaffConstants.REGEX_STAFFID)
+                    && searchQuery.matches(StaffConstants.REGEX_POSITION_DEPT)) {
+                view.displayErrorMessage(StaffConstants.ERROR_SEARCH_NUMERIC);
+                continue;
+            }
+
+            break;
+        }
+
         boolean found = false;
 
-        // Search header display
         view.displaySearchResultsHeader();
 
         for (Staff staff : staffList) {
-            // Modified id and name to getId() and getName() because of encapsulation
-            // changes made in Staff.java
-            if (staff.getId().equalsIgnoreCase(searchQuery) || staff.getName().contains(searchQuery)) {
+            if (staff.getId().equalsIgnoreCase(searchQuery)
+                    || staff.getName().toLowerCase().contains(searchQuery.toLowerCase())) {
                 view.displayStaffDetails(staff);
                 found = true;
             }
         }
 
         if (!found) {
-            // Display no matching staff found message
             view.displayErrorMessage(StaffConstants.ERROR_NO_MATCHING_STAFF);
         }
     }
@@ -329,9 +451,42 @@ public class StaffManagementSystem {
      * Make salary report of the whole department
      */
     public void departmentSalaryReport() {
+        // Display existing departments
+        view.displayExistingDepartments(getExistingDepartments());
 
-        view.displayPrompt(StaffConstants.DEPARTMENT_REPORT);
-        String departmentSalaryReport = scanner.nextLine();
+        String departmentSalaryReport;
+
+        while (true) {
+            view.displayPrompt(StaffConstants.DEPARTMENT_REPORT);
+            departmentSalaryReport = scanner.nextLine();
+
+            if (departmentSalaryReport.trim().isEmpty()) {
+                view.displayErrorMessage(StaffConstants.ERROR_DEPARTMENT_BLANK);
+                continue;
+            }
+
+            if (departmentSalaryReport.matches(StaffConstants.REGEX_POSITION_DEPT)) {
+                view.displayErrorMessage(StaffConstants.ERROR_DEPARTMENT_CONTAINS_NUMBERS);
+                continue;
+            }
+
+            boolean departmentExists = false;
+            for (String dept : getExistingDepartments()) {
+                if (dept.equalsIgnoreCase(departmentSalaryReport)) {
+                    departmentSalaryReport = dept; // Use the exact case from system
+                    departmentExists = true;
+                    break;
+                }
+            }
+
+            if (!departmentExists) {
+                view.displayErrorMessage(StaffConstants.ERROR_DEPARTMENT_NOT_EXIST);
+                continue;
+            }
+
+            break;
+        }
+
         double totalSalary = 0;
 
         List<Staff> staffInDepartment = new ArrayList<>();
@@ -344,6 +499,19 @@ public class StaffManagementSystem {
         }
 
         view.displayDepartmentReport(departmentSalaryReport, staffInDepartment, totalSalary);
+    }
+
+    /**
+     * Get list of existing departments from staff list
+     */
+    private List<String> getExistingDepartments() {
+        List<String> departments = new ArrayList<>();
+        for (Staff staff : staffList) {
+            if (!departments.contains(staff.getDepartment())) {
+                departments.add(staff.getDepartment());
+            }
+        }
+        return departments;
     }
 
     /**

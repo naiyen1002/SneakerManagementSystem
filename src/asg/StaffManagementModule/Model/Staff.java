@@ -4,9 +4,6 @@ import asg.SMdetails;
 
 public class Staff extends SMdetails {
 
-    /***
-     * Originality protected change to private for better encapsulation
-     */
     private String position;
     private double salary;
     private String department;

@@ -25,6 +25,22 @@ public class StaffView {
     }
 
     /**
+     * Field modification menu display
+     */
+    public void displayModifyMenu() {
+        System.out.print(StaffConstants.MODIFY_MENU_HEADER);
+        System.out.println(StaffConstants.MODIFY_MENU_TITLE);
+        System.out.println(StaffConstants.MODIFY_MENU_HEADER);
+        System.out.println(StaffConstants.MODIFY_MENU_OPTION_1);
+        System.out.println(StaffConstants.MODIFY_MENU_OPTION_2);
+        System.out.println(StaffConstants.MODIFY_MENU_OPTION_3);
+        System.out.println(StaffConstants.MODIFY_MENU_OPTION_4);
+        System.out.println(StaffConstants.MODIFY_MENU_OPTION_5);
+        System.out.println(StaffConstants.MODIFY_MENU_OPTION_0);
+        System.out.print(StaffConstants.MODIFY_MENU_ENDER);
+    }
+
+    /**
      * Display single staff details
      * 
      * @param staff
@@ -73,8 +89,8 @@ public class StaffView {
     /**
      * Display department report
      * 
-     * @param department 
-     * @param staffInDepartment 
+     * @param department
+     * @param staffInDepartment
      * @param totalSalary
      */
     public void displayDepartmentReport(String department, List<Staff> staffInDepartment, double totalSalary) {
@@ -89,6 +105,21 @@ public class StaffView {
             }
             System.out.println(String.format(StaffConstants.LABEL_TOTAL_SALARY, department, totalSalary));
         }
+    }
+
+    /**
+     * Display existing departments in the system
+     */
+    public void displayExistingDepartments(java.util.List<String> departments) {
+        System.out.println(StaffConstants.LABEL_EXISTING_DEPARTMENTS);
+        if (departments.isEmpty()) {
+            System.out.println("No departments found.");
+        } else {
+            for (String dept : departments) {
+                System.out.println("--> " + dept);
+            }
+        }
+        System.out.println();
     }
 
     /**
