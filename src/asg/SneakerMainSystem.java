@@ -2,7 +2,7 @@ package asg;
 
 import java.util.Scanner;
 
-import view.MakeOrder_refactor;
+import asg.StaffManagementModule.Controller.StaffController;
 
 public class SneakerMainSystem {
     private static Scanner scanner = new Scanner(System.in);
@@ -59,7 +59,7 @@ public class SneakerMainSystem {
 
             switch (choice) {
                 case 1:
-                    StaffManagementSystem.main();
+                    StaffController.main();
                     break;
                 case 2:
                     OldMemberManagement.main();
