@@ -1,10 +1,12 @@
-package asg;
+package asg.StaffManagementModule.Model;
+
+import asg.SMdetails;
 
 public class Staff extends SMdetails {
 
-    protected String position;
-    protected double salary;
-    protected String department;
+    private String position;
+    private double salary;
+    private String department;
 
     public Staff(String ID, String name, String gender, String position, double salary, String department) {
         super(ID, name, gender);

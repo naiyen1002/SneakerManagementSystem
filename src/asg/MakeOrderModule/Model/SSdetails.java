@@ -1,13 +1,8 @@
-package model;
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+package asg.MakeOrderModule.Model;
 
 /**
- *
- * @author ginwe
+ * Base class representing sneaker/shoe details.
+ * Contains common attributes shared by all sneaker items in the system.
  */
 public class SSdetails {
     protected String itemCode;
@@ -17,6 +12,7 @@ public class SSdetails {
     protected double itemPrice;
 
     public SSdetails(String itemCode, String brand, String itemDescription, String colour, double itemPrice) {
+        
         this.itemCode = itemCode;
         this.brand = brand;
         this.itemDescription = itemDescription;
@@ -63,6 +59,10 @@ public class SSdetails {
     public void setItemPrice(double itemPrice) {
         this.itemPrice = itemPrice;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return String.format("SSdetails{itemCode='%s', brand='%s', description='%s', colour='%s', price=%.2f}",
+                itemCode, brand, itemDescription, colour, itemPrice);
+    }
 }

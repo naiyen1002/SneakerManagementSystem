@@ -2,7 +2,8 @@ package asg;
 
 import java.util.Scanner;
 
-import view.MakeOrder_refactor;
+import asg.StaffManagementModule.Controller.StaffController;
+import asg.MakeOrderModule.Controller.MakeOrderController;
 
 public class SneakerMainSystem {
     private static Scanner scanner = new Scanner(System.in);
@@ -59,7 +60,7 @@ public class SneakerMainSystem {
 
             switch (choice) {
                 case 1:
-                    StaffManagementSystem.main();
+                    StaffController.main();
                     break;
                 case 2:
                     // OldMemberManagement.main();
@@ -71,7 +72,7 @@ public class SneakerMainSystem {
                     // Stock.main();
                     break;
                 case 5:
-                    MakeOrder_refactor.main();
+                    MakeOrderController.main();
                     break;
                 case 6:
                     System.out.println("\nEXITING PROGRAM...\n");
