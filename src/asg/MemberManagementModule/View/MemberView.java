@@ -12,7 +12,25 @@ import java.util.Scanner;
 
 public class MemberView {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
+
+    /**
+     * Default constructor for production use
+     * Creates a Scanner that reads from System.in
+     */
+    public MemberView() {
+        this.scanner = new Scanner(System.in);
+    }
+
+    /**
+     * Constructor for testing
+     * Allows injection of a custom Scanner
+     * 
+     * @param scanner Scanner to use for input
+     */
+    public MemberView(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
     // ==================== MENU DISPLAY ====================
 
@@ -54,8 +72,13 @@ public class MemberView {
 
         System.out.println(MemberConstants.HEADER_DISPLAY_ALL);
         System.out.printf(MemberConstants.FORMAT_TABLE_HEADER,
-                "Member ID", "Name", "Gender", "IC Number", "Contact Number (+60)",
-                "Join Date (dd/mm/yyyy)", "Membership Tier");
+                MemberConstants.HEADER_MEMBER_ID,
+                MemberConstants.HEADER_NAME,
+                MemberConstants.HEADER_GENDER,
+                MemberConstants.HEADER_IC_NUMBER,
+                MemberConstants.HEADER_CONTACT,
+                MemberConstants.HEADER_JOIN_DATE,
+                MemberConstants.HEADER_MEMBERSHIP_TIER);
         System.out.println(MemberConstants.FORMAT_TABLE_SEPARATOR);
 
         for (Member member : memberList) {
@@ -92,7 +115,7 @@ public class MemberView {
         System.out.printf(MemberConstants.DETAIL_JOIN_DATE, member.getFormattedJoinDate());
         System.out.printf(MemberConstants.DETAIL_MEMBERSHIP_TIER, member.getMembershipTier().getDisplayName());
         System.out.printf(MemberConstants.DETAIL_TOTAL_SPENDING, member.getTotalSpending());
-        System.out.println(MemberConstants.DETAIL_SEPARATOR + "\n");
+        System.out.println(MemberConstants.DETAIL_SEPARATOR);
     }
 
     /**
@@ -327,7 +350,7 @@ public class MemberView {
     public boolean askContinue(String message) {
         while (true) {
             System.out.printf(MemberConstants.ASK_CONTINUE_FORMAT, message);
-            String input = scanner.nextLine().trim().toUpperCase();
+            String input = scanner.nextLine().toUpperCase();
 
             if (input.isEmpty()) {
                 showErrorMessage(MemberConstants.NO_INPUT_PROVIDED);

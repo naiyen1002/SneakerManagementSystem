@@ -27,7 +27,7 @@ public final class MemberConstants {
     public static final String ERROR_EMPTY_CONTACT = "Contact number cannot be empty";
     public static final String ERROR_INVALID_IC = "IC Number must be in format: xxxxxx-xx-xxxx";
     public static final String ERROR_INVALID_CONTACT = "Contact number must be 9-11 digits";
-    public static final String ERROR_INVALID_GENDER = "Invalid Gender.  Please enter Male, Female, or Other";
+    public static final String ERROR_INVALID_GENDER = "Invalid Gender... Please enter Male, Female, or Other";
     public static final String ERROR_INVALID_DATE_FORMAT = "Invalid date format!  Please enter format: DD/MM/YYYY";
     public static final String ERROR_MEMBER_NOT_FOUND = "Member not found with ID: ";
     public static final String ERROR_DUPLICATE_ID = "Member ID already exists: ";
@@ -48,9 +48,9 @@ public final class MemberConstants {
     public static final String SUCCESS_SEARCH = "Member found successfully!";
 
     // ==================== MESSAGE FORMATTING ====================
-    public static final String MSG_FORMAT_SUCCESS = "\nSUCCESS: %s\n";
-    public static final String MSG_FORMAT_ERROR = "\nERROR: %s\n";
-    public static final String MSG_FORMAT_CANCEL = "\nCANCELLED: %s\n";
+    public static final String MSG_FORMAT_SUCCESS = "\nSUCCESS: %s";
+    public static final String MSG_FORMAT_ERROR = "\nERROR: %s";
+    public static final String MSG_FORMAT_CANCEL = "\nCANCELLED: %s";
     public static final String MSG_NOT_FOUND = "Member's Information NOT FOUND!";
 
     // ==================== OPERATION MESSAGES ====================
@@ -66,12 +66,12 @@ public final class MemberConstants {
     public static final String MSG_CONTINUE_SEARCH = "Search Another Member";
 
     // ==================== MENU HEADERS ====================
-    public static final String HEADER_MAIN_MENU = "\n\n--------------------------------\n\tMember Main Menu\n--------------------------------\n";
-    public static final String HEADER_ADD_MEMBER = "\n--------------------------------\n   Add New Member Records\n--------------------------------\n";
-    public static final String HEADER_SEARCH_MEMBER = "\n--------------------------------\n   Search Member Information\n--------------------------------\n";
+    public static final String HEADER_MAIN_MENU = "\n--------------------------------\n\tMember Main Menu\n--------------------------------";
+    public static final String HEADER_ADD_MEMBER = "\n--------------------------------\n   Add New Member Records\n--------------------------------";
+    public static final String HEADER_SEARCH_MEMBER = "\n--------------------------------\n   Search Member Information\n--------------------------------";
     public static final String HEADER_UPDATE_MEMBER = "\n--------------------------------\n   Update Member Information\n--------------------------------";
     public static final String HEADER_DELETE_MEMBER = "\n--------------------------------\n   Delete Member Records\n--------------------------------";
-    public static final String HEADER_DISPLAY_ALL = "\n--------------------------------\n     All Member Information\n--------------------------------\n";
+    public static final String HEADER_DISPLAY_ALL = "\n--------------------------------\n     All Member Information\n--------------------------------";
     public static final String HEADER_MEMBERSHIP_REPORT = "\n\n--------------------------------------------\n          Monthly Report Of Member\n--------------------------------------------\n";
 
     // ==================== MENU OPTIONS ====================
@@ -93,8 +93,8 @@ public final class MemberConstants {
     public static final String PROMPT_MENU_CHOICE = "Choose From (1-7): ";
     public static final String PROMPT_SEARCH_CHOICE = "\nChoose From (1-6) to Search Member's Information: ";
     public static final String PROMPT_UPDATE_CHOICE = "\nChoose Field to Update (1-5): ";
-    public static final String PROMPT_Y_STRING = "y";
-    public static final String PROMPT_N_STRING = "n";
+    public static final String PROMPT_Y_STRING = "Y";
+    public static final String PROMPT_N_STRING = "N";
 
     // ==================== VALIDATION PATTERNS ====================
     public static final String PATTERN_IC_NUMBER = "\\d{6}-\\d{2}-\\d{4}";
@@ -153,13 +153,27 @@ public final class MemberConstants {
     public static final String EXIT_MESSAGE = "\nEXITING MENU.. .\n";
     public static final String END_PROCESSING = "END OF PROCESSING.. .\n";
     public static final String NO_MEMBERS_FOUND = "\nNo members found in the system.\n";
-    public static final String TOTAL_MEMBERS_FORMAT = "\n\n<<< Total %d Member(s) >>>\n";
+    public static final String TOTAL_MEMBERS_FORMAT = "\n<<< Total %d Member(s) >>>\n";
     public static final String INVALID_MENU_RANGE = "\nYou Can Only Choose From %d - %d Only.. .\n";
     public static final String INVALID_INPUT_DIGIT = "\nEnter Digit Only...  Please enter a number between %d and %d.\n";
-    public static final String INVALID_RESPONSE = "\nINVALID RESPONSE!  Please Enter y=Yes or n=No\n";
-    public static final String NO_INPUT_PROVIDED = "\nNo input provided.. .\n";
-    public static final String CONFIRM_ACTION_FORMAT = "\nAre You Sure Want To %s Record(s) (y=Yes/n=No)? : ";
+    public static final String INVALID_RESPONSE = "\nINVALID RESPONSE!  Please Enter y=Yes or n=No";
+    public static final String NO_INPUT_PROVIDED = "\nNo input provided.. .";
+    public static final String CONFIRM_ACTION_FORMAT = "\nAre You Sure Want To %s Record(s) (y=Yes/n=No)? :";
     public static final String ASK_CONTINUE_FORMAT = "\n%s (y=Yes/n=No): ";
+
+    // ==================== SALES INTEGRATION MESSAGES ====================
+    public static final String MSG_SALES_FOUND = "Found existing sales: RM %.2f";
+    public static final String MSG_TIER_ASSIGNED = "Membership tier set to: %s";
+    public static final String MSG_NO_SALES_FOUND = "No existing sales found. Starting with BASIC tier.";
+
+    // ==================== TABLE COLUMN HEADERS ====================
+    public static final String HEADER_MEMBER_ID = "Member ID";
+    public static final String HEADER_NAME = "Name";
+    public static final String HEADER_GENDER = "Gender";
+    public static final String HEADER_IC_NUMBER = "IC Number";
+    public static final String HEADER_CONTACT = "Contact Number (+60)";
+    public static final String HEADER_JOIN_DATE = "Join Date (dd/mm/yyyy)";
+    public static final String HEADER_MEMBERSHIP_TIER = "Membership Tier";
 
     // Private constructor to prevent instantiation
     private MemberConstants() {
