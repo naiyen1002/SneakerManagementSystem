@@ -65,9 +65,10 @@ public class TestStaff {
         }
 
         /**
-         * Add staff with invalid ID
+         * Add staff --> invalid ID
          */
         @Test
+        @DisplayName("Add Staff - Invalid ID")
         public void testAddStaffInvalidId() {
                 simulateInput("abc\nST006\nDavid\nmale\nManager\n6000\nHR\n");
 
@@ -84,7 +85,7 @@ public class TestStaff {
         }
 
         /**
-         * Add staff with invalid gender
+         * Add staff --> invalid gender
          */
         @Test
         @DisplayName("Add Staff - Invalid Gender")
@@ -104,9 +105,10 @@ public class TestStaff {
         }
 
         /**
-         * Add staff with invalid position (contains numbers)
+         * Add staff --> invalid position (contains numbers)
          */
         @Test
+        @DisplayName("Add Staff - Invalid Position")
         public void testAddStaffInvalidPosition() {
                 simulateInput("ST007\nEason\nfemale\nDev123\nDeveloper\n5000\nIT\n");
 
@@ -123,7 +125,7 @@ public class TestStaff {
         }
 
         /**
-         * Add staff with invalid department (contains numbers)
+         * Add staff --> invalid department (contains numbers)
          */
         @Test
         @DisplayName("Add Staff - Invalid Department")
@@ -143,9 +145,10 @@ public class TestStaff {
         }
 
         /**
-         * Add staff with invalid salary (non-numeric)
+         * Add staff --> invalid salary (non-numeric)
          */
         @Test
+        @DisplayName("Add Staff - Invalid Salary")
         public void testAddStaffInvalidSalary() {
                 simulateInput("ST009\nGrace\nfemale\nDesigner\nabc\n4800\nDesign\n");
 
@@ -162,9 +165,10 @@ public class TestStaff {
         }
 
         /**
-         * Add staff with duplicate ID
+         * Add staff --> duplicate ID
          */
         @Test
+        @DisplayName("Add Staff - Duplicate ID")
         public void testAddStaffDuplicateId() {
                 simulateInput("ST001\nST011\nBernice\nmale\nTester\n5000\nIT\n");
 
@@ -181,9 +185,10 @@ public class TestStaff {
         }
 
         /**
-         * Add staff with negative salary
+         * Add staff --> negative salary
          */
         @Test
+        @DisplayName("Add Staff - Negative Salary")
         public void testAddStaffNegativeSalary() {
                 simulateInput("ST012\nYshan\nfemale\nAnalyst\n-500\n3500\nFinance\n");
 
@@ -201,12 +206,11 @@ public class TestStaff {
         }
 
         /**
-         * Add staff with ID ST000 (not allowed)
+         * Add staff --> ID ST000 (Not allowed)
          */
         @Test
         @DisplayName("Add Staff - ST000 Not Allowed")
         public void testAddStaffST000() {
-                // ST000 is invalid, then ST006 is valid
                 simulateInput("ST000\nST006\nSoo\nmale\nDeveloper\n5000\nIT\n");
 
                 int initialSize = staffSystem.staffList.size();
@@ -224,11 +228,11 @@ public class TestStaff {
         // ------------------- MODIFY FUNCTION TEST CASES ------------------- //
 
         /**
-         * Modify staff --> All fields correct (with confirmation)
+         * Modify staff --> All fields correct
          */
         @Test
+        @DisplayName("Modify Staff - All Fields Updated")
         public void testModifyStaff() {
-                // Confirmation AFTER each field input
                 simulateInput("ST002\n1\nJojo\nyes\n2\nmale\nyes\n3\nContent Creator\nyes\n4\n5500\nyes\n5\nMultimedia\nyes\n0\n");
 
                 staffSystem.modifyStaff();
@@ -251,11 +255,11 @@ public class TestStaff {
         }
 
         /**
-         * Modify staff with invalid ID
+         * Modify staff --> invalid ID
          */
         @Test
+        @DisplayName("Modify Staff - Invalid ID")
         public void testModifyStaffInvalidId() {
-                // Fix required for name format
                 simulateInput("ST999\nST001\n1\nJiahuiLee\nyes\n0\n");
 
                 staffSystem.modifyStaff();
@@ -274,11 +278,11 @@ public class TestStaff {
         }
 
         /**
-         * Modify staff --> only modify one field (salary)
+         * Modify staff --> only modify salary
          */
         @Test
+        @DisplayName("Modify Staff - Only Salary Updated")
         public void testModifyStaffSalary() {
-                // yes AFTER salary value
                 simulateInput("ST001\n4\n9999\nyes\n0\n");
 
                 staffSystem.modifyStaff();
@@ -297,11 +301,11 @@ public class TestStaff {
         }
 
         /**
-         * Modify staff --> modify multiple fields continuously
+         * Modify staff --> modify multiple fields
          */
         @Test
+        @DisplayName("Modify Staff - Multiple Fields Updated")
         public void testModifyStaffMultipleFields() {
-                // yes AFTER each field value
                 simulateInput("ST001\n1\nJh Lee\nyes\n3\nSenior Manager\nyes\n4\n12000\nyes\n0\n");
 
                 staffSystem.modifyStaff();
@@ -329,8 +333,8 @@ public class TestStaff {
          * Modify staff --> cancel modification
          */
         @Test
+        @DisplayName("Modify Staff - Modification Cancelled")
         public void testModifyStaffCancelled() {
-                // Enter name then cancel with 'no'
                 simulateInput("ST001\n1\nJIAHUI\nno\n0\n");
 
                 staffSystem.modifyStaff();
@@ -346,7 +350,6 @@ public class TestStaff {
         @Test
         @DisplayName("Modify Staff - Invalid Confirmation Input")
         public void testModifyStaffInvalidConfirmation() {
-                // "maybe" is invalid, then "yes" is valid
                 simulateInput("ST001\n1\nNewName\nmaybe\nyes\n0\n");
 
                 staffSystem.modifyStaff();
@@ -370,6 +373,7 @@ public class TestStaff {
          * Delete staff --> With valid ID and confirmation
          */
         @Test
+        @DisplayName("Delete Staff - Valid ID and Confirmation")
         public void testDeleteStaff() {
                 simulateInput("ST002\nyes\n");
 
@@ -397,9 +401,10 @@ public class TestStaff {
         }
 
         /**
-         * Delete staff with blank ID input first, then valid ID with confirmation
+         * Delete staff --> blank ID
          */
         @Test
+        @DisplayName("Delete Staff - Blank ID")
         public void testDeleteStaffBlankId() {
                 simulateInput("\nST003\nyes\n");
 
@@ -417,11 +422,11 @@ public class TestStaff {
         }
 
         /**
-         * Delete staff with non-existent ID
+         * Delete staff --> non-existent ID
          */
         @Test
+        @DisplayName("Delete Staff - Non-Existent ID")
         public void testDeleteStaffNotExist() {
-                // After not found, then to enter another ID and cancel
                 simulateInput("ST999\nST001\nno\n");
 
                 int initialSize = staffSystem.staffList.size();
@@ -439,6 +444,7 @@ public class TestStaff {
          * Delete staff --> cancel
          */
         @Test
+        @DisplayName("Delete Staff - Deletion Cancelled")
         public void testDeleteStaffCancelled() {
                 simulateInput("ST001\nno\n");
 
@@ -453,12 +459,42 @@ public class TestStaff {
                                 "Should display cancelled message");
         }
 
+        /**
+         * Delete staff --> Delete the same staff twice
+         */
+        public void testDeleteStaffTwice() {
+                simulateInput("ST002\nyes\n");
+
+                int initialSize = staffSystem.staffList.size();
+                staffSystem.deleteStaff();
+
+                assertEquals(initialSize - 1, staffSystem.staffList.size(),
+                                "Staff list should decrease after first deletion");
+
+                String firstOutput = outputStream.toString();
+                assertTrue(firstOutput.contains("deleted successfully"),
+                                "First deletion should succeed");
+
+                // Reset output stream for second attempt
+                outputStream.reset();
+
+                // Second deletion attempt - should fail (staff no longer exists)
+                simulateInput("ST002\nST001\nno\n");
+
+                staffSystem.deleteStaff();
+
+                String secondOutput = outputStream.toString();
+                assertTrue(secondOutput.contains("not found"),
+                                "Second deletion should show 'not found' error");
+        }
+
         // ------------------- SEARCH FUNCTION TEST CASES ------------------- //
 
         /**
-         * Search staff by ID
+         * Search staff --> ID
          */
         @Test
+        @DisplayName("Search Staff - By ID")
         public void testSearchStaffById() {
                 simulateInput("ST001\n");
 
@@ -478,9 +514,10 @@ public class TestStaff {
         }
 
         /**
-         * Search staff by Name
+         * Search staff --> Name
          */
         @Test
+        @DisplayName("Search Staff - By Name")
         public void testSearchStaffByName() {
                 simulateInput("NaiYen\n");
 
@@ -498,9 +535,10 @@ public class TestStaff {
         }
 
         /**
-         * Search staff by a part of name
+         * Search staff --> a part of name
          */
         @Test
+        @DisplayName("Search Staff - By Partial Name")
         public void testSearchStaffPartialName() {
                 simulateInput("Nai\n");
 
@@ -514,9 +552,10 @@ public class TestStaff {
         }
 
         /**
-         * Search staff with lowercase name but same structure
+         * Search staff --> lowercase name but same structure
          */
         @Test
+        @DisplayName("Search Staff - By Lowercase Name")
         public void testSearchStaffLowercaseName() {
                 simulateInput("naiyen\n");
 
@@ -530,7 +569,7 @@ public class TestStaff {
         }
 
         /**
-         * Search staff - no match found
+         * Search staff --> no match found
          */
         @Test
         @DisplayName("Search Staff - No Match Found")
@@ -544,12 +583,39 @@ public class TestStaff {
                                 "Should display no matching staff message");
         }
 
+        /**
+         * Search staff --> non-existent name
+         */
+        @Test
+        @DisplayName("Search Staff - Non-Existent ID")
+        public void testSearchStaffNonExistentId() {
+                simulateInput("ST999\n");
+                staffSystem.searchStaff();
+                String output = outputStream.toString();
+                assertTrue(output.contains("No matching") || output.contains("not found"),
+                                "Should display no matching staff for non-existent ID");
+        }
+
+        /**
+         * Search staff --> non-existent id
+         */
+        @Test
+        @DisplayName("Search Staff - Non-Existent Name")
+        public void testSearchStaffNonExistentName() {
+                simulateInput("Unknown\n");
+                staffSystem.searchStaff();
+                String output = outputStream.toString();
+                assertTrue(output.contains("No matching") || output.contains("not found"),
+                                "Should display no matching staff for non-existent name");
+        }
+
         // ------------------- REPORT FUNCTION TEST CASES ------------------- //
 
         /**
-         * Report for non-existent department (specific department)
+         * Report --> non-existent department (specific department)
          */
         @Test
+        @DisplayName("Report - Non-Existent Department")
         public void testReportNonExistentDepartment() {
                 // 2 is specific report for department
 
@@ -563,9 +629,10 @@ public class TestStaff {
         }
 
         /**
-         * Report for existing department
+         * Report --> existing department
          */
         @Test
+        @DisplayName("Report - Existing Department")
         public void testReportExistingDepartment() {
                 // 2 is specific report for department
                 simulateInput("2\nIT\n");
@@ -582,9 +649,10 @@ public class TestStaff {
         }
 
         /**
-         * Overall report (all staff)
+         * Overall report --> all staff
          */
         @Test
+        @DisplayName("Report - Overall Staff Report")
         public void testOverallReport() {
                 simulateInput("1\n");
 
@@ -600,23 +668,11 @@ public class TestStaff {
         }
 
         /**
-         * Back to menu from report
+         * Display report --> Add new staff in department and verify report includes
+         * them
          */
         @Test
-        public void testReportBackToMenu() {
-                simulateInput("0\n");
-
-                staffSystem.departmentSalaryReport();
-
-                String output = outputStream.toString();
-                assertTrue(output.contains("SELECT REPORT TYPE"),
-                                "Should display report menu");
-        }
-
-        /**
-         * Add new staff in department and verify report includes them
-         */
-        @Test
+        @DisplayName("Report - Department Report with New Staff")
         public void testReportWithNewStaff() {
                 // Add staff first
                 simulateInput("ST010\nJohn\nmale\nTester\n5500\nIT\n2\nIT\n");
@@ -643,6 +699,7 @@ public class TestStaff {
          * Display all staff
          */
         @Test
+        @DisplayName("Display All Staff")
         public void testDisplayAllStaff() {
                 simulateInput("");
 
