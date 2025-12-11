@@ -72,8 +72,13 @@ public class MemberView {
 
         System.out.println(MemberConstants.HEADER_DISPLAY_ALL);
         System.out.printf(MemberConstants.FORMAT_TABLE_HEADER,
-                "Member ID", "Name", "Gender", "IC Number", "Contact Number (+60)",
-                "Join Date (dd/mm/yyyy)", "Membership Tier");
+                MemberConstants.HEADER_MEMBER_ID,
+                MemberConstants.HEADER_NAME,
+                MemberConstants.HEADER_GENDER,
+                MemberConstants.HEADER_IC_NUMBER,
+                MemberConstants.HEADER_CONTACT,
+                MemberConstants.HEADER_JOIN_DATE,
+                MemberConstants.HEADER_MEMBERSHIP_TIER);
         System.out.println(MemberConstants.FORMAT_TABLE_SEPARATOR);
 
         for (Member member : memberList) {

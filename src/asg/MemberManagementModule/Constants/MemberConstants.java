@@ -66,12 +66,12 @@ public final class MemberConstants {
     public static final String MSG_CONTINUE_SEARCH = "Search Another Member";
 
     // ==================== MENU HEADERS ====================
-    public static final String HEADER_MAIN_MENU = "\n--------------------------------\n\tMember Main Menu\n--------------------------------\n";
+    public static final String HEADER_MAIN_MENU = "\n--------------------------------\n\tMember Main Menu\n--------------------------------";
     public static final String HEADER_ADD_MEMBER = "\n--------------------------------\n   Add New Member Records\n--------------------------------";
-    public static final String HEADER_SEARCH_MEMBER = "\n--------------------------------\n   Search Member Information\n--------------------------------\n";
+    public static final String HEADER_SEARCH_MEMBER = "\n--------------------------------\n   Search Member Information\n--------------------------------";
     public static final String HEADER_UPDATE_MEMBER = "\n--------------------------------\n   Update Member Information\n--------------------------------";
     public static final String HEADER_DELETE_MEMBER = "\n--------------------------------\n   Delete Member Records\n--------------------------------";
-    public static final String HEADER_DISPLAY_ALL = "\n--------------------------------\n     All Member Information\n--------------------------------\n";
+    public static final String HEADER_DISPLAY_ALL = "\n--------------------------------\n     All Member Information\n--------------------------------";
     public static final String HEADER_MEMBERSHIP_REPORT = "\n\n--------------------------------------------\n          Monthly Report Of Member\n--------------------------------------------\n";
 
     // ==================== MENU OPTIONS ====================
@@ -160,6 +160,20 @@ public final class MemberConstants {
     public static final String NO_INPUT_PROVIDED = "\nNo input provided.. .";
     public static final String CONFIRM_ACTION_FORMAT = "\nAre You Sure Want To %s Record(s) (y=Yes/n=No)? :";
     public static final String ASK_CONTINUE_FORMAT = "\n%s (y=Yes/n=No): ";
+
+    // ==================== SALES INTEGRATION MESSAGES ====================
+    public static final String MSG_SALES_FOUND = "Found existing sales: RM %.2f";
+    public static final String MSG_TIER_ASSIGNED = "Membership tier set to: %s";
+    public static final String MSG_NO_SALES_FOUND = "No existing sales found. Starting with BASIC tier.";
+
+    // ==================== TABLE COLUMN HEADERS ====================
+    public static final String HEADER_MEMBER_ID = "Member ID";
+    public static final String HEADER_NAME = "Name";
+    public static final String HEADER_GENDER = "Gender";
+    public static final String HEADER_IC_NUMBER = "IC Number";
+    public static final String HEADER_CONTACT = "Contact Number (+60)";
+    public static final String HEADER_JOIN_DATE = "Join Date (dd/mm/yyyy)";
+    public static final String HEADER_MEMBERSHIP_TIER = "Membership Tier";
 
     // Private constructor to prevent instantiation
     private MemberConstants() {

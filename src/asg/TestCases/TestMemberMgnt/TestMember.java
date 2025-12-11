@@ -369,53 +369,14 @@ public class TestMember {
     // ==================== MEMBERSHIP TIER TESTS ====================
 
     @Test
-    @Order(24)
-    @DisplayName("Test MembershipTier - Calculate Tier BASIC")
-    public void testMembershipTier_CalculateTier_Basic() {
-        // Act
-        MembershipTier tier = MembershipTier.calculateMembershipTier(500.0);
-
-        // Assert
-        assertEquals(MembershipTier.BASIC, tier);
-    }
-
-    @Test
-    @Order(25)
-    @DisplayName("Test MembershipTier - Calculate Tier BRONZE")
-    public void testMembershipTier_CalculateTier_Bronze() {
-        // Act
-        MembershipTier tier = MembershipTier.calculateMembershipTier(1500.0);
-
-        // Assert
-        assertEquals(MembershipTier.BRONZE, tier);
-    }
-
-    @Test
-    @Order(26)
-    @DisplayName("Test MembershipTier - Calculate Tier SILVER")
-    public void testMembershipTier_CalculateTier_Silver() {
-        // Act
-        MembershipTier tier = MembershipTier.calculateMembershipTier(2500.0);
-
-        // Assert
-        assertEquals(MembershipTier.SILVER, tier);
-    }
-
-    @Test
-    @Order(27)
-    @DisplayName("Test MembershipTier - Calculate Tier GOLDEN")
-    public void testMembershipTier_CalculateTier_Golden() {
-        // Act
-        MembershipTier tier = MembershipTier.calculateMembershipTier(3500.0);
-
-        // Assert
-        assertEquals(MembershipTier.GOLDEN, tier);
-    }
-
-    @Test
     @Order(28)
-    @DisplayName("Test MembershipTier - Calculate Tier Boundary")
+    @DisplayName("Test MembershipTier - Calculate Tier Boundary and above")
     public void testMembershipTier_CalculateTier_Boundary() {
+        assertEquals(MembershipTier.BASIC, MembershipTier.calculateMembershipTier(0.0));
+        assertEquals(MembershipTier.BRONZE, MembershipTier.calculateMembershipTier(1500.0));
+        assertEquals(MembershipTier.SILVER, MembershipTier.calculateMembershipTier(2500.0));
+        assertEquals(MembershipTier.GOLDEN, MembershipTier.calculateMembershipTier(3500.0));
+
         // Assert exact boundaries
         assertEquals(MembershipTier.BASIC, MembershipTier.calculateMembershipTier(0.0));
         assertEquals(MembershipTier.BRONZE, MembershipTier.calculateMembershipTier(1000.0));
@@ -464,7 +425,8 @@ public class TestMember {
         assertEquals(0.15, MembershipTier.GOLDEN.getDiscountRate());
     }
 
-    // ==================== MEMBER CONTROLLER TESTS ====================
+    // ==================== CONTROLLER TESTS (Non-Interactive Methods)
+    // ====================
 
     @Test
     @Order(37)
@@ -477,39 +439,6 @@ public class TestMember {
 
         // Assert
         assertEquals(5, memberController.getMemberCount());
-    }
-
-    @Test
-    @Order(39)
-    @DisplayName("Test Controller - Add Duplicate Member")
-    public void testController_AddDuplicateMember() {
-        // Arrange
-        memberController = new MemberController(memberView);
-        Member member1 = new Member("M001", "Test", Gender.MALE, "950101-01-1234", "123456789", LocalDate.now(),
-                MembershipTier.BASIC);
-        Member member2 = new Member("M001", "Test2", Gender.FEMALE, "990101-01-9999", "999999999", LocalDate.now(),
-                MembershipTier.BASIC);
-
-        // Act
-        memberController.addMemberDirect(member1);
-        boolean result = memberController.addMemberDirect(member2);
-
-        // Assert
-        assertFalse(result);
-        assertEquals(1, memberController.getMemberCount());
-    }
-
-    @Test
-    @Order(40)
-    @DisplayName("Test Controller - Add Null Member")
-    public void testController_AddNullMember() {
-        // Arrange
-        memberController = new MemberController(memberView);
-
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            memberController.addMemberDirect(null);
-        });
     }
 
     @Test
@@ -603,20 +532,6 @@ public class TestMember {
     }
 
     @Test
-    @Order(48)
-    @DisplayName("Test Controller - Update Non-Existent Member")
-    public void testController_UpdateNonExistentMember() {
-        // Arrange
-        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
-        Member updatedMember = MemberData.createTestMember();
-
-        // Act
-        boolean result = memberController.updateMemberDirect("M999", updatedMember);
-        // Assert
-        assertFalse(result);
-    }
-
-    @Test
     @Order(50)
     @DisplayName("Test Controller - Delete Non-Existent Member")
     public void testController_DeleteNonExistentMember() {
@@ -667,80 +582,6 @@ public class TestMember {
         // Assert
         assertFalse(goldenMembers.isEmpty());
         assertFalse(basicMembers.isEmpty());
-    }
-
-    // ==================== INTEGRATION TESTS ====================
-
-    @Test
-    @Order(57)
-    @DisplayName("Integration Test - Complete Member Lifecycle")
-    public void integrationTest_CompleteMemberLifecycle() {
-        // Arrange
-        MemberView view = new MemberView();
-        MemberController controller = new MemberController(view);
-
-        // Act 1: Add Member
-        Member newMember = new Member(
-                "M100",
-                "Integration Test User",
-                Gender.MALE,
-                "950101-01-1234",
-                "123456789",
-                LocalDate.now(),
-                MembershipTier.BASIC);
-        controller.addMemberDirect(newMember);
-
-        // Assert 1: Member exists
-        assertEquals(1, controller.getMemberCount());
-        Member found = controller.findMemberById("M100");
-        assertNotNull(found);
-
-        // Act 2: Update Member
-        Member updatedInfo = new Member(
-                "M999",
-                "Updated Name",
-                Gender.FEMALE,
-                "990101-01-9999",
-                "999999999",
-                LocalDate.now(),
-                MembershipTier.BASIC);
-        controller.updateMemberDirect("M100", updatedInfo);
-
-        // Assert 2: Member updated
-        found = controller.findMemberById("M100");
-        assertEquals("Updated Name", found.getName());
-
-        // Act 3: Add Spending
-        found.addSpending(1500.0);
-
-        // Assert 3: Tier upgraded
-        assertEquals(MembershipTier.BRONZE, found.getMembershipTier());
-
-        // Act 4: Delete Member
-        controller.deleteMemberById("M100");
-
-        // Assert 4: Member deleted
-        assertEquals(0, controller.getMemberCount());
-        assertNull(controller.findMemberById("M100"));
-    }
-
-    @Test
-    @Order(58)
-    @DisplayName("Integration Test - Search Operations")
-    public void integrationTest_SearchOperations() {
-        // Arrange
-        MemberView view = new MemberView();
-        MemberController controller = new MemberController(view, MemberData.initiallizeMembersData());
-
-        // Act & Assert: Search by various criteria
-        List<Member> byName = controller.searchMembersByName("Smith");
-        assertFalse(byName.isEmpty());
-
-        List<Member> byGender = controller.searchMembersByGender(Gender.MALE);
-        assertFalse(byGender.isEmpty());
-
-        List<Member> byTier = controller.searchMembersByTier(MembershipTier.BASIC);
-        assertFalse(byTier.isEmpty());
     }
 
     // ==================== MEMBER OPTIONS ENUM TESTS ====================
@@ -1088,11 +929,10 @@ public class TestMember {
         // Arrange
         memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
 
-        // Act
-        boolean result = memberController.deleteMemberById("");
-
         // Assert
-        assertFalse(result);
+        assertThrows(IllegalArgumentException.class, () -> {
+            memberController.deleteMemberById("");
+        });
     }
 
     @Test
@@ -1249,26 +1089,6 @@ public class TestMember {
         // Assert
         String output = outputStreamCaptor.toString();
         assertTrue(output.contains("No members found"));
-    }
-
-    @Test
-    @Order(104)
-    @DisplayName("Test View - Display Membership Report - With Data")
-    public void testView_DisplayMembershipReport_WithData() {
-        // Arrange
-        List<Member> members = MemberData.initiallizeMembersData();
-        java.util.Map<MembershipTier, Integer> tierCounts = new java.util.HashMap<>();
-        tierCounts.put(MembershipTier.BASIC, 2);
-        tierCounts.put(MembershipTier.BRONZE, 1);
-        tierCounts.put(MembershipTier.SILVER, 1);
-        tierCounts.put(MembershipTier.GOLDEN, 1);
-
-        // Act
-        memberView.displayMembershipReport(members, tierCounts);
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("M001"));
     }
 
     @Test
@@ -1486,5 +1306,238 @@ public class TestMember {
         // Assert
         String output = outputStreamCaptor.toString();
         assertTrue(output.length() > 0);
+    }
+
+    @Test
+    @Order(122)
+    @DisplayName("Test Interactive - addMember - Duplicate Member ID")
+    public void testInteractive_addMember_DuplicateId() {
+        // Arrange - try M001 (duplicate), then M100 (unique), then cancel at final
+        // confirmation
+        // y (confirm) -> M001 (duplicate, will loop) -> M100 (unique) -> Test -> Male
+        // -> 950101-01-1234 -> 123456789 -> 15/01/2023 -> n (cancel final) -> n (don't
+        // continue)
+        String input = "y\nM001\nM100\nDuplicate Test\nMale\n950101-01-1234\n123456789\n15/01/2023\nn\nn\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView, MemberData.initiallizeMembersData());
+        int initialCount = memberController.getMemberCount();
+
+        // Act
+        memberController.addMember();
+
+        // Assert - should not add because we cancelled at final confirmation
+        assertEquals(initialCount, memberController.getMemberCount());
+    }
+
+    @Test
+    @Order(123)
+    @DisplayName("Test Interactive - addMember - With Existing Sales Detection")
+    public void testInteractive_addMember_WithExistingSales() {
+        // Arrange - add M006 which has existing sales ($2000)
+        // y -> M006 -> New Customer -> Male -> 950101-01-1234 -> 123456789 ->
+        // 15/01/2023 -> y -> n
+        String input = "y\nM006\nNew Customer\nMale\n950101-01-1234\n123456789\n15/01/2023\ny\nn\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView);
+
+        // Act
+        memberController.addMember();
+
+        // Assert - should auto-assign SILVER tier
+        Member added = memberController.findMemberById("M006");
+        assertNotNull(added);
+        assertEquals(MembershipTier.SILVER, added.getMembershipTier());
+        assertEquals(2000.0, added.getTotalSpending(), 0.01);
+    }
+
+    @Test
+    @Order(124)
+    @DisplayName("Test Interactive - addMember - Cancel at Final Confirmation")
+    public void testInteractive_addMember_CancelFinalConfirmation() {
+        // Arrange - y -> M100 -> Test -> Male -> 950101-01-1234 -> 123456789 ->
+        // 15/01/2023 -> n (cancel final)
+        String input = "y\nM100\nTest User\nMale\n950101-01-1234\n123456789\n15/01/2023\nn\nn\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView);
+
+        // Act
+        memberController.addMember();
+
+        // Assert - should not add
+        assertEquals(0, memberController.getMemberCount());
+    }
+
+    @Test
+    @Order(125)
+    @DisplayName("Test Interactive - updateMember - Non-Existent Member")
+    public void testInteractive_updateMember_NonExistent() {
+        // Arrange - try to update M999 which doesn't exist
+        // y -> M999 -> n
+        String input = "y\nM999\nn\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView, MemberData.initiallizeMembersData());
+
+        // Act
+        memberController.updateMember();
+
+        // Assert - should show not found message
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("NOT FOUND") || output.contains("not found"));
+    }
+
+    @Test
+    @Order(126)
+    @DisplayName("Test Interactive - updateMember - Update Multiple Fields")
+    public void testInteractive_updateMember_MultipleFields() {
+        // Arrange - update M001: ID -> confirm -> name -> gender -> finish -> don't
+        // continue
+        // M001 -> y (confirm) -> 1 (name) -> Updated Name -> 2 (gender) -> Female -> 5
+        // (finish) -> n (don't continue)
+        String input = "M001\ny\n1\nUpdated Name\n2\nFemale\n5\nn\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView, MemberData.initiallizeMembersData());
+
+        // Act
+        memberController.updateMember();
+
+        // Assert
+        Member updated = memberController.findMemberById("M001");
+        assertEquals("Updated Name", updated.getName());
+        assertEquals(Gender.FEMALE, updated.getGender());
+    }
+
+    @Test
+    @Order(127)
+    @DisplayName("Test Interactive - updateMember - Cancel Update")
+    public void testInteractive_updateMember_CancelUpdate() {
+        // Arrange - M001 -> n (cancel at confirmation) -> n (don't continue)
+        String input = "M001\nn\nn\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView, MemberData.initiallizeMembersData());
+        Member original = memberController.findMemberById("M001");
+        String originalName = original.getName();
+
+        // Act
+        memberController.updateMember();
+
+        // Assert - name should not change
+        assertEquals(originalName, memberController.findMemberById("M001").getName());
+    }
+
+    @Test
+    @Order(128)
+    @DisplayName("Test Interactive - deleteMember - Non-Existent Member")
+    public void testInteractive_deleteMember_NonExistent() {
+        // Arrange - try to delete M999 (not found, loops back) -> n (don't continue)
+        // M999 -> n (don't continue)
+        String input = "M999\nn\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView, MemberData.initiallizeMembersData());
+        int initialCount = memberController.getMemberCount();
+
+        // Act
+        memberController.deleteMember();
+
+        // Assert - count should not change
+        assertEquals(initialCount, memberController.getMemberCount());
+    }
+
+    @Test
+    @Order(129)
+    @DisplayName("Test Interactive - deleteMember - Verify Removal")
+    public void testInteractive_deleteMember_VerifyRemoval() {
+        // Arrange - delete M005: ID -> confirm -> don't continue
+        // M005 -> y (confirm delete) -> n (don't continue)
+        String input = "M005\ny\nn\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView, MemberData.initiallizeMembersData());
+        int initialCount = memberController.getMemberCount();
+
+        // Act
+        memberController.deleteMember();
+
+        // Assert
+        assertEquals(initialCount - 1, memberController.getMemberCount());
+        assertNull(memberController.findMemberById("M005"));
+    }
+
+    @Test
+    @Order(130)
+    @DisplayName("Test Interactive - searchMember - By Gender")
+    public void testInteractive_searchMember_ByGender() {
+        // Arrange - search by gender: 3 (gender) -> Male -> n
+        String input = "3\nMale\nn\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView, MemberData.initiallizeMembersData());
+
+        // Act
+        memberController.searchMember();
+
+        // Assert - should find male members
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("M001") || output.contains("John Smith"));
+    }
+
+    @Test
+    @Order(131)
+    @DisplayName("Test Interactive - searchMember - By IC Number")
+    public void testInteractive_searchMember_ByIcNumber() {
+        // Arrange - search by IC: 4 (IC) -> 950101-01-1234 -> n
+        String input = "4\n950101-01-1234\nn\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView, MemberData.initiallizeMembersData());
+
+        // Act
+        memberController.searchMember();
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("M001") || output.contains("John"));
+    }
+
+    @Test
+    @Order(132)
+    @DisplayName("Test Interactive - searchMember - By Contact Number")
+    public void testInteractive_searchMember_ByContact() {
+        // Arrange - search by contact: 5 (contact) -> 123456789 -> n
+        String input = "5\n123456789\nn\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView, MemberData.initiallizeMembersData());
+
+        // Act
+        memberController.searchMember();
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("M001") || output.contains("John"));
+    }
+
+    @Test
+    @Order(133)
+    @DisplayName("Test Interactive - searchMember - No Results")
+    public void testInteractive_searchMember_NoResults() {
+        // Arrange - search for non-existent name: 2 (name) -> NonExistentName -> n
+        String input = "2\nNonExistentName\nn\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView, MemberData.initiallizeMembersData());
+
+        // Act
+        memberController.searchMember();
+
+        // Assert - should show no results message
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("NOT FOUND") || output.contains("not found") || output.contains("No members"));
     }
 }

@@ -2,34 +2,35 @@ package asg.MemberManagementModule.Controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import asg.MemberManagementModule.Constants.MemberConstants;
 import asg.MemberManagementModule.Constants.MemberOptions;
 import asg.MemberManagementModule.Model.Gender;
 import asg.MemberManagementModule.Model.Member;
 import asg.MemberManagementModule.Model.MembershipTier;
+import asg.MemberManagementModule.Service.MemberService;
 import asg.MemberManagementModule.View.MemberView;
+import asg.SalesManagementModule.Constants.SalesData;
 
 /**
- * MemberController - Central business logic controller
- * Follows Single Responsibility Principle: Manages member operations
+ * MemberController - UI Logic Controller
+ * Handles user interaction and delegates business logic to MemberService
+ * Follows MVC pattern with Service Layer
  */
 public class MemberController {
-    private final List<Member> memberList;
+    private final MemberService memberService;
     private final MemberView memberView;
 
     public MemberController(MemberView memberView) {
-        this.memberList = new java.util.ArrayList<>();
         this.memberView = memberView;
+        this.memberService = new MemberService();
     }
 
     public MemberController(MemberView memberView, List<Member> initialMembers) {
         this.memberView = memberView;
-        this.memberList = new ArrayList<>(initialMembers);
+        this.memberService = new MemberService(initialMembers);
     }
 
     // ==================== DISPLAY OPERATIONS ====================
@@ -38,37 +39,15 @@ public class MemberController {
      * Display all members in the system
      */
     public void displayAllMembers() {
-        memberView.displayAllMembers(memberList);
+        memberView.displayAllMembers(memberService.getAllMembers());
     }
 
     /**
      * Display membership tier report
      */
     public void displayMembershipReport() {
-        Map<MembershipTier, Integer> tierCounts = calculateTierCounts();
-        memberView.displayMembershipReport(memberList, tierCounts);
-    }
-
-    /**
-     * Calculate tier distribution statistics
-     * 
-     * @return Map of tier counts
-     */
-    private Map<MembershipTier, Integer> calculateTierCounts() {
-        Map<MembershipTier, Integer> tierCounts = new HashMap<>();
-
-        // Initialize all tiers with 0 count
-        for (MembershipTier tier : MembershipTier.values()) {
-            tierCounts.put(tier, 0);
-        }
-
-        // Count members in each tier
-        for (Member member : memberList) {
-            MembershipTier tier = member.getMembershipTier();
-            tierCounts.put(tier, tierCounts.get(tier) + 1);
-        }
-
-        return tierCounts;
+        Map<MembershipTier, Integer> tierCounts = memberService.getMemberCountByTier();
+        memberView.displayMembershipReport(memberService.getAllMembers(), tierCounts);
     }
 
     // ==================== INPUT UNIQUE MEMBER ID ====================
@@ -106,13 +85,7 @@ public class MemberController {
      * @return true if exists, false otherwise
      */
     private boolean isMemberIdExists(String memberId) {
-        if (memberId == null || memberId.trim().isEmpty()) {
-            return false;
-        }
-
-        String normalizedId = memberId.trim().toUpperCase();
-        return memberList.stream()
-                .anyMatch(m -> m.getId().equals(normalizedId));
+        return memberService.isMemberIdExists(memberId);
     }
 
     // ==================== ADD OPERATION ====================
@@ -120,6 +93,7 @@ public class MemberController {
     /**
      * Add new member to the system with full validation.
      * Implements the complete add workflow with confirmation
+     * Automatically checks for existing sales and calculates tier
      */
     public void addMember() {
         if (!memberView.confirmAction(MemberConstants.MSG_CONFIRM_ADD)) {
@@ -141,33 +115,30 @@ public class MemberController {
             Member newMember = new Member(memberId, name, gender,
                     icNumber, contactNumber, joinDate, MembershipTier.BASIC);
 
+            // Check for existing sales and calculate tier
+            try {
+                double totalSpending = SalesData.getTotalSalesByMember(memberId);
+                if (totalSpending > 0) {
+                    newMember.setTotalSpending(totalSpending);
+                    newMember.setMembershipTier(MembershipTier.calculateMembershipTier(totalSpending));
+                    System.out.println(String.format(MemberConstants.MSG_SALES_FOUND, totalSpending));
+                    System.out.println(String.format(MemberConstants.MSG_TIER_ASSIGNED,
+                            newMember.getMembershipTier().getDisplayName()));
+                }
+            } catch (Exception e) {
+                // If SalesData is not available, continue with BASIC tier
+                System.out.println(MemberConstants.MSG_NO_SALES_FOUND);
+            }
+
             // Final confirmation before adding
             if (memberView.confirmAction(MemberConstants.MSG_CONFIRM_ADD)) {
-                memberList.add(newMember);
+                memberService.addMember(newMember);
                 memberView.showSuccessMessage(MemberConstants.SUCCESS_ADD);
             } else {
                 memberView.showCancelMessage(MemberConstants.MSG_CANCEL_ADD);
             }
 
         } while (memberView.askContinue(MemberConstants.MSG_CONTINUE_ADD));
-    }
-
-    /**
-     * Add member programmatically (for testing or batch import)
-     * 
-     * @param member Member to add
-     * @return true if added successfully, false if duplicate ID exists
-     */
-    public boolean addMemberDirect(Member member) {
-        if (member == null) {
-            throw new IllegalArgumentException("Member cannot be null");
-        }
-
-        if (isMemberIdExists(member.getId())) {
-            return false;
-        }
-
-        return memberList.add(member);
     }
 
     // ==================== SEARCH OPERATIONS ====================
@@ -245,15 +216,7 @@ public class MemberController {
      * @return Member if found, null otherwise
      */
     public Member findMemberById(String id) {
-        if (id == null || id.trim().isEmpty()) {
-            return null;
-        }
-
-        String normalizedId = id.trim().toUpperCase();
-        return memberList.stream()
-                .filter(m -> m.getId().equals(normalizedId))
-                .findFirst()
-                .orElse(null);
+        return memberService.findMemberById(id);
     }
 
     /**
@@ -263,14 +226,7 @@ public class MemberController {
      * @return List of matching members
      */
     public List<Member> searchMembersByName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        String searchTerm = name.trim().toLowerCase();
-        return memberList.stream()
-                .filter(m -> m.getName().toLowerCase().contains(searchTerm))
-                .collect(Collectors.toList());
+        return memberService.searchMembersByName(name);
     }
 
     /**
@@ -280,13 +236,7 @@ public class MemberController {
      * @return List of matching members
      */
     public List<Member> searchMembersByGender(Gender gender) {
-        if (gender == null) {
-            return new ArrayList<>();
-        }
-
-        return memberList.stream()
-                .filter(m -> m.getGender() == gender)
-                .collect(Collectors.toList());
+        return memberService.searchMembersByGender(gender);
     }
 
     /**
@@ -296,14 +246,7 @@ public class MemberController {
      * @return List of matching members
      */
     public List<Member> searchMembersByIcNumber(String icNumber) {
-        if (icNumber == null || icNumber.trim().isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        String searchTerm = icNumber.trim();
-        return memberList.stream()
-                .filter(m -> m.getIcNumber().equals(searchTerm))
-                .collect(Collectors.toList());
+        return memberService.searchMembersByIcNumber(icNumber);
     }
 
     /**
@@ -313,14 +256,7 @@ public class MemberController {
      * @return List of matching members
      */
     public List<Member> searchMembersByContact(String contactNumber) {
-        if (contactNumber == null || contactNumber.trim().isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        String searchTerm = contactNumber.trim();
-        return memberList.stream()
-                .filter(m -> m.getContactNumber().equals(searchTerm))
-                .collect(Collectors.toList());
+        return memberService.searchMembersByContact(contactNumber);
     }
 
     /**
@@ -330,13 +266,7 @@ public class MemberController {
      * @return List of matching members
      */
     public List<Member> searchMembersByJoinDate(LocalDate joinDate) {
-        if (joinDate == null) {
-            return new ArrayList<>();
-        }
-
-        return memberList.stream()
-                .filter(m -> m.getJoinDate().equals(joinDate))
-                .collect(Collectors.toList());
+        return memberService.searchMembersByJoinDate(joinDate);
     }
 
     /**
@@ -346,13 +276,7 @@ public class MemberController {
      * @return List of matching members
      */
     public List<Member> searchMembersByTier(MembershipTier tier) {
-        if (tier == null) {
-            return new ArrayList<>();
-        }
-
-        return memberList.stream()
-                .filter(m -> m.getMembershipTier() == tier)
-                .collect(Collectors.toList());
+        return memberService.searchMembersByTier(tier);
     }
 
     // ==================== UPDATE OPERATION ====================
@@ -492,7 +416,7 @@ public class MemberController {
 
             // Confirm deletion
             if (memberView.confirmAction(MemberConstants.MSG_CONFIRM_DELETE)) {
-                if (memberList.remove(member)) {
+                if (memberService.deleteMember(member.getId())) {
                     memberView.showSuccessMessage(MemberConstants.SUCCESS_DELETE);
                 } else {
                     memberView.showErrorMessage(MemberConstants.ERROR_CATCH_DELETE);
@@ -511,16 +435,7 @@ public class MemberController {
      * @return true if deleted successfully, false if member not found
      */
     public boolean deleteMemberById(String memberId) {
-        if (memberId == null || memberId.trim().isEmpty()) {
-            return false;
-        }
-
-        Member member = findMemberById(memberId);
-        if (member == null) {
-            return false;
-        }
-
-        return memberList.remove(member);
+        return memberService.deleteMember(memberId);
     }
 
     /**
@@ -529,18 +444,7 @@ public class MemberController {
      * @return Member count
      */
     public int getMemberCount() {
-        return memberList.size();
-    }
-
-    /**
-     * Get member at specific index (for testing)
-     * 
-     * @param index Index of member
-     * @return Member at index
-     * @throws IndexOutOfBoundsException if index is invalid
-     */
-    public Member getMemberAt(int index) {
-        return memberList.get(index);
+        return memberService.getMemberCount();
     }
 
 }
