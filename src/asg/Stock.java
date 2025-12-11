@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import model.StockItem;
+import asg.MakeOrderModule.Model.StockItem;
 
 /**
  *
