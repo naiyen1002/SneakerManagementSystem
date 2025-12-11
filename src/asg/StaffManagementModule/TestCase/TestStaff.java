@@ -535,8 +535,7 @@ public class TestStaff {
         @Test
         @DisplayName("Search Staff - No Match Found")
         public void testSearchStaffNoMatch() {
-                // Use text-only search term (no numbers) that doesn't match any staff
-                simulateInput("ZZZ\n");
+                simulateInput("STXXX\n");
 
                 staffSystem.searchStaff();
 
