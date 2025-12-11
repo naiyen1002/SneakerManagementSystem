@@ -1,13 +1,17 @@
-package model;
+package asg.MakeOrderModule.Model;
 
-import java.util.ArrayList;
+import java.util.Objects;
 
+/**
+ * Represents an order detail in the shopping cart.
+ * Contains information about items that customers want to purchase.
+ */
 public class OrderDetails {
     private String orderCode;
     private String orderBrand;
     private String orderDescription;
     private String orderColor;
-    private double orderPrice; 
+    private double orderPrice;
 
     public OrderDetails(String orderCode, String orderBrand, String orderDescription, String orderColor, double orderPrice) {
         this.orderCode = orderCode;
@@ -16,8 +20,6 @@ public class OrderDetails {
         this.orderColor = orderColor;
         this.orderPrice = orderPrice;
     }
-
-   
 
     public String getOrderCode() {
         return orderCode;
@@ -59,10 +61,5 @@ public class OrderDetails {
         this.orderPrice = orderPrice;
     }
 
-    @Override
-    public String toString() {
-        return "OrderDetails{" + "orderCode=" + orderCode + ", orderBrand=" + orderBrand + ", orderDescription=" + orderDescription + ", orderColor=" + orderColor + ", orderPrice=" + orderPrice + '}';
-    }
-
-    
+ 
 }
