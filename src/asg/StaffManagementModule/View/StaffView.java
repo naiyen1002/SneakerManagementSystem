@@ -8,35 +8,34 @@ import asg.StaffManagementModule.Model.Staff;
 public class StaffView {
 
     /**
-     * Staff module menu display
+     * Display menu header
      */
-    public void displayMenu() {
+    public void displayMenuHeader() {
         System.out.print(StaffConstants.STAFF_MENU_HEADER);
         System.out.print(StaffConstants.STAFF_MENU_TITLE);
-        System.out.print(StaffConstants.STAFF_MENU_HEADER);
-        System.out.print(StaffConstants.STAFF_MENU_OPTION_1);
-        System.out.print(StaffConstants.STAFF_MENU_OPTION_2);
-        System.out.print(StaffConstants.STAFF_MENU_OPTION_3);
-        System.out.print(StaffConstants.STAFF_MENU_OPTION_4);
-        System.out.print(StaffConstants.STAFF_MENU_OPTION_5);
-        System.out.print(StaffConstants.STAFF_MENU_OPTION_6);
-        System.out.print(StaffConstants.STAFF_MENU_OPTION_0);
+        System.out.println(StaffConstants.STAFF_MENU_HEADER);
+    }
+
+    /**
+     * Display menu ender
+     */
+    public void displayMenuEnder() {
         System.out.print(StaffConstants.STAFF_MENU_ENDER);
     }
 
     /**
-     * Field modification menu display
+     * Display modify menu header
      */
-    public void displayModifyMenu() {
+    public void displayModifyMenuHeader() {
         System.out.print(StaffConstants.MODIFY_MENU_HEADER);
         System.out.println(StaffConstants.MODIFY_MENU_TITLE);
         System.out.println(StaffConstants.MODIFY_MENU_HEADER);
-        System.out.println(StaffConstants.MODIFY_MENU_OPTION_1);
-        System.out.println(StaffConstants.MODIFY_MENU_OPTION_2);
-        System.out.println(StaffConstants.MODIFY_MENU_OPTION_3);
-        System.out.println(StaffConstants.MODIFY_MENU_OPTION_4);
-        System.out.println(StaffConstants.MODIFY_MENU_OPTION_5);
-        System.out.println(StaffConstants.MODIFY_MENU_OPTION_0);
+    }
+
+    /**
+     * Display modify menu ender
+     */
+    public void displayModifyMenuEnder() {
         System.out.print(StaffConstants.MODIFY_MENU_ENDER);
     }
 
@@ -46,16 +45,20 @@ public class StaffView {
      * @param staff
      */
     public void displayStaffDetails(Staff staff) {
-        System.out.println(StaffConstants.LABEL_ID + staff.getId());
-        System.out.println(StaffConstants.LABEL_NAME + staff.getName());
-        System.out.println(StaffConstants.LABEL_GENDER + staff.getGender());
-        System.out.println(StaffConstants.LABEL_POSITION + staff.getPosition());
-        System.out.println(StaffConstants.LABEL_SALARY + staff.getSalary());
-        System.out.println(StaffConstants.LABEL_DEPARTMENT + staff.getDepartment());
+        System.out.println("\n" + StaffConstants.STAFF_DETAILS_SEPARATOR);
+        System.out.println(StaffConstants.STAFF_DETAILS_TITLE);
+        System.out.println(StaffConstants.STAFF_DETAILS_SEPARATOR);
+        System.out.println("  " + StaffConstants.LABEL_ID + staff.getId());
+        System.out.println("  " + StaffConstants.LABEL_NAME + staff.getName());
+        System.out.println("  " + StaffConstants.LABEL_GENDER + staff.getGender());
+        System.out.println("  " + StaffConstants.LABEL_POSITION + staff.getPosition());
+        System.out.printf("  " + StaffConstants.LABEL_SALARY + "%.2f%n", staff.getSalary());
+        System.out.println("  " + StaffConstants.LABEL_DEPARTMENT + staff.getDepartment());
+        System.out.println(StaffConstants.STAFF_DETAILS_SEPARATOR);
     }
 
     /**
-     * Display all staff members
+     * Display all staff members in table format
      * 
      * @param staffList
      */
@@ -63,12 +66,26 @@ public class StaffView {
         if (staffList.isEmpty()) {
             System.out.println(StaffConstants.ERROR_NO_STAFF_AVAILABLE);
         } else {
-            System.out.println(StaffConstants.LABEL_STAFF_DETAILS);
-            for (Staff staff : staffList) {
-                // Use the fucntion above to display staff details
-                displayStaffDetails(staff);
-                System.out.println(StaffConstants.LABEL_SEPARATOR);
+
+            System.out.println("\n" + StaffConstants.TABLE_SEPARATOR);
+            System.out.println(StaffConstants.TABLE_STAFF_TITLE);
+            System.out.println(StaffConstants.TABLE_SEPARATOR);
+            System.out.printf(StaffConstants.TABLE_STAFF_HEADER_FORMAT + "%n",
+                    "No", "Staff ID", "Name", "Gender", "Position", "Salary (RM)", "Department");
+            System.out.println(StaffConstants.TABLE_SEPARATOR);
+
+            for (int i = 0; i < staffList.size(); i++) {
+                Staff staff = staffList.get(i);
+                System.out.printf(StaffConstants.TABLE_STAFF_ROW_FORMAT + "%n",
+                        i + 1,
+                        staff.getId(),
+                        staff.getName(),
+                        staff.getGender(),
+                        staff.getPosition(),
+                        staff.getSalary(),
+                        staff.getDepartment());
             }
+            System.out.println(StaffConstants.TABLE_SEPARATOR + "\n");
         }
     }
 
@@ -109,8 +126,10 @@ public class StaffView {
 
     /**
      * Display existing departments in the system
+     * 
+     * @param departments
      */
-    public void displayExistingDepartments(java.util.List<String> departments) {
+    public void displayExistingDepartments(List<String> departments) {
         System.out.println(StaffConstants.LABEL_EXISTING_DEPARTMENTS);
         if (departments.isEmpty()) {
             System.out.println("No departments found.");

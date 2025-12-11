@@ -3,64 +3,29 @@ package asg.StaffManagementModule.Constants;
 public class StaffConstants {
 
     /**
-     * Staff menu options
-     */
-    // Later change to StaffOption.java (Practical 2)
-    public static final int DISPLAY_STAFF = 1;
-    public static final int ADD_STAFF = 2;
-    public static final int UPDATE_STAFF = 3;
-    public static final int DELETE_STAFF = 4;
-    public static final int SEARCH_STAFF = 5;
-    public static final int SALARY_REPORT = 6;
-    public static final int EXIT_STAFF_MODULE = 0;
-
-    /**
      * Staff module menu
      */
     public static final String STAFF_MENU_HEADER = "\n\t\t\t\t\t====================================";
     public static final String STAFF_MENU_TITLE = "\n\t\t\t\t\t       STAFF MANAGEMENT MENU        ";
-    public static final String STAFF_MENU_OPTION_1 = "\n\t\t\t\t\t 1 -> Display Staff Details";
-    public static final String STAFF_MENU_OPTION_2 = "\n\t\t\t\t\t 2 -> Add New Staff";
-    public static final String STAFF_MENU_OPTION_3 = "\n\t\t\t\t\t 3 -> Modify Current Staff Information";
-    public static final String STAFF_MENU_OPTION_4 = "\n\t\t\t\t\t 4 -> Delete Staff";
-    public static final String STAFF_MENU_OPTION_5 = "\n\t\t\t\t\t 5 -> Search Staff";
-    public static final String STAFF_MENU_OPTION_6 = "\n\t\t\t\t\t 6 -> Report of Staff Overview";
-    public static final String STAFF_MENU_OPTION_0 = "\n\t\t\t\t\t 0 -> Exit Staff Module\n";
     public static final String STAFF_MENU_ENDER = "\t\t\t\t\t====================================\n\n";
-
-    /**
-     * Field modification menu options
-     */
-    public static final int MODIFY_NAME = 1;
-    public static final int MODIFY_GENDER = 2;
-    public static final int MODIFY_POSITION = 3;
-    public static final int MODIFY_SALARY = 4;
-    public static final int MODIFY_DEPARTMENT = 5;
-    public static final int FINISH_MODIFICATION = 0;
 
     /**
      * Field modification menu
      */
     public static final String MODIFY_MENU_HEADER = "\n====================================";
     public static final String MODIFY_MENU_TITLE = "\n\nSELECT FIELD TO MODIFY";
-    public static final String MODIFY_MENU_OPTION_1 = " 1 -> Modify Name";
-    public static final String MODIFY_MENU_OPTION_2 = " 2 -> Modify Gender";
-    public static final String MODIFY_MENU_OPTION_3 = " 3 -> Modify Position";
-    public static final String MODIFY_MENU_OPTION_4 = " 4 -> Modify Salary";
-    public static final String MODIFY_MENU_OPTION_5 = " 5 -> Modify Department";
-    public static final String MODIFY_MENU_OPTION_0 = " 0 -> Finish Modification";
     public static final String MODIFY_MENU_ENDER = "====================================\n";
 
     /**
      * Staff gender
      */
-    public static final String GENDER_MALE = "male";
-    public static final String GENDER_FEMALE = "female";
+    public static final String GENDER_MALE = "Male";
+    public static final String GENDER_FEMALE = "Female";
 
     /**
      * Added regex patterns for input validation
      */
-    public static final String REGEX_STAFFID = "ST\\d+";
+    public static final String REGEX_STAFFID = "(?i)ST\\d{3}";
     public static final String REGEX_POSITION_DEPT = ".*\\d+.*";
 
     /**
@@ -105,6 +70,7 @@ public class StaffConstants {
     public static final String ERROR_INVALID_CHOICE = "\nInvalid choice.. .\n";
     public static final String ERROR_BLANK_INPUT = "\nChoice cannot be blank. Please enter a valid option.\n";
     public static final String ERROR_ID_BLANK = "Staff ID cannot be blank. Please try again.";
+    public static final String ERROR_ID_ZERO = "Staff ID cannot be ST000. Please use a valid ID (ST001-ST999).";
     public static final String ERROR_INVALID_CHOICE_RETRY = "Invalid choice. Please enter again.. .\n";
 
     /**
@@ -126,11 +92,27 @@ public class StaffConstants {
     public static final String LABEL_EXISTING_DEPARTMENTS = "\nExisting Departments:";
 
     /**
+     * Staff list display
+     */
+    public static final String TABLE_SEPARATOR = "===========================================================================================================";
+    public static final String TABLE_STAFF_TITLE = "                                           STAFF LIST";
+    public static final String TABLE_STAFF_HEADER_FORMAT = "%-4s | %-10s | %-15s | %-8s | %-15s | %-12s | %-15s";
+    public static final String TABLE_STAFF_ROW_FORMAT = "%-4d | %-10s | %-15s | %-8s | %-15s | %-12.2f | %-15s";
+
+    /**
      * Success messages
      */
     public static final String SUCCESS_STAFF_ADDED = "Staff added successfully.";
     public static final String SUCCESS_STAFF_MODIFIED = "Staff modified successfully.";
     public static final String SUCCESS_STAFF_DELETED = "Staff with ID %s deleted successfully.";
+    public static final String ACTION_CANCELLED = "Action cancelled.";
+
+    /**
+     * Confirmation prompts
+     */
+    public static final String CONFIRM_MODIFY = "Are you sure you want to modify this staff? (yes/no): ";
+    public static final String CONFIRM_DELETE = "Are you sure you want to delete staff %s? (yes/no): ";
+    public static final String ERROR_YES_NO_ONLY = "Invalid input. Please enter 'yes' or 'no' only.";
 
     /**
      * Error messages - Not found messages
@@ -142,6 +124,19 @@ public class StaffConstants {
     public static final String ERROR_SEARCH_BLANK = "Search query cannot be blank. Please try again.";
     public static final String ERROR_SEARCH_MIN_LENGTH = "Search query must be at least 2 characters. Please try again.";
     public static final String ERROR_SEARCH_NUMERIC = "Search query cannot contain invalid numbers. Please enter a name or Staff ID (Exp: ST001).";
+
+    /**
+     * Staff details display (single staff)
+     */
+    public static final String STAFF_DETAILS_SEPARATOR = "========================================";
+    public static final String STAFF_DETAILS_TITLE = "           STAFF DETAILS";
+
+    /**
+     * Report display
+     */
+    public static final String REPORT_SEPARATOR = "===========================================================================================================";
+    public static final String REPORT_TITLE_OVERALL = "                                    OVERALL STAFF REPORT";
+    public static final String REPORT_TITLE_DEPARTMENT = "                               DEPARTMENT STAFF REPORT: %s";
 
     /**
      * Exit message

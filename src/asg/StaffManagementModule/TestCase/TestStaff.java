@@ -1,6 +1,6 @@
-package asg.TestCases.TestStaffMgmt;
+package asg.StaffManagementModule.TestCase;
 
-import asg.StaffManagementModule.Controller.StaffManagementSystem;
+import asg.StaffManagementModule.Controller.StaffController;
 import asg.StaffManagementModule.Model.Staff;
 
 import org.junit.jupiter.api.*;
@@ -12,7 +12,7 @@ import java.io.PrintStream;
 
 public class TestStaff {
 
-        private StaffManagementSystem staffSystem;
+        private StaffController staffSystem;
         private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         private final PrintStream originalOut = System.out;
 
@@ -31,7 +31,7 @@ public class TestStaff {
                 ByteArrayInputStream testIn = new ByteArrayInputStream(data.getBytes());
                 System.setIn(testIn);
                 // Recreate staffSystem with new input stream
-                staffSystem = new StaffManagementSystem();
+                staffSystem = new StaffController();
                 staffSystem.retrieveStaff();
         }
 
@@ -41,6 +41,7 @@ public class TestStaff {
          * Add new staff --> All fields correct
          */
         @Test
+        @DisplayName("Add Staff - All Valid Inputs")
         public void testAddStaff() {
                 simulateInput("ST006\nAlice\nFemale\nDeveloper\n4500\nIT\n");
 
@@ -67,6 +68,7 @@ public class TestStaff {
          * Add staff with invalid ID
          */
         @Test
+        @DisplayName("Add Staff - Invalid ID Format")
         public void testAddStaffInvalidId() {
                 simulateInput("abc\nST006\nDavid\nmale\nManager\n6000\nHR\n");
 
@@ -85,15 +87,17 @@ public class TestStaff {
         /**
          * Add staff with invalid gender
          */
+        @Test
+        @DisplayName("Add Staff - Invalid Gender")
         public void testAddStaffInvalidGender() {
-                simulateInput("8\nCarol\nnon-binary\nfemale\nDesigner\n4800\nDesign\n");
+                simulateInput("ST006\nCarol\nnon-binary\nfemale\nDesigner\n4800\nDesign\n");
 
                 int initialSize = staffSystem.staffList.size();
                 staffSystem.addStaff();
 
                 assertEquals(initialSize + 1, staffSystem.staffList.size());
                 Staff addedStaff = staffSystem.staffList.get(staffSystem.staffList.size() - 1);
-                assertEquals("female", addedStaff.getGender());
+                assertEquals("Female", addedStaff.getGender());
 
                 String output = outputStream.toString();
                 assertTrue(output.contains("Gender must be 'male' or 'female'"),
@@ -104,8 +108,9 @@ public class TestStaff {
          * Add staff with invalid position (contains numbers)
          */
         @Test
+        @DisplayName("Add Staff - Invalid Position")
         public void testAddStaffInvalidPosition() {
-                simulateInput("ST007\nEmma\nfemale\nDev123\nDeveloper\n5000\nIT\n");
+                simulateInput("ST007\nEason\nfemale\nDev123\nDeveloper\n5000\nIT\n");
 
                 int initialSize = staffSystem.staffList.size();
                 staffSystem.addStaff();
@@ -123,8 +128,9 @@ public class TestStaff {
          * Add staff with invalid department (contains numbers)
          */
         @Test
+        @DisplayName("Add Staff - Invalid Department")
         public void testAddStaffInvalidDepartment() {
-                simulateInput("ST008\nFrank\nmale\nAnalyst\n4500\nIT123\nFinance\n");
+                simulateInput("ST008\nRobert\nmale\nAnalyst\n4500\nIT123\nFinance\n");
 
                 int initialSize = staffSystem.staffList.size();
                 staffSystem.addStaff();
@@ -142,6 +148,7 @@ public class TestStaff {
          * Add staff with invalid salary (non-numeric)
          */
         @Test
+        @DisplayName("Add Staff - Invalid Salary")
         public void testAddStaffInvalidSalary() {
                 simulateInput("ST009\nGrace\nfemale\nDesigner\nabc\n4800\nDesign\n");
 
@@ -161,8 +168,9 @@ public class TestStaff {
          * Add staff with duplicate ID
          */
         @Test
+        @DisplayName("Add Staff - Duplicate ID")
         public void testAddStaffDuplicateId() {
-                simulateInput("ST001\nST011\nDuplicateTest\nmale\nTester\n5000\nIT\n");
+                simulateInput("ST001\nST011\nBernice\nmale\nTester\n5000\nIT\n");
 
                 int initialSize = staffSystem.staffList.size();
                 staffSystem.addStaff();
@@ -180,8 +188,9 @@ public class TestStaff {
          * Add staff with negative salary
          */
         @Test
+        @DisplayName("Add Staff - Negative Salary")
         public void testAddStaffNegativeSalary() {
-                simulateInput("ST012\nNegSalaryTest\nfemale\nAnalyst\n-500\n3500\nFinance\n");
+                simulateInput("ST012\nYshan\nfemale\nAnalyst\n-500\n3500\nFinance\n");
 
                 int initialSize = staffSystem.staffList.size();
                 staffSystem.addStaff();
@@ -199,15 +208,15 @@ public class TestStaff {
         // ------------------- MODIFY FUNCTION TEST CASES ------------------- //
 
         /**
-         * Modify staff --> All fields correct
+         * Modify staff --> All fields correct (with confirmation)
          */
         @Test
+        @DisplayName("Modify Staff - All Valid Modifications")
         public void testModifyStaff() {
-                simulateInput("ST002\n1\nJojo\n2\nmale\n3\nContent Creator\n4\n5500\n5\nMultimedia\n0\n");
+                simulateInput("ST002\n1\nJojo\nyes\n2\nmale\nyes\n3\nContent Creator\nyes\n4\n5500\nyes\n5\nMultimedia\nyes\n0\n");
 
                 staffSystem.modifyStaff();
 
-                // Find the modified staff
                 Staff modifiedStaff = staffSystem.staffList.stream()
                                 .filter(s -> s.getId().equals("ST002"))
                                 .findFirst()
@@ -229,8 +238,9 @@ public class TestStaff {
          * Modify staff with invalid ID
          */
         @Test
-        public void testModifyStaffInvalidIdThenCorrect() {
-                simulateInput("ST999\nST001\n1\nUpdatedJiaHui\n0\n");
+        @DisplayName("Modify Staff - Invalid ID")
+        public void testModifyStaffInvalidId() {
+                simulateInput("ST999\nST001\n1\nJiahuiLee\nyes\n0\n");
 
                 staffSystem.modifyStaff();
 
@@ -240,7 +250,7 @@ public class TestStaff {
                                 .orElse(null);
 
                 assertNotNull(modifiedStaff, "Staff with ID ST001 should exist");
-                assertEquals("UpdatedJiaHui", modifiedStaff.getName(), "Name should be updated");
+                assertEquals("Jiahuilee", modifiedStaff.getName(), "Name should be updated (title case)");
 
                 String output = outputStream.toString();
                 assertTrue(output.contains("not found"),
@@ -251,8 +261,9 @@ public class TestStaff {
          * Modify staff --> only modify one field (salary)
          */
         @Test
-        public void testModifyStaffSingleField() {
-                simulateInput("ST001\n4\n9999\n0\n");
+        @DisplayName("Modify Staff - Single Field (Salary)")
+        public void testModifyStaffSalary() {
+                simulateInput("ST001\n4\n9999\nyes\n0\n");
 
                 staffSystem.modifyStaff();
 
@@ -270,12 +281,12 @@ public class TestStaff {
         }
 
         /**
-         * Modify staff --> modify multiple fields continuosly
+         * Modify staff --> modify multiple fields continuously
          */
         @Test
+        @DisplayName("Modify Staff - Multiple Fields")
         public void testModifyStaffMultipleFields() {
-                // ST001, then: 1(name), 3(position), 4(salary), 0(finish)
-                simulateInput("ST001\n1\nMultiModified\n3\nSenior Manager\n4\n12000\n0\n");
+                simulateInput("ST001\n1\nJh Lee\nyes\n3\nSenior Manager\nyes\n4\n12000\nyes\n0\n");
 
                 staffSystem.modifyStaff();
 
@@ -285,7 +296,7 @@ public class TestStaff {
                                 .orElse(null);
 
                 assertNotNull(modifiedStaff, "Staff with ID ST001 should exist");
-                assertEquals("MultiModified", modifiedStaff.getName(), "Name should be updated");
+                assertEquals("Jh Lee", modifiedStaff.getName(), "Name should be title case");
                 assertEquals("Senior Manager", modifiedStaff.getPosition(), "Position should be updated");
                 assertEquals(12000.0, modifiedStaff.getSalary(), 0.001, "Salary should be updated");
 
@@ -298,14 +309,30 @@ public class TestStaff {
                                 "Should display salary update success");
         }
 
+        /**
+         * Modify staff --> cancel modification
+         */
+        @Test
+        @DisplayName("Modify Staff - Cancel Modification")
+        public void testModifyStaffCancelled() {
+                simulateInput("ST001\n1\nJIAHUI\nno\n0\n");
+
+                staffSystem.modifyStaff();
+
+                String output = outputStream.toString();
+                assertTrue(output.contains("cancelled") || output.contains("Action cancelled"),
+                                "Should display cancelled message");
+        }
+
         // ------------------- DELETE FUNCTION TEST CASES ------------------- //
 
         /**
-         * Delete staff --> With valid ID and exist
+         * Delete staff --> With valid ID and confirmation
          */
         @Test
+        @DisplayName("Delete Staff - Valid ID with Confirmation")
         public void testDeleteStaff() {
-                simulateInput("ST002\n");
+                simulateInput("ST002\nyes\n");
 
                 int initialSize = staffSystem.staffList.size();
 
@@ -321,9 +348,8 @@ public class TestStaff {
                 assertEquals(initialSize - 1, staffSystem.staffList.size(),
                                 "Staff list should decrease by 1 after deletion");
 
-                // The "ST002" should no longer exist
                 boolean found = staffSystem.staffList.stream()
-                                .anyMatch(s -> s.getId().equals("2"));
+                                .anyMatch(s -> s.getId().equals("ST002"));
                 assertFalse(found, "Staff with ID ST002 should not exist after deletion");
 
                 String output = outputStream.toString();
@@ -332,11 +358,12 @@ public class TestStaff {
         }
 
         /**
-         * Delete staff with blank ID input first, then valid ID
+         * Delete staff with blank ID input first, then valid ID with confirmation
          */
         @Test
+        @DisplayName("Delete Staff - Blank ID then Valid ID")
         public void testDeleteStaffBlankId() {
-                simulateInput("\nST003\n");
+                simulateInput("\nST003\nyes\n");
 
                 int initialSize = staffSystem.staffList.size();
                 staffSystem.deleteStaff();
@@ -355,18 +382,38 @@ public class TestStaff {
          * Delete staff with non-existent ID
          */
         @Test
+        @DisplayName("Delete Staff - Non-Existent ID")
         public void testDeleteStaffNotExist() {
-                simulateInput("ST999\n");
+                simulateInput("ST999\nST001\nno\n");
 
                 int initialSize = staffSystem.staffList.size();
                 staffSystem.deleteStaff();
 
                 assertEquals(initialSize, staffSystem.staffList.size(),
-                                "Staff list should remain unchanged for non-existent ID");
+                                "Staff list should remain unchanged when cancelled");
 
                 String output = outputStream.toString();
                 assertTrue(output.contains("not found"),
                                 "Should display not found error");
+        }
+
+        /**
+         * Delete staff --> cancel
+         */
+        @Test
+        @DisplayName("Delete Staff - Cancel Deletion")
+        public void testDeleteStaffCancelled() {
+                simulateInput("ST001\nno\n");
+
+                int initialSize = staffSystem.staffList.size();
+                staffSystem.deleteStaff();
+
+                assertEquals(initialSize, staffSystem.staffList.size(),
+                                "Staff list should remain unchanged when cancelled");
+
+                String output = outputStream.toString();
+                assertTrue(output.contains("cancelled") || output.contains("Action cancelled"),
+                                "Should display cancelled message");
         }
 
         // ------------------- SEARCH FUNCTION TEST CASES ------------------- //
@@ -375,17 +422,18 @@ public class TestStaff {
          * Search staff by ID
          */
         @Test
+        @DisplayName("Search Staff - By ID")
         public void testSearchStaffById() {
                 simulateInput("ST001\n");
 
                 staffSystem.searchStaff();
 
                 String output = outputStream.toString();
-                assertTrue(output.contains("Search Results"),
+                assertTrue(output.contains("Search Results") || output.contains("STAFF DETAILS"),
                                 "Should display search results header");
                 assertTrue(output.contains("JiaHui"),
                                 "Should find staff with ID ST001");
-                assertTrue(output.contains("ID: ST001") || output.contains("ST001"),
+                assertTrue(output.contains("ST001"),
                                 "Should display staff ID");
                 assertTrue(output.contains("Manager"),
                                 "Should display staff position");
@@ -397,6 +445,7 @@ public class TestStaff {
          * Search staff by Name
          */
         @Test
+        @DisplayName("Search Staff - By Name")
         public void testSearchStaffByName() {
                 simulateInput("NaiYen\n");
 
@@ -417,6 +466,7 @@ public class TestStaff {
          * Search staff by a part of name
          */
         @Test
+        @DisplayName("Search Staff - By Partial Name")
         public void testSearchStaffPartialName() {
                 simulateInput("Nai\n");
 
@@ -433,6 +483,7 @@ public class TestStaff {
          * Search staff with lowercase name but same structure
          */
         @Test
+        @DisplayName("Search Staff - Lowercase Name")
         public void testSearchStaffLowercaseName() {
                 simulateInput("naiyen\n");
 
@@ -445,12 +496,17 @@ public class TestStaff {
                                 "Should display correct ID");
         }
 
+        // ------------------- REPORT FUNCTION TEST CASES ------------------- //
+
         /**
-         * Report for non-existent department
+         * Report for non-existent department (specific department)
          */
         @Test
+        @DisplayName("Report - Non-Existent Department")
         public void testReportNonExistentDepartment() {
-                simulateInput("InvalidDept\nIT\n");
+                // 2 is specific report for department
+
+                simulateInput("2\nClubbing\nIT\n");
 
                 staffSystem.departmentSalaryReport();
 
@@ -459,20 +515,19 @@ public class TestStaff {
                                 "Should display error for non-existent department");
         }
 
-        // ------------------- REPORT FUNCTION TEST CASES ------------------- //
-
         /**
          * Report for existing department
          */
         @Test
-        public void testReport_ExistingDepartment() {
-                simulateInput("IT\n");
+        @DisplayName("Report - Existing Department")
+        public void testReportExistingDepartment() {
+                // 2 is specific report for department
+                simulateInput("2\nIT\n");
 
                 staffSystem.departmentSalaryReport();
 
                 String output = outputStream.toString();
-                assertTrue(output.contains("Staff Report for Department: IT")
-                                || output.contains("IT"),
+                assertTrue(output.contains("DEPARTMENT STAFF REPORT") || output.contains("IT"),
                                 "Should display department report header");
                 assertTrue(output.contains("NaiYen"),
                                 "Should display staff in IT department");
@@ -481,24 +536,57 @@ public class TestStaff {
         }
 
         /**
+         * Overall report (all staff)
+         */
+        @Test
+        @DisplayName("Report - Overall Staff Report")
+        public void testOverallReport() {
+                simulateInput("1\n");
+
+                staffSystem.departmentSalaryReport();
+
+                String output = outputStream.toString();
+                assertTrue(output.contains("OVERALL STAFF REPORT"),
+                                "Should display overall report header");
+                assertTrue(output.contains("Total Staff"),
+                                "Should display total staff count");
+                assertTrue(output.contains("Total Salary"),
+                                "Should display total salary");
+        }
+
+        /**
+         * Back to menu from report
+         */
+        @Test
+        @DisplayName("Report - Back to Menu")
+        public void testReportBackToMenu() {
+                simulateInput("0\n");
+
+                staffSystem.departmentSalaryReport();
+
+                String output = outputStream.toString();
+                assertTrue(output.contains("SELECT REPORT TYPE"),
+                                "Should display report menu");
+        }
+
+        /**
          * Add new staff in department and verify report includes them
          */
         @Test
+        @DisplayName("Report - New Staff Included in Department Report")
         public void testReportWithNewStaff() {
-                // Add staff
-                simulateInput("ST010\nNewStaff\nmale\nTester\n5500\nIT\nIT\n");
+                // Add staff first
+                simulateInput("ST010\nJohn\nmale\nTester\n5500\nIT\n2\nIT\n");
                 staffSystem.addStaff();
 
-                // Reset output to only capture report output
                 outputStream.reset();
 
                 staffSystem.departmentSalaryReport();
 
                 String output = outputStream.toString();
-                assertTrue(output.contains("Staff Report for Department: IT")
-                                || output.contains("IT"),
+                assertTrue(output.contains("DEPARTMENT STAFF REPORT") || output.contains("IT"),
                                 "Should display department report header");
-                assertTrue(output.contains("NewStaff"),
+                assertTrue(output.contains("John"),
                                 "Should include newly added staff in report");
                 assertTrue(output.contains("NaiYen"),
                                 "Should still include existing IT staff");
@@ -509,16 +597,17 @@ public class TestStaff {
         // ------------------- DISPLAY FUNCTION TEST CASES ------------------- //
 
         /**
-         * Display all staff (2 people)
+         * Display all staff
          */
         @Test
+        @DisplayName("Display All Staff")
         public void testDisplayAllStaff() {
                 simulateInput("");
 
                 staffSystem.displayStaff();
 
                 String output = outputStream.toString();
-                assertTrue(output.contains("Staff Details"),
+                assertTrue(output.contains("Staff") || output.contains("STAFF LIST"),
                                 "Should display staff details header");
                 assertTrue(output.contains("ST001"),
                                 "Should display first staff");
