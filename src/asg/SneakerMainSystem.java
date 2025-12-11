@@ -62,7 +62,7 @@ public class SneakerMainSystem {
                     StaffController.main();
                     break;
                 case 2:
-                    MemberManagement.main();
+                    OldMemberManagement.main();
                     break;
                 case 3:
                     NewSales.main();
@@ -71,7 +71,7 @@ public class SneakerMainSystem {
                     Stock.main();
                     break;
                 case 5:
-                    MakeOrder.main();
+                    MakeOrder_refactor.main();
                     break;
                 case 6:
                     System.out.println("\nEXITING PROGRAM...\n");
