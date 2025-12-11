@@ -4,7 +4,7 @@
  */
 package asg;
 
-import model.SSdetails;
+import asg.MakeOrderModule.Model.SSdetails;
 
 /**
  *
