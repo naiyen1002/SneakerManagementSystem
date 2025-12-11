@@ -12,7 +12,25 @@ import java.util.Scanner;
 
 public class MemberView {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
+
+    /**
+     * Default constructor for production use
+     * Creates a Scanner that reads from System.in
+     */
+    public MemberView() {
+        this.scanner = new Scanner(System.in);
+    }
+
+    /**
+     * Constructor for testing
+     * Allows injection of a custom Scanner
+     * 
+     * @param scanner Scanner to use for input
+     */
+    public MemberView(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
     // ==================== MENU DISPLAY ====================
 
@@ -92,7 +110,7 @@ public class MemberView {
         System.out.printf(MemberConstants.DETAIL_JOIN_DATE, member.getFormattedJoinDate());
         System.out.printf(MemberConstants.DETAIL_MEMBERSHIP_TIER, member.getMembershipTier().getDisplayName());
         System.out.printf(MemberConstants.DETAIL_TOTAL_SPENDING, member.getTotalSpending());
-        System.out.println(MemberConstants.DETAIL_SEPARATOR + "\n");
+        System.out.println(MemberConstants.DETAIL_SEPARATOR);
     }
 
     /**

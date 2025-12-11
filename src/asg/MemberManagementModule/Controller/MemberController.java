@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import asg.MemberManagementModule.Constants.MemberConstants;
+import asg.MemberManagementModule.Constants.MemberOptions;
 import asg.MemberManagementModule.Model.Gender;
 import asg.MemberManagementModule.Model.Member;
 import asg.MemberManagementModule.Model.MembershipTier;
@@ -180,8 +181,10 @@ public class MemberController {
             List<Member> listMemberResults = new ArrayList<>();
 
             try {
-                switch (searchChoice) {
-                    case 1:
+                MemberOptions searchOption = MemberOptions.fromSearchMenuValue(searchChoice);
+
+                switch (searchOption) {
+                    case SEARCH_BY_ID:
                         String id = memberView.inputMemberId();
                         Member member = findMemberById(id);
                         if (member != null) {
@@ -189,27 +192,27 @@ public class MemberController {
                         }
                         break;
 
-                    case 2:
+                    case SEARCH_BY_NAME:
                         String name = memberView.inputName();
                         listMemberResults = searchMembersByName(name);
                         break;
 
-                    case 3:
+                    case SEARCH_BY_GENDER:
                         Gender gender = memberView.inputGender();
                         listMemberResults = searchMembersByGender(gender);
                         break;
 
-                    case 4:
+                    case SEARCH_BY_IC:
                         String ic = memberView.inputIcNumber();
                         listMemberResults = searchMembersByIcNumber(ic);
                         break;
 
-                    case 5:
+                    case SEARCH_BY_CONTACT:
                         String contact = memberView.inputContactNumber();
                         listMemberResults = searchMembersByContact(contact);
                         break;
 
-                    case 6:
+                    case SEARCH_BY_DATE:
                         LocalDate date = memberView.inputJoinDate();
                         listMemberResults = searchMembersByJoinDate(date);
                         break;
@@ -382,36 +385,38 @@ public class MemberController {
                 int updateChoice = memberView.displayUpdateMenu();
 
                 try {
-                    switch (updateChoice) {
-                        case 1:
+                    MemberOptions updateOption = MemberOptions.fromUpdateMenuValue(updateChoice);
+
+                    switch (updateOption) {
+                        case UPDATE_NAME:
                             String newName = memberView.inputName();
                             member.setName(newName);
                             updated = true;
                             memberView.showSuccessMessage(MemberConstants.SUCCESS_UPDATE);
                             break;
 
-                        case 2:
+                        case UPDATE_GENDER:
                             Gender newGender = memberView.inputGender();
                             member.setGender(newGender);
                             updated = true;
                             memberView.showSuccessMessage(MemberConstants.SUCCESS_UPDATE);
                             break;
 
-                        case 3:
+                        case UPDATE_IC:
                             String newIc = memberView.inputIcNumber();
                             member.setIcNumber(newIc);
                             updated = true;
                             memberView.showSuccessMessage(MemberConstants.SUCCESS_UPDATE);
                             break;
 
-                        case 4:
+                        case UPDATE_CONTACT:
                             String newContact = memberView.inputContactNumber();
                             member.setContactNumber(newContact);
                             updated = true;
                             memberView.showSuccessMessage(MemberConstants.SUCCESS_UPDATE);
                             break;
 
-                        case 5:
+                        case UPDATE_FINISH:
                             if (updated) {
                                 memberView.showSuccessMessage(MemberConstants.SUCCESS_UPDATE);
                                 memberView.displayMemberDetails(member);
@@ -425,7 +430,7 @@ public class MemberController {
                             continue;
                     }
 
-                    if (updateChoice == 5) {
+                    if (updateOption == MemberOptions.UPDATE_FINISH) {
                         break;
                     }
 

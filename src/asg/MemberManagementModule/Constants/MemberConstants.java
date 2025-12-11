@@ -66,7 +66,7 @@ public final class MemberConstants {
     public static final String MSG_CONTINUE_SEARCH = "Search Another Member";
 
     // ==================== MENU HEADERS ====================
-    public static final String HEADER_MAIN_MENU = "\n\n--------------------------------\n\tMember Main Menu\n--------------------------------\n";
+    public static final String HEADER_MAIN_MENU = "\n--------------------------------\n\tMember Main Menu\n--------------------------------\n";
     public static final String HEADER_ADD_MEMBER = "\n--------------------------------\n   Add New Member Records\n--------------------------------";
     public static final String HEADER_SEARCH_MEMBER = "\n--------------------------------\n   Search Member Information\n--------------------------------\n";
     public static final String HEADER_UPDATE_MEMBER = "\n--------------------------------\n   Update Member Information\n--------------------------------";

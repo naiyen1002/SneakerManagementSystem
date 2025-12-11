@@ -1,6 +1,7 @@
 package asg.MemberManagementModule;
 
 import asg.MemberManagementModule.Constants.MemberData;
+import asg.MemberManagementModule.Constants.MemberOptions;
 import asg.MemberManagementModule.Controller.MemberController;
 import asg.MemberManagementModule.View.MemberView;
 
@@ -16,28 +17,31 @@ public class MemberManagementApp {
         while (running) {
             memberView.displayMemberMainMenu();
             int choice = memberView.getMenuChoice();
+            MemberOptions menuOption = MemberOptions.fromMainMenuValue(choice);
 
-            switch (choice) {
-                case 1:
+            switch (menuOption) {
+                case DISPLAY_ALL_MEMBERS:
                     memberController.displayAllMembers();
                     break;
-                case 2:
+                case ADD_MEMBER:
                     memberController.addMember();
                     break;
-                case 3:
+                case SEARCH_MEMBER:
                     memberController.searchMember();
                     break;
-                case 4:
+                case UPDATE_MEMBER:
                     memberController.updateMember();
                     break;
-                case 5:
+                case DELETE_MEMBER:
                     memberController.deleteMember();
                     break;
-                case 6:
+                case SHOW_MEMBERSHIP_REPORT:
                     memberController.displayMembershipReport();
                     break;
-                case 7:
+                case EXIT:
                     running = false;
+                    break;
+                default:
                     break;
             }
         }
