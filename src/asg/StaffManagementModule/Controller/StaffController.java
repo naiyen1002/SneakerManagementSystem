@@ -11,12 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Facade Controller for Staff Management Module
+ */
 public class StaffController {
 
+    /**
+     * Consider as subsystem components hidden behind facade (staffMenu)
+     */
     public final ArrayList<Staff> staffList;
-    public final Scanner scanner;
     private final StaffView view;
     private final StaffService staffService;
+
+    public final Scanner scanner;
 
     public StaffController() {
         this.staffList = new ArrayList<>();
@@ -27,14 +34,19 @@ public class StaffController {
         this.staffService = new StaffService(view, scanner, staffList);
     }
 
+    /**
+     * Based on facade, client will ony use this (the staffMenu)
+     */
     public static void main() {
         StaffController staffSystem = new StaffController();
         staffSystem.retrieveStaff();
+        // Only facade method exposed to client (Entry point)
         staffSystem.staffMenu();
     }
 
     /**
      * Staff main menu
+     * Simple interface for client based on facade design pattern
      */
     public void staffMenu() {
         StaffMenuOptions option;
