@@ -73,7 +73,7 @@ public enum StaffMenuOptions {
         return null;
     }
 
-    // Get report menu option 
+    // Get report menu option
     public static StaffMenuOptions fromReportCode(int code) {
         for (StaffMenuOptions option : StaffMenuOptions.values()) {
             if (option.getCode() == code && option.getMenuType() == MenuType.REPORT) {
