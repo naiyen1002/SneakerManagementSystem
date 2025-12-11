@@ -609,6 +609,21 @@ public class TestStaff {
                                 "Should display no matching staff for non-existent name");
         }
 
+        /**
+         * Search staff --> minimum 2 characters
+         */
+        @Test
+        @DisplayName("Search Staff - Minimum 2 Characters Required")
+        public void testSearchStaffMinLength() {
+                simulateInput("A\nJi\n");
+                staffSystem.searchStaff();
+                String output = outputStream.toString();
+                assertTrue(output.contains("at least 2 characters") || output.contains("min"),
+                                "Should display minimum length error for 1 character input");
+                assertTrue(output.contains("JiaHui"),
+                                "Should find staff after entering valid search term");
+        }
+
         // ------------------- REPORT FUNCTION TEST CASES ------------------- //
 
         /**
