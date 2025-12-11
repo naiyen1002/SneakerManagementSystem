@@ -7,70 +7,57 @@ import java.util.List;
 import asg.MemberManagementModule.Model.Gender;
 import asg.MemberManagementModule.Model.Member;
 import asg.MemberManagementModule.Model.MembershipTier;
+import asg.SalesManagementModule.Constants.SalesData;
 
 public final class MemberData {
     public static List<Member> initiallizeMembersData() {
         List<Member> memberList = new ArrayList<>();
 
-        // Golden Member - High spending customer
-        Member golden = new Member(
-                "M001",
-                "John Smith",
-                Gender.MALE,
-                "950101-01-1234",
-                "123456789",
-                LocalDate.of(2023, 1, 15),
-                MembershipTier.GOLDEN);
-        golden.setTotalSpending(3500.00);
-        memberList.add(golden);
+        // Member 1 - John Smith
+        // Tier will be calculated based on total spending from sales
+        Member Member1 = new Member("M001", "John Smith", Gender.MALE, "950101-01-1234", "123456789",
+                LocalDate.of(2023, 1, 15), MembershipTier.BASIC);
 
-        // Silver Member - Medium spending customer
-        Member silver = new Member(
-                "M002",
-                "Jane Doe",
-                Gender.FEMALE,
-                "980505-02-5678",
-                "987654321",
-                LocalDate.of(2023, 3, 20),
-                MembershipTier.SILVER);
-        silver.setTotalSpending(2300.00);
-        memberList.add(silver);
+        double spending1 = SalesData.getTotalSalesByMember("M001");
+        Member1.setTotalSpending(spending1);
+        Member1.setMembershipTier(MembershipTier.calculateMembershipTier(spending1));
+        memberList.add(Member1);
 
-        // Bronze Member - Regular customer
-        Member bronze = new Member(
-                "M003",
-                "Alex Wong",
-                Gender.OTHER,
-                "000808-03-9012",
-                "112233445",
-                LocalDate.of(2024, 6, 10),
-                MembershipTier.BRONZE);
-        bronze.setTotalSpending(1500.00);
-        memberList.add(bronze);
+        // Member 2 - Jane Doe
+        // Tier will be calculated based on total spending from sales
+        Member Member2 = new Member("M002", "Jane Doe", Gender.FEMALE, "980505-02-5678", "987654321",
+                LocalDate.of(2023, 3, 20), MembershipTier.BASIC);
+        double spending2 = SalesData.getTotalSalesByMember("M002");
+        Member2.setTotalSpending(spending2);
+        Member2.setMembershipTier(MembershipTier.calculateMembershipTier(spending2));
+        memberList.add(Member2);
 
-        // Basic Member - New customer
-        Member basic = new Member(
-                "M004",
-                "Sarah Lee",
-                Gender.FEMALE,
-                "020202-04-3456",
-                "555666777",
-                LocalDate.of(2024, 11, 5),
-                MembershipTier.BASIC);
-        basic.setTotalSpending(500.00);
-        memberList.add(basic);
+        // Member 3 - Alex Wong
+        // Tier will be calculated based on total spending from sales
+        Member Member3 = new Member("M003", "Alex Wong", Gender.OTHER, "000808-03-9012", "112233445",
+                LocalDate.of(2024, 6, 10), MembershipTier.BASIC);
+        double spending3 = SalesData.getTotalSalesByMember("M003");
+        Member3.setTotalSpending(spending3);
+        Member3.setMembershipTier(MembershipTier.calculateMembershipTier(spending3));
+        memberList.add(Member3);
 
-        // Additional Basic Member
-        Member basic2 = new Member(
-                "M005",
-                "Michael Chen",
-                Gender.MALE,
-                "990315-05-7890",
-                "666777888",
-                LocalDate.of(2024, 12, 1),
-                MembershipTier.BASIC);
-        basic2.setTotalSpending(200.00);
-        memberList.add(basic2);
+        // Member 4 - Sarah Lee
+        // Tier will be calculated based on total spending from sales
+        Member Member4 = new Member("M004", "Sarah Lee", Gender.FEMALE, "020202-04-3456", "555666777",
+                LocalDate.of(2024, 11, 5), MembershipTier.BASIC);
+        double spending4 = SalesData.getTotalSalesByMember("M004");
+        Member4.setTotalSpending(spending4);
+        Member4.setMembershipTier(MembershipTier.calculateMembershipTier(spending4));
+        memberList.add(Member4);
+
+        // Member 5 - Michael Chen
+        // Tier will be calculated based on total spending from sales
+        Member Member5 = new Member("M005", "Michael Chen", Gender.MALE, "990315-05-7890", "666777888",
+                LocalDate.of(2024, 12, 1), MembershipTier.BASIC);
+        double spending5 = SalesData.getTotalSalesByMember("M005");
+        Member5.setTotalSpending(spending5);
+        Member5.setMembershipTier(MembershipTier.calculateMembershipTier(spending5));
+        memberList.add(Member5);
 
         return memberList;
     }

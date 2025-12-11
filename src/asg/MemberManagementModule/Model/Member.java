@@ -83,6 +83,10 @@ public class Member {
         this.contactNumber = contactNumber;
     }
 
+    public void setJoinDate(LocalDate joinDate) {
+        this.joinDate = joinDate;
+    }
+
     public void setMembershipTier(MembershipTier membershipTier) {
         this.membershipTier = membershipTier;
     }
