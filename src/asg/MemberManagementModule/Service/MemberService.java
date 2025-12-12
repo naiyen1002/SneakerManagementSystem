@@ -46,7 +46,7 @@ public class MemberService {
     // ==================== MEMBER CRUD OPERATIONS ====================
 
     /**
-     * Add a new member with business rule validation
+     * Add a new member with validation
      * Automatically checks for existing sales and calculates tier
      * 
      * @param member Member to add
