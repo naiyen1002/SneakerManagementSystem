@@ -35,13 +35,21 @@ public class StaffController {
     }
 
     /**
-     * Based on facade, client will ony use this (the staffMenu)
+     * Based on facade, client will ony use this (the staffMenu from run)
      */
     public static void main() {
         StaffController staffSystem = new StaffController();
-        staffSystem.retrieveStaff();
+        staffSystem.run();
+    }
+
+    /**
+     * Run the staff management system
+     * Entry point
+     */
+    public void run() {
+        retrieveStaff();
         // Only facade method exposed to client (Entry point)
-        staffSystem.staffMenu();
+        staffMenu();
     }
 
     /**
@@ -70,18 +78,16 @@ public class StaffController {
     /**
      * Display menu options from enum
      */
-    private void displayMenu() {
+    public void displayMenu() {
         view.displayMenuHeader();
-        for (StaffMenuOptions opt : StaffMenuOptions.getMainMenuOptions()) {
-            System.out.printf("\t\t\t\t\t %d -> %s\n", opt.getCode(), opt.getDescription());
-        }
+        view.displayMainMenuOptions(StaffMenuOptions.getMainMenuOptions());
         view.displayMenuEnder();
     }
 
     /**
      * Get menu option from user input
      */
-    private StaffMenuOptions getMenuOption() {
+    public StaffMenuOptions getMenuOption() {
         int choice = getMenuChoice();
         return StaffMenuOptions.fromCode(choice);
     }
@@ -89,7 +95,7 @@ public class StaffController {
     /**
      * Process the selected menu option
      */
-    private void processMenuOption(StaffMenuOptions option) {
+    public void processMenuOption(StaffMenuOptions option) {
         switch (option) {
             case DISPLAY_STAFF:
                 displayStaff();
@@ -122,7 +128,7 @@ public class StaffController {
      * 
      * @return choice
      */
-    private int getMenuChoice() {
+    public int getMenuChoice() {
         while (true) {
             view.displayPrompt(StaffConstants.ENTER_CHOICE);
             String input = scanner.nextLine();
@@ -228,18 +234,16 @@ public class StaffController {
     /**
      * Display modify menu options from enum
      */
-    private void displayModifyMenu() {
+    public void displayModifyMenu() {
         view.displayModifyMenuHeader();
-        for (StaffMenuOptions opt : StaffMenuOptions.getModifyMenuOptions()) {
-            System.out.printf(" %d -> %s\n", opt.getCode(), opt.getDescription());
-        }
+        view.displayModifyMenuOptions(StaffMenuOptions.getModifyMenuOptions());
         view.displayModifyMenuEnder();
     }
 
     /**
      * Get modify menu user input
      */
-    private StaffMenuOptions getModifyMenuOption() {
+    public StaffMenuOptions getModifyMenuOption() {
         int choice = getMenuChoice();
         return StaffMenuOptions.fromModifyCode(choice);
     }
@@ -247,14 +251,14 @@ public class StaffController {
     /**
      * Process the selected modify option
      */
-    private boolean processModifyOption(StaffMenuOptions option, Staff staffToModify, boolean modified) {
+    public boolean processModifyOption(StaffMenuOptions option, Staff staffToModify, boolean modified) {
         switch (option) {
             case MODIFY_NAME:
                 String name = staffService.getValidName(true);
                 if (!name.isEmpty()) {
-                    if (staffService.getConfirmation("Confirm update name to '" + name + "'? (yes/no): ")) {
+                    if (staffService.getConfirmation(String.format(StaffConstants.CONFIRM_UPDATE_NAME, name))) {
                         staffToModify.setName(name);
-                        view.displaySuccessMessage("Name updated successfully.");
+                        view.displaySuccessMessage(StaffConstants.SUCCESS_NAME_UPDATED);
                         modified = true;
                     } else {
                         view.displaySuccessMessage(StaffConstants.ACTION_CANCELLED);
@@ -264,9 +268,9 @@ public class StaffController {
 
             case MODIFY_GENDER:
                 String gender = staffService.getValidGender(true);
-                if (staffService.getConfirmation("Confirm update gender to '" + gender + "'? (yes/no): ")) {
+                if (staffService.getConfirmation(String.format(StaffConstants.CONFIRM_UPDATE_GENDER, gender))) {
                     staffToModify.setGender(gender);
-                    view.displaySuccessMessage("Gender updated successfully.");
+                    view.displaySuccessMessage(StaffConstants.SUCCESS_GENDER_UPDATED);
                     modified = true;
                 } else {
                     view.displaySuccessMessage(StaffConstants.ACTION_CANCELLED);
@@ -276,9 +280,9 @@ public class StaffController {
             case MODIFY_POSITION:
                 String position = staffService.getValidPosition(true);
                 if (position != null && !position.isEmpty()) {
-                    if (staffService.getConfirmation("Confirm update position to '" + position + "'? (yes/no): ")) {
+                    if (staffService.getConfirmation(String.format(StaffConstants.CONFIRM_UPDATE_POSITION, position))) {
                         staffToModify.setPosition(position);
-                        view.displaySuccessMessage("Position updated successfully.");
+                        view.displaySuccessMessage(StaffConstants.SUCCESS_POSITION_UPDATED);
                         modified = true;
                     } else {
                         view.displaySuccessMessage(StaffConstants.ACTION_CANCELLED);
@@ -289,9 +293,9 @@ public class StaffController {
             case MODIFY_SALARY:
                 Double salary = staffService.getValidSalary(true);
                 if (salary != null) {
-                    if (staffService.getConfirmation("Confirm update salary to RM" + salary + "? (yes/no): ")) {
+                    if (staffService.getConfirmation(String.format(StaffConstants.CONFIRM_UPDATE_SALARY, salary))) {
                         staffToModify.setSalary(salary);
-                        view.displaySuccessMessage("Salary updated successfully.");
+                        view.displaySuccessMessage(StaffConstants.SUCCESS_SALARY_UPDATED);
                         modified = true;
                     } else {
                         view.displaySuccessMessage(StaffConstants.ACTION_CANCELLED);
@@ -302,9 +306,10 @@ public class StaffController {
             case MODIFY_DEPARTMENT:
                 String department = staffService.getValidDepartment(true);
                 if (department != null && !department.isEmpty()) {
-                    if (staffService.getConfirmation("Confirm update department to '" + department + "'? (yes/no): ")) {
+                    if (staffService
+                            .getConfirmation(String.format(StaffConstants.CONFIRM_UPDATE_DEPARTMENT, department))) {
                         staffToModify.setDepartment(department);
-                        view.displaySuccessMessage("Department updated successfully.");
+                        view.displaySuccessMessage(StaffConstants.SUCCESS_DEPARTMENT_UPDATED);
                         modified = true;
                     } else {
                         view.displaySuccessMessage(StaffConstants.ACTION_CANCELLED);
@@ -316,7 +321,7 @@ public class StaffController {
                 if (modified) {
                     view.displaySuccessMessage(StaffConstants.SUCCESS_STAFF_MODIFIED);
                 } else {
-                    view.displayErrorMessage("No modifications were made.");
+                    view.displayErrorMessage(StaffConstants.ERROR_NO_MODIFICATIONS);
                 }
                 break;
 
@@ -440,21 +445,16 @@ public class StaffController {
     /**
      * Display report menu options from enum
      */
-    private void displayReportMenu() {
-        System.out.println("\n====================================");
-        System.out.println("        SELECT REPORT TYPE");
-        System.out.println("====================================");
-        for (StaffMenuOptions opt : StaffMenuOptions.getReportMenuOptions()) {
-            System.out.printf(" %d -> %s%n", opt.getCode(), opt.getDescription());
-        }
-        System.out.println("====================================");
+    public void displayReportMenu() {
+        view.displayReportMenuHeader();
+        view.displayReportMenuOptions(StaffMenuOptions.getReportMenuOptions());
     }
 
     /**
      * Get report menu option from user input
      */
-    private StaffMenuOptions getReportMenuOption() {
-        view.displayPrompt("Enter choice: ");
+    public StaffMenuOptions getReportMenuOption() {
+        view.displayPrompt(StaffConstants.ENTER_CHOICE);
         try {
             int choice = Integer.parseInt(scanner.nextLine());
             return StaffMenuOptions.fromReportCode(choice);
@@ -466,7 +466,7 @@ public class StaffController {
     /**
      * Display overall staff report
      */
-    private void displayOverallReport() {
+    public void displayOverallReport() {
         if (staffList.isEmpty()) {
             view.displayErrorMessage(StaffConstants.ERROR_NO_STAFF_AVAILABLE);
             return;
@@ -477,34 +477,13 @@ public class StaffController {
             totalSalary += staff.getSalary();
         }
 
-        System.out.println("\n" + StaffConstants.REPORT_SEPARATOR);
-        System.out.println(StaffConstants.REPORT_TITLE_OVERALL);
-        System.out.println(StaffConstants.REPORT_SEPARATOR);
-        System.out.printf(StaffConstants.TABLE_STAFF_HEADER_FORMAT + "%n",
-                "No", "Staff ID", "Name", "Gender", "Position", "Salary (RM)", "Department");
-        System.out.println(StaffConstants.REPORT_SEPARATOR);
-
-        for (int i = 1; i < staffList.size(); i++) {
-            Staff staff = staffList.get(i);
-            System.out.printf(StaffConstants.TABLE_STAFF_ROW_FORMAT + "%n",
-                    i,
-                    staff.getId(),
-                    staff.getName(),
-                    staff.getGender(),
-                    staff.getPosition(),
-                    staff.getSalary(),
-                    staff.getDepartment());
-        }
-
-        System.out.println(StaffConstants.REPORT_SEPARATOR);
-        System.out.printf("Total Staff: %d | Total Salary: RM %.2f%n", staffList.size(), totalSalary);
-        System.out.println(StaffConstants.REPORT_SEPARATOR + "\n");
+        view.displayOverallReport(staffList, totalSalary);
     }
 
     /**
      * Display specific department report
      */
-    private void displayDepartmentReport() {
+    public void displayDepartmentReport() {
 
         view.displayExistingDepartments(getExistingDepartments());
 
@@ -551,35 +530,13 @@ public class StaffController {
             }
         }
 
-        System.out.println("\n" + StaffConstants.REPORT_SEPARATOR);
-        System.out.printf(StaffConstants.REPORT_TITLE_DEPARTMENT + "%n", departmentName);
-        System.out.println(StaffConstants.REPORT_SEPARATOR);
-        System.out.printf(StaffConstants.TABLE_STAFF_HEADER_FORMAT + "%n",
-                "No", "Staff ID", "Name", "Gender", "Position", "Salary (RM)", "Department");
-        System.out.println(StaffConstants.REPORT_SEPARATOR);
-
-        for (int i = 0; i < staffInDepartment.size(); i++) {
-            Staff staff = staffInDepartment.get(i);
-            System.out.printf(StaffConstants.TABLE_STAFF_ROW_FORMAT + "%n",
-                    i + 1,
-                    staff.getId(),
-                    staff.getName(),
-                    staff.getGender(),
-                    staff.getPosition(),
-                    staff.getSalary(),
-                    staff.getDepartment());
-        }
-
-        System.out.println(StaffConstants.REPORT_SEPARATOR);
-        System.out.printf("Total Staff in %s: %d | Total Salary: RM %.2f%n",
-                departmentName, staffInDepartment.size(), totalSalary);
-        System.out.println(StaffConstants.REPORT_SEPARATOR + "\n");
+        view.displayDepartmentReportTable(departmentName, staffInDepartment, totalSalary);
     }
 
     /**
      * Get list of existing departments from staff list
      */
-    private List<String> getExistingDepartments() {
+    public List<String> getExistingDepartments() {
         List<String> departments = new ArrayList<>();
         for (Staff staff : staffList) {
             if (!departments.contains(staff.getDepartment())) {
@@ -599,7 +556,7 @@ public class StaffController {
     }
 
     /**
-     * Add the staffby intilise them here through StaffData
+     * Add the staff by intilise them here through StaffData
      */
     public void retrieveStaff() {
         staffList.addAll(StaffData.getStaffData());

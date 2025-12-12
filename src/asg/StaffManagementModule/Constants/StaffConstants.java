@@ -141,6 +141,49 @@ public class StaffConstants {
     /**
      * Exit message
      */
-    public static final String MESSAGE_EXIT_STAFF_MODULE = "\nThank you for using the staff management system. Goodbye!\n";
+    public static final String MESSAGE_EXIT_STAFF_MODULE = "\n\nThank you for using the staff management system. Goodbye!\n";
+
+    /**
+     * Report menu
+     */
+    public static final String REPORT_MENU_HEADER = "\n====================================";
+    public static final String REPORT_MENU_TITLE = "        SELECT REPORT TYPE";
+    public static final String REPORT_MENU_ENDER = "====================================";
+
+    /**
+     * Menu option formats
+     */
+    public static final String MENU_OPTION_FORMAT = "\t\t\t\t\t %d -> %s%n";
+    public static final String MENU_OPTION_FORMAT_SIMPLE = " %d -> %s%n";
+
+    /**
+     * Report summary labels
+     */
+    public static final String LABEL_TOTAL_STAFF_SALARY = "Total Staff: %d | Total Salary: RM %.2f";
+    public static final String LABEL_DEPT_TOTAL_STAFF_SALARY = "Total Staff in %s: %d | Total Salary: RM %.2f";
+
+    /**
+     * Service suggestions
+     */
+    public static final String LABEL_SUGGESTED_ID = "\n[ Suggested next available ID: %s ]";
+
+    /**
+     * Modify confirmation messages
+     */
+    public static final String CONFIRM_UPDATE_NAME = "Confirm update name to '%s'? (yes/no): ";
+    public static final String CONFIRM_UPDATE_GENDER = "Confirm update gender to '%s'? (yes/no): ";
+    public static final String CONFIRM_UPDATE_POSITION = "Confirm update position to '%s'? (yes/no): ";
+    public static final String CONFIRM_UPDATE_SALARY = "Confirm update salary to RM%s? (yes/no): ";
+    public static final String CONFIRM_UPDATE_DEPARTMENT = "Confirm update department to '%s'? (yes/no): ";
+
+    /**
+     * Success messages for individual field updates
+     */
+    public static final String SUCCESS_NAME_UPDATED = "Name updated successfully.";
+    public static final String SUCCESS_GENDER_UPDATED = "Gender updated successfully.";
+    public static final String SUCCESS_POSITION_UPDATED = "Position updated successfully.";
+    public static final String SUCCESS_SALARY_UPDATED = "Salary updated successfully.";
+    public static final String SUCCESS_DEPARTMENT_UPDATED = "Department updated successfully.";
+    public static final String ERROR_NO_MODIFICATIONS = "No modifications were made.";
 
 }

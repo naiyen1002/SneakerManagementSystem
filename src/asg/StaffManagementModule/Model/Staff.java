@@ -1,8 +1,8 @@
 package asg.StaffManagementModule.Model;
 
-import asg.StaffManagementModule.Model.People;
+import asg.StaffManagementModule.Model.Person;
 
-public class Staff extends People {
+public class Staff extends Person {
 
     private String position;
     private double salary;

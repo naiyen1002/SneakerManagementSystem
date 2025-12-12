@@ -22,13 +22,14 @@ public class StaffService {
 
     /**
      * Validation for staff id
+     * 
      * @return id
      */
     public String getValidStaffId() {
         String id;
         // Show the available ID
         String nextId = getNextAvailableId();
-        System.out.println("\n[ Suggested next available ID: " + nextId + " ]");
+        view.displaySuggestedId(nextId);
 
         while (true) {
             view.displayPrompt(StaffConstants.ENTER_ID);
@@ -54,9 +55,10 @@ public class StaffService {
 
     /**
      * Get the next available staff ID
+     * 
      * @return next ID
      */
-    private String getNextAvailableId() {
+    public String getNextAvailableId() {
         int maxNum = 0;
         for (Staff staff : staffList) {
             String id = staff.getId();
@@ -76,6 +78,7 @@ public class StaffService {
 
     /**
      * Check if staff ID already exists in the system
+     * 
      * @param id
      * @return true if exists, false otherwise
      */
@@ -90,6 +93,7 @@ public class StaffService {
 
     /**
      * Validate staff name
+     * 
      * @param isModify
      * @return name
      */
@@ -115,6 +119,7 @@ public class StaffService {
 
     /**
      * Validate gender
+     * 
      * @param isModify
      * @return gender
      */
@@ -135,6 +140,7 @@ public class StaffService {
 
     /**
      * Validate position
+     * 
      * @param isModify
      * @return position
      */
@@ -160,6 +166,7 @@ public class StaffService {
 
     /**
      * Validate salary
+     * 
      * @param isModify
      * @return salary
      */
@@ -188,6 +195,7 @@ public class StaffService {
 
     /**
      * Validate department
+     * 
      * @param isModify
      * @return department
      */
@@ -213,10 +221,11 @@ public class StaffService {
 
     /**
      * Convert string (add, search, delete) to Title Case
+     * 
      * @param input
      * @return title case string
      */
-    private String toTitleCase(String input) {
+    public String toTitleCase(String input) {
         if (input == null || input.isEmpty()) {
             return input;
         }
@@ -239,6 +248,7 @@ public class StaffService {
 
     /**
      * Get confirmation from user
+     * 
      * @param prompt
      * @return true if yes, false if no
      */
@@ -258,6 +268,7 @@ public class StaffService {
 
     /**
      * Find existing department
+     * 
      * @param inputDept
      * @return existing department or new department in title case
      */
