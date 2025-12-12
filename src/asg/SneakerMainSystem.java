@@ -3,6 +3,7 @@ package asg;
 import java.util.Scanner;
 
 import asg.StaffManagementModule.Controller.StaffController;
+import asg.StockManagementModule.Controller.StockApp;
 import asg.MakeOrderModule.Controller.MakeOrderController;
 import asg.SalesManagementModule.Controller.SalesController;
 
@@ -70,7 +71,7 @@ public class SneakerMainSystem {
                     SalesController.main();
                     break;
                 case 4:
-                    // Stock.main();
+                    StockApp.main();
                     break;
                 case 5:
                     MakeOrderController.main();
