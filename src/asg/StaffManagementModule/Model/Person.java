@@ -1,12 +1,12 @@
 package asg.StaffManagementModule.Model;
 
-public class People {
+public class Person {
 
     protected String id;
     protected String name;
     protected String gender;
 
-    public People(String id, String name, String gender) {
+    public Person(String id, String name, String gender) {
         this.id = id;
         this.name = name;
         this.gender = gender;

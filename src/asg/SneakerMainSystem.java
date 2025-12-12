@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import asg.StaffManagementModule.Controller.StaffController;
 import asg.MakeOrderModule.Controller.MakeOrderController;
+import asg.SalesManagementModule.Controller.SalesController;
 
 public class SneakerMainSystem {
     private static Scanner scanner = new Scanner(System.in);
@@ -66,7 +67,7 @@ public class SneakerMainSystem {
                     // OldMemberManagement.main();
                     break;
                 case 3:
-                    // NewSales.main();
+                    SalesController.main();
                     break;
                 case 4:
                     // Stock.main();
