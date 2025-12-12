@@ -16,7 +16,7 @@ import java.io.PrintStream;
  * 83 test cases
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class StaffTest {
+public class StaffControllerTest {
 
         private StaffController staffSystem;
         private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
