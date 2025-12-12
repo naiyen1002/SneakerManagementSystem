@@ -7,7 +7,7 @@ import asg.MemberManagementModule.View.MemberView;
 
 public class MemberManagementApp {
 
-    public static void main(String[] args) {
+    public static void main() {
         MemberView memberView = new MemberView();
         MemberController memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
 

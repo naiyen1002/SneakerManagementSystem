@@ -128,11 +128,11 @@ public class MemberControllerTest {
         memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
 
         // Act
-        List<Member> results = memberController.searchMembersByName("John");
+        List<Member> results = memberController.searchMembersByName("Juju");
 
         // Assert
         assertFalse(results.isEmpty());
-        assertTrue(results.get(0).getName().contains("John"));
+        assertTrue(results.get(0).getName().contains("Juju"));
     }
 
     @Test
@@ -744,5 +744,305 @@ public class MemberControllerTest {
         // Assert - should show no results message
         String output = outputStreamCaptor.toString();
         assertTrue(output.contains("NOT FOUND") || output.contains("not found") || output.contains("No members"));
+    }
+
+    // ==================== INVALID INPUT TESTS ====================
+
+    @Test
+    @Order(42)
+    @DisplayName("Test Controller - Find Member By ID - Special Characters")
+    public void testController_FindMemberById_SpecialCharacters() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        Member found = memberController.findMemberById("M@#$%");
+
+        // Assert
+        assertNull(found);
+    }
+
+    @Test
+    @Order(43)
+    @DisplayName("Test Controller - Search Members By Name - Empty Input")
+    public void testController_SearchMembersByName_EmptyInput() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByName("");
+
+        // Assert
+        assertNotNull(results);
+        assertTrue(results.isEmpty());
+    }
+
+    @Test
+    @Order(44)
+    @DisplayName("Test Controller - Search Members By IC Number - Special Characters")
+    public void testController_SearchMembersByIcNumber_SpecialCharacters() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByIcNumber("@#$%^&*");
+
+        // Assert
+        assertNotNull(results);
+        assertTrue(results.isEmpty());
+    }
+
+    @Test
+    @Order(45)
+    @DisplayName("Test Controller - Search Members By Contact - Special Characters")
+    public void testController_SearchMembersByContact_SpecialCharacters() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByContact("!@#$%");
+
+        // Assert
+        assertNotNull(results);
+        assertTrue(results.isEmpty());
+    }
+
+    // ==================== EDGE CASE TESTS ====================
+
+    @Test
+    @Order(46)
+    @DisplayName("Test Controller - Search Members By Name - Case Sensitivity")
+    public void testController_SearchMembersByName_CaseSensitivity() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act - search with different cases
+        List<Member> resultsLower = memberController.searchMembersByName("juju");
+        List<Member> resultsUpper = memberController.searchMembersByName("JUJU");
+        List<Member> resultsMixed = memberController.searchMembersByName("Juju");
+
+        // Assert - all should return same results (case-insensitive)
+        assertFalse(resultsLower.isEmpty());
+        assertEquals(resultsLower.size(), resultsUpper.size());
+        assertEquals(resultsLower.size(), resultsMixed.size());
+    }
+
+    @Test
+    @Order(47)
+    @DisplayName("Test Controller - Search Members By Name - Partial Match")
+    public void testController_SearchMembersByName_PartialMatch() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByName("Juju");
+
+        // Assert
+        assertNotNull(results);
+        for (Member member : results) {
+            assertTrue(member.getName().toLowerCase().contains("juju"));
+        }
+    }
+
+    @Test
+    @Order(48)
+    @DisplayName("Test Controller - Display All Members - Empty List")
+    public void testController_DisplayAllMembers_EmptyList() {
+        // Arrange
+        memberController = new MemberController(memberView);
+
+        // Act
+        memberController.displayAllMembers();
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertNotNull(output);
+    }
+
+    @Test
+    @Order(49)
+    @DisplayName("Test Controller - Display Membership Report - Empty List")
+    public void testController_DisplayMembershipReport_EmptyList() {
+        // Arrange
+        memberController = new MemberController(memberView);
+
+        // Act
+        memberController.displayMembershipReport();
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertNotNull(output);
+    }
+
+    @Test
+    @Order(50)
+    @DisplayName("Test Controller - Get Member Count - Empty List")
+    public void testController_GetMemberCount_EmptyList() {
+        // Arrange
+        memberController = new MemberController(memberView);
+
+        // Act
+        int count = memberController.getMemberCount();
+
+        // Assert
+        assertEquals(0, count);
+    }
+
+    @Test
+    @Order(51)
+    @DisplayName("Test Controller - Search Members By Tier - All Tiers")
+    public void testController_SearchMembersByTier_AllTiers() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> basicMembers = memberController.searchMembersByTier(MembershipTier.BASIC);
+        List<Member> bronzeMembers = memberController.searchMembersByTier(MembershipTier.BRONZE);
+        List<Member> silverMembers = memberController.searchMembersByTier(MembershipTier.SILVER);
+        List<Member> goldenMembers = memberController.searchMembersByTier(MembershipTier.GOLDEN);
+
+        // Assert
+        assertNotNull(basicMembers);
+        assertNotNull(bronzeMembers);
+        assertNotNull(silverMembers);
+        assertNotNull(goldenMembers);
+    }
+
+    @Test
+    @Order(52)
+    @DisplayName("Test Controller - Search Members By Gender - All Genders")
+    public void testController_SearchMembersByGender_AllGenders() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> maleMembers = memberController.searchMembersByGender(Gender.MALE);
+        List<Member> femaleMembers = memberController.searchMembersByGender(Gender.FEMALE);
+
+        // Assert
+        assertNotNull(maleMembers);
+        assertNotNull(femaleMembers);
+
+        for (Member member : maleMembers) {
+            assertEquals(Gender.MALE, member.getGender());
+        }
+
+        for (Member member : femaleMembers) {
+            assertEquals(Gender.FEMALE, member.getGender());
+        }
+    }
+
+    @Test
+    @Order(53)
+    @DisplayName("Test Controller - Delete Member - Verify Count Decreases")
+    public void testController_DeleteMember_VerifyCountDecreases() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+        int initialCount = memberController.getMemberCount();
+
+        // Act
+        boolean deleted = memberController.deleteMemberById("M001");
+
+        // Assert
+        assertTrue(deleted);
+        assertEquals(initialCount - 1, memberController.getMemberCount());
+    }
+
+    @Test
+    @Order(54)
+    @DisplayName("Test Controller - Update Member - Verify Changes Persist")
+    public void testController_UpdateMember_VerifyChangesPersist() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+        Member updatedMember = new Member("M001", "Updated Name", Gender.FEMALE,
+                "990101-01-9999", "999999999", LocalDate.now(), MembershipTier.GOLDEN);
+
+        // Act
+        boolean updated = memberController.updateMemberDirect("M001", updatedMember);
+
+        // Assert
+        assertTrue(updated);
+        Member retrieved = memberController.findMemberById("M001");
+        assertEquals("Updated Name", retrieved.getName());
+        assertEquals(Gender.FEMALE, retrieved.getGender());
+        assertEquals("990101-01-9999", retrieved.getIcNumber());
+        assertEquals("999999999", retrieved.getContactNumber());
+        assertEquals(MembershipTier.GOLDEN, retrieved.getMembershipTier());
+    }
+
+    @Test
+    @Order(55)
+    @DisplayName("Test Controller - Search Members By Join Date - Future Date")
+    public void testController_SearchMembersByJoinDate_FutureDate() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+        LocalDate futureDate = LocalDate.now().plusYears(1);
+
+        // Act
+        List<Member> results = memberController.searchMembersByJoinDate(futureDate);
+
+        // Assert
+        assertNotNull(results);
+        assertTrue(results.isEmpty());
+    }
+
+    @Test
+    @Order(56)
+    @DisplayName("Test Controller - Search Members By Join Date - Past Date")
+    public void testController_SearchMembersByJoinDate_PastDate() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+        LocalDate pastDate = LocalDate.of(2019, 1, 1);
+
+        // Act
+        List<Member> results = memberController.searchMembersByJoinDate(pastDate);
+
+        // Assert
+        assertNotNull(results);
+    }
+
+    @Test
+    @Order(57)
+    @DisplayName("Test Controller - Find Member By ID - Very Long ID")
+    public void testController_FindMemberById_VeryLongId() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+        String longId = "M" + "0".repeat(1000);
+
+        // Act
+        Member found = memberController.findMemberById(longId);
+
+        // Assert
+        assertNull(found);
+    }
+
+    @Test
+    @Order(58)
+    @DisplayName("Test Controller - Search Members By Name - Special Characters")
+    public void testController_SearchMembersByName_SpecialCharacters() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByName("@#$%^&*()");
+
+        // Assert
+        assertNotNull(results);
+        assertTrue(results.isEmpty());
+    }
+
+    @Test
+    @Order(59)
+    @DisplayName("Test Controller - Search Members By IC Number - Malformed IC")
+    public void testController_SearchMembersByIcNumber_MalformedIC() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByIcNumber("invalid-ic-format");
+
+        // Assert
+        assertNotNull(results);
+        assertTrue(results.isEmpty());
     }
 }
