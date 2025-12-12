@@ -1,5 +1,6 @@
 package asg.Login.View;
 
+import java.io.Console;
 import java.util.Scanner;
 
 public class LoginView {
@@ -34,6 +35,22 @@ public class LoginView {
 
     // Get password input from user
     public String getPassword() {
+        Console console = System.console();
+
+        // Console - hide the input
+        if (console != null) {
+            char[] passwordChars;
+            while (true) {
+                System.out.print("\n\t\t\t< Enter Password > : ");
+                passwordChars = console.readPassword();
+                if (passwordChars != null && passwordChars.length > 0) {
+                    return new String(passwordChars);
+                }
+                System.out.println("\t\t\t[!] Password cannot be blank. Please try again.");
+            }
+        }
+
+        // IDE fallback - show password input 
         String password;
         while (true) {
             System.out.print("\n\t\t\t< Enter Password > : ");
