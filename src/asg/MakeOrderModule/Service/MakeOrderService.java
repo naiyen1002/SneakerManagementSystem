@@ -93,10 +93,6 @@ public class MakeOrderService {
      * @return true if removed, false if not found
      */
     public boolean removeOrderDetail(String orderCode) {
-        // First check if it exists (Service layer validation)
-        if (OrderDetailsController.getOrderDetailByCode(orderCode) == null) {
-            return false;
-        }
         OrderDetailsController.removeOrderDetail(orderCode);
         return true;
     }

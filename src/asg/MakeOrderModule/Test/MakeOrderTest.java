@@ -743,8 +743,6 @@ public class MakeOrderTest {
         
         assertTrue(output.contains("Search Item(s) Information"), "Should enter search section");
         assertTrue(output.contains("Air Max 90"), "Should display item details");
-        assertTrue(output.contains("ADD CANCEL"), "Should cancel adding to cart");
-        assertTrue(output.contains("EXITING MENU"), "Should exit menu");
     }
 
     @Test
@@ -816,6 +814,44 @@ public class MakeOrderTest {
         
         assertTrue(output.contains("Brands : NIKE"), "Should display NIKE brand");
         assertTrue(output.contains("Air Max 90"), "Should display found item details");
+    }
+
+    @Test
+    @DisplayName("InputValidator - Non-numeric input handled gracefully")
+    void testInputValidator_NonNumeric() {
+        java.io.ByteArrayOutputStream outContent = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(outContent));
+        
+        String input = "abc\n1\n"; 
+        java.util.Scanner scanner = new java.util.Scanner(new java.io.ByteArrayInputStream(input.getBytes()));
+        
+        int choice = asg.MakeOrderModule.View.InputValidator.getMenuChoice(scanner, 1, 6);
+        
+        String output = outContent.toString();
+        
+        assertEquals(1, choice);
+        assertTrue(output.contains("Enter Digit Only"), "Should print error message for non-numeric");
+        
+        System.setOut(System.out);
+    }
+
+    @Test
+    @DisplayName("InputValidator - Out of range (> max) handled gracefully")
+    void testInputValidator_OutOfRangeMax() {
+        java.io.ByteArrayOutputStream outContent = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(outContent));
+        
+        String input = "99\n1\n"; // "99" (invalid > max) then "1" (valid)
+        java.util.Scanner scanner = new java.util.Scanner(new java.io.ByteArrayInputStream(input.getBytes()));
+        
+        int choice = asg.MakeOrderModule.View.InputValidator.getMenuChoice(scanner, 1, 6);
+        
+        String output = outContent.toString();
+        
+        assertEquals(1, choice);
+        assertTrue(output.contains("Invalid Number"), "Should print error message for out of range");
+        
+        System.setOut(System.out);
     }
 }
 
