@@ -749,7 +749,7 @@ public class MemberControllerTest {
     // ==================== INVALID INPUT TESTS ====================
 
     @Test
-    @Order(43)
+    @Order(42)
     @DisplayName("Test Controller - Find Member By ID - Special Characters")
     public void testController_FindMemberById_SpecialCharacters() {
         // Arrange
@@ -763,7 +763,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(45)
+    @Order(43)
     @DisplayName("Test Controller - Search Members By Name - Empty Input")
     public void testController_SearchMembersByName_EmptyInput() {
         // Arrange
@@ -778,7 +778,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(48)
+    @Order(44)
     @DisplayName("Test Controller - Search Members By IC Number - Special Characters")
     public void testController_SearchMembersByIcNumber_SpecialCharacters() {
         // Arrange
@@ -793,7 +793,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(51)
+    @Order(45)
     @DisplayName("Test Controller - Search Members By Contact - Special Characters")
     public void testController_SearchMembersByContact_SpecialCharacters() {
         // Arrange
@@ -810,7 +810,7 @@ public class MemberControllerTest {
     // ==================== EDGE CASE TESTS ====================
 
     @Test
-    @Order(57)
+    @Order(46)
     @DisplayName("Test Controller - Search Members By Name - Case Sensitivity")
     public void testController_SearchMembersByName_CaseSensitivity() {
         // Arrange
@@ -828,7 +828,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(58)
+    @Order(47)
     @DisplayName("Test Controller - Search Members By Name - Partial Match")
     public void testController_SearchMembersByName_PartialMatch() {
         // Arrange
@@ -845,7 +845,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(59)
+    @Order(48)
     @DisplayName("Test Controller - Display All Members - Empty List")
     public void testController_DisplayAllMembers_EmptyList() {
         // Arrange
@@ -860,7 +860,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(60)
+    @Order(49)
     @DisplayName("Test Controller - Display Membership Report - Empty List")
     public void testController_DisplayMembershipReport_EmptyList() {
         // Arrange
@@ -875,7 +875,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(61)
+    @Order(50)
     @DisplayName("Test Controller - Get Member Count - Empty List")
     public void testController_GetMemberCount_EmptyList() {
         // Arrange
@@ -889,7 +889,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(62)
+    @Order(51)
     @DisplayName("Test Controller - Search Members By Tier - All Tiers")
     public void testController_SearchMembersByTier_AllTiers() {
         // Arrange
@@ -909,7 +909,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(63)
+    @Order(52)
     @DisplayName("Test Controller - Search Members By Gender - All Genders")
     public void testController_SearchMembersByGender_AllGenders() {
         // Arrange
@@ -933,7 +933,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(64)
+    @Order(53)
     @DisplayName("Test Controller - Delete Member - Verify Count Decreases")
     public void testController_DeleteMember_VerifyCountDecreases() {
         // Arrange
@@ -949,7 +949,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(65)
+    @Order(54)
     @DisplayName("Test Controller - Update Member - Verify Changes Persist")
     public void testController_UpdateMember_VerifyChangesPersist() {
         // Arrange
@@ -971,7 +971,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(66)
+    @Order(55)
     @DisplayName("Test Controller - Search Members By Join Date - Future Date")
     public void testController_SearchMembersByJoinDate_FutureDate() {
         // Arrange
@@ -987,7 +987,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(67)
+    @Order(56)
     @DisplayName("Test Controller - Search Members By Join Date - Past Date")
     public void testController_SearchMembersByJoinDate_PastDate() {
         // Arrange
@@ -1002,7 +1002,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(68)
+    @Order(57)
     @DisplayName("Test Controller - Find Member By ID - Very Long ID")
     public void testController_FindMemberById_VeryLongId() {
         // Arrange
@@ -1017,7 +1017,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(69)
+    @Order(58)
     @DisplayName("Test Controller - Search Members By Name - Special Characters")
     public void testController_SearchMembersByName_SpecialCharacters() {
         // Arrange
@@ -1032,7 +1032,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @Order(70)
+    @Order(59)
     @DisplayName("Test Controller - Search Members By IC Number - Malformed IC")
     public void testController_SearchMembersByIcNumber_MalformedIC() {
         // Arrange
