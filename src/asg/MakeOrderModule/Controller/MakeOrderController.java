@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Scanner;
 
 import asg.MakeOrderModule.Constants.MenuOption;
+import asg.MakeOrderModule.Model.OrderDetails;
 import asg.MakeOrderModule.Model.StockItem;
 import asg.MakeOrderModule.Service.MakeOrderService;
+import asg.MakeOrderModule.Strategy.*;
 import asg.MakeOrderModule.View.InputValidator;
 import asg.MakeOrderModule.View.MenuDisplay;
 import asg.MakeOrderModule.View.ReceiptPrinter;
@@ -18,7 +20,9 @@ public class MakeOrderController {
 
     private Scanner scanner;
     private MakeOrderService service;
-
+    private ValidationContext<Integer> menuValidator = new ValidationContext<>();
+    private ValidationContext<String> stringValidator = new ValidationContext<>();
+    private ValidationContext<Character> yesNoValidator = new ValidationContext<>();
     public MakeOrderController() {
         this.scanner = new Scanner(System.in);
         this.service = new MakeOrderService();
@@ -83,100 +87,93 @@ public class MakeOrderController {
         do {
             MenuDisplay.displaySectionHeader("MAKE ORDER");
 
-            String itemCode = InputValidator.getNonEmptyString(scanner, 
+            stringValidator.setStrategy(new NonEmptyStringValidator());
+            String itemCode = stringValidator.execute(scanner,
                     "\nEnter Product Item Code That Need To Order --> ");
-            
+
             StockItem foundItem = service.findProductByCode(itemCode);
-            
+
             if (foundItem == null) {
-                System.out.printf("\nItem Code's NOT MATCH!!!\n");
+                System.out.println("\nItem Code's NOT MATCH!!!");
             } else {
                 MenuDisplay.displayItemDetails(foundItem);
-                
-                char confirmAdd = InputValidator.getYesNoResponse(scanner, 
+
+                yesNoValidator.setStrategy(new YesNoValidator());
+                char confirmAdd = yesNoValidator.execute(scanner,
                         "\nAre You Want To Add This Item To Basket ? (y=Yes/n=No) : ");
 
                 if (confirmAdd == 'Y') {
                     service.addToCart(foundItem);
                     System.out.printf("\nADD TO BASKET SUCCESSFUL!!!\n");
-                    System.out.printf("\nCurrent Sub-total = RM %.2f\n", 
-                            service.calculateCartTotal());
+                    System.out.printf("\nCurrent Sub-total = RM %.2f\n", service.calculateCartTotal());
                 } else {
-                    System.out.printf("\nADD CANCEL...\n");
+                    System.out.println("\nADD CANCEL...");
                 }
             }
 
-            continueAdding = InputValidator.getYesNoResponse(scanner, 
+            yesNoValidator.setStrategy(new YesNoValidator());
+            continueAdding = yesNoValidator.execute(scanner,
                     "\nWant To Add Another Item(s) To Basket ? (y=Yes/n=No) : ");
 
         } while (continueAdding == 'Y');
     }
+
 
     private void searchProduct() {
         char searchAnother;
 
         do {
             MenuDisplay.displaySearchMenu();
-            int choice = InputValidator.getMenuChoice(scanner, 1, 2);
 
-            switch (choice) {
-                case 1:
-                    searchByItemCode();
-                    break;
-                case 2:
-                    searchByBrand();
-                    break;
+            menuValidator.setStrategy(new MenuChoiceValidator(1, 2));
+            int choice = menuValidator.execute(scanner, "Choose From 1 to 2 : ");
+
+            ProductSearchContext context = new ProductSearchContext();
+            String keyword;
+
+            if (choice == 1) {
+                context.setStrategy(new SearchByCode());
+                stringValidator.setStrategy(new NonEmptyStringValidator());
+                keyword = stringValidator.execute(scanner, "\nItem Code --> ");
+
+            } else {
+                context.setStrategy(new SearchByBrand());
+                stringValidator.setStrategy(new NonEmptyStringValidator());
+                keyword = stringValidator.execute(scanner, "\nEnter Brand (NIKE/PUMA/ADIDAS) --> ");
             }
 
-            searchAnother = InputValidator.getYesNoResponse(scanner, 
+            List<StockItem> results = context.executeSearch(service.getAllProducts(), keyword);
+
+            if (results.isEmpty()) {
+                System.out.println(choice == 1
+                        ? "\nSearch Item's Code NOT MATCH!!!"
+                        : "\nSearch Item's Brand NOT MATCH!!! Please Type NIKE/PUMA/ADIDAS Only.");
+            } else {
+                results.forEach(MenuDisplay::displayItemDetails);
+
+                if (choice == 1) {
+                    yesNoValidator.setStrategy(new YesNoValidator());
+                    char confirmAdd = yesNoValidator.execute(scanner,
+                            "\nAre You Want To Add This Item To Basket ? (y=Yes/n=No) : ");
+
+                    if (confirmAdd == 'Y') {
+                        service.addToCart(results.get(0));
+                        System.out.printf("\nADD TO BASKET SUCCESSFUL!!!\n");
+                        System.out.printf("\nCurrent Sub-total = RM %.2f\n", service.calculateCartTotal());
+                    }
+                }
+            }
+
+            yesNoValidator.setStrategy(new YesNoValidator());
+            searchAnother = yesNoValidator.execute(scanner,
                     "\nWant Search Another Item(s) Information ? (y=Yes/n=No) : ");
+
         } while (searchAnother == 'Y');
-    }
-
-    private void searchByItemCode() {
-        String itemCode = InputValidator.getNonEmptyString(scanner, "\nItem Code --> ");
-        
-        StockItem found = service.findProductByCode(itemCode);
-        
-        if (found == null) {
-            System.out.printf("\nSearch Item's Code NOT MATCH!!!\n");
-            return;
-        }
-
-        MenuDisplay.displayItemDetails(found);
-        
-        char confirmAdd = InputValidator.getYesNoResponse(scanner, 
-                "\nAre You Want To Add This Item To Basket ? (y=Yes/n=No) : ");
-
-        if (confirmAdd == 'Y') {
-            service.addToCart(found);
-            System.out.printf("\nADD TO BASKET SUCCESSFUL!!!\n");
-            System.out.printf("\nCurrent Sub-total = RM %.2f\n", 
-                    service.calculateCartTotal());
-        } else {
-            System.out.printf("\nADD CANCEL...\n");
-        }
-    }
-
-    private void searchByBrand() {
-        String brand = InputValidator.getNonEmptyString(scanner, 
-                "\nEnter Brand (NIKE/PUMA/ADIDAS) --> ");
-        
-        List<StockItem> foundItems = service.findProductsByBrand(brand);
-        
-        if (foundItems.isEmpty()) {
-            System.out.printf("\nSearch Item's Brand NOT MATCH!!! Please Type NIKE/PUMA/ADIDAS Only.\n");
-            return;
-        }
-
-        for (StockItem item : foundItems) {
-            MenuDisplay.displayItemDetails(item);
-        }
     }
 
     private void deleteOrder() {
         char deleteAnother;
-        
+
         do {
             MenuDisplay.displaySectionHeader("DELETE ORDER");
 
@@ -187,24 +184,27 @@ public class MakeOrderController {
 
             MenuDisplay.displayOrderList(service.getCartItems());
 
-            String codeToDelete = InputValidator.getNonEmptyString(scanner, 
+            stringValidator.setStrategy(new NonEmptyStringValidator());
+            String codeToDelete = stringValidator.execute(scanner,
                     "\nEnter The Item Code To Delete : ");
 
-            if (service.findOrderDetail(codeToDelete) == null) {
+            OrderDetails toDelete = service.findOrderDetail(codeToDelete);
+
+            if (toDelete == null) {
                 System.out.printf("\nNo Item Found With Code: %s\n", codeToDelete);
             } else {
-                char confirm = InputValidator.getYesNoResponse(scanner, 
+                yesNoValidator.setStrategy(new YesNoValidator());
+                char confirm = yesNoValidator.execute(scanner,
                         "Confirm Delete This Item? (y=Yes/n=No) : ");
-                
+
                 if (confirm == 'Y') {
                     service.removeOrderDetail(codeToDelete);
                     System.out.printf("\nItem %s Has Been Successfully Deleted!\n", codeToDelete);
-                } else {
-                    System.out.println("\nDELETION CANCELLED...");
                 }
             }
 
-            deleteAnother = InputValidator.getYesNoResponse(scanner, 
+            yesNoValidator.setStrategy(new YesNoValidator());
+            deleteAnother = yesNoValidator.execute(scanner,
                     "\nDelete Another Item? (y=Yes/n=No) : ");
 
         } while (deleteAnother == 'Y');

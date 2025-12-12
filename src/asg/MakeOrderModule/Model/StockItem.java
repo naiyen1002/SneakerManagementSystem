@@ -4,7 +4,7 @@ package asg.MakeOrderModule.Model;
  * Represents a stock item in the inventory.
  * Extends SSdetails with quantity tracking functionality.
  */
-public class StockItem extends SSdetails {
+public class StockItem extends ShoesDetails {
     private int quantityInStock;
 
 
