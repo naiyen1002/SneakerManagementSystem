@@ -180,4 +180,120 @@ public class StaffView {
         System.out.println(StaffConstants.LABEL_SEPARATOR);
     }
 
+    /**
+     * Display main menu options
+     * 
+     * @param options
+     */
+    public void displayMainMenuOptions(asg.StaffManagementModule.Constants.StaffMenuOptions[] options) {
+        for (asg.StaffManagementModule.Constants.StaffMenuOptions opt : options) {
+            System.out.printf(StaffConstants.MENU_OPTION_FORMAT, opt.getCode(), opt.getDescription());
+        }
+    }
+
+    /**
+     * Display modify menu options
+     * 
+     * @param options
+     */
+    public void displayModifyMenuOptions(asg.StaffManagementModule.Constants.StaffMenuOptions[] options) {
+        for (asg.StaffManagementModule.Constants.StaffMenuOptions opt : options) {
+            System.out.printf(StaffConstants.MENU_OPTION_FORMAT_SIMPLE, opt.getCode(), opt.getDescription());
+        }
+    }
+
+    /**
+     * Display report menu header
+     */
+    public void displayReportMenuHeader() {
+        System.out.println(StaffConstants.REPORT_MENU_HEADER);
+        System.out.println(StaffConstants.REPORT_MENU_TITLE);
+        System.out.println(StaffConstants.REPORT_MENU_ENDER);
+    }
+
+    /**
+     * Display report menu options
+     * 
+     * @param options
+     */
+    public void displayReportMenuOptions(asg.StaffManagementModule.Constants.StaffMenuOptions[] options) {
+        for (asg.StaffManagementModule.Constants.StaffMenuOptions opt : options) {
+            System.out.printf(StaffConstants.MENU_OPTION_FORMAT_SIMPLE, opt.getCode(), opt.getDescription());
+        }
+        System.out.println(StaffConstants.REPORT_MENU_ENDER);
+    }
+
+    /**
+     * Display overall staff report
+     * 
+     * @param staffList
+     * @param totalSalary
+     */
+    public void displayOverallReport(List<Staff> staffList, double totalSalary) {
+        System.out.println("\n" + StaffConstants.REPORT_SEPARATOR);
+        System.out.println(StaffConstants.REPORT_TITLE_OVERALL);
+        System.out.println(StaffConstants.REPORT_SEPARATOR);
+        System.out.printf(StaffConstants.TABLE_STAFF_HEADER_FORMAT + "%n",
+                "No", "Staff ID", "Name", "Gender", "Position", "Salary (RM)", "Department");
+        System.out.println(StaffConstants.REPORT_SEPARATOR);
+
+        for (int i = 0; i < staffList.size(); i++) {
+            Staff staff = staffList.get(i);
+            System.out.printf(StaffConstants.TABLE_STAFF_ROW_FORMAT + "%n",
+                    i + 1,
+                    staff.getId(),
+                    staff.getName(),
+                    staff.getGender(),
+                    staff.getPosition(),
+                    staff.getSalary(),
+                    staff.getDepartment());
+        }
+
+        System.out.println(StaffConstants.REPORT_SEPARATOR);
+        System.out.printf(StaffConstants.LABEL_TOTAL_STAFF_SALARY + "%n", staffList.size(), totalSalary);
+        System.out.println(StaffConstants.REPORT_SEPARATOR + "\n");
+    }
+
+    /**
+     * Display department staff report table
+     * 
+     * @param departmentName
+     * @param staffInDepartment
+     * @param totalSalary
+     */
+    public void displayDepartmentReportTable(String departmentName, List<Staff> staffInDepartment, double totalSalary) {
+        System.out.println("\n" + StaffConstants.REPORT_SEPARATOR);
+        System.out.printf(StaffConstants.REPORT_TITLE_DEPARTMENT + "%n", departmentName);
+        System.out.println(StaffConstants.REPORT_SEPARATOR);
+        System.out.printf(StaffConstants.TABLE_STAFF_HEADER_FORMAT + "%n",
+                "No", "Staff ID", "Name", "Gender", "Position", "Salary (RM)", "Department");
+        System.out.println(StaffConstants.REPORT_SEPARATOR);
+
+        for (int i = 0; i < staffInDepartment.size(); i++) {
+            Staff staff = staffInDepartment.get(i);
+            System.out.printf(StaffConstants.TABLE_STAFF_ROW_FORMAT + "%n",
+                    i + 1,
+                    staff.getId(),
+                    staff.getName(),
+                    staff.getGender(),
+                    staff.getPosition(),
+                    staff.getSalary(),
+                    staff.getDepartment());
+        }
+
+        System.out.println(StaffConstants.REPORT_SEPARATOR);
+        System.out.printf(StaffConstants.LABEL_DEPT_TOTAL_STAFF_SALARY + "%n",
+                departmentName, staffInDepartment.size(), totalSalary);
+        System.out.println(StaffConstants.REPORT_SEPARATOR + "\n");
+    }
+
+    /**
+     * Display suggested ID
+     * 
+     * @param nextId
+     */
+    public void displaySuggestedId(String nextId) {
+        System.out.println(String.format(StaffConstants.LABEL_SUGGESTED_ID, nextId));
+    }
+
 }
