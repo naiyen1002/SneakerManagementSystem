@@ -1,4 +1,4 @@
-package asg.StockManagementModule.TestCases;
+package asg.StockManagementModule.Test;
 
 import asg.StockManagementModule.Constants.StockConstants;
 import asg.StockManagementModule.Constants.StockMenuOption;
@@ -37,15 +37,12 @@ public class StockServiceAndCommandTest {
         System.setOut(originalOut);
     }
 
-    // 统一用这个 helper 产生带指定 input 的 service
     private StockService createServiceWithInput(String input) {
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         Scanner scanner = new Scanner(in);
         StockView view = new StockView(scanner);
         return new StockService(view, controller);
     }
-
-    // ---------- Service + Add command ----------
 
     @Test
     @DisplayName("handleAddItem - valid inputs should add new item and show success message")
@@ -67,7 +64,6 @@ public class StockServiceAndCommandTest {
     @Test
     @DisplayName("getValidItemCodeForAdd - duplicate then valid code should show error and use second code")
     void getValidItemCodeForAdd_duplicateThenValid() {
-        // 默认已有 I001
         String userInput = "I001\nI151\nNike\nAir Zoom\nBlack\n399.9\n10\n";
         StockService service = createServiceWithInput(userInput);
 
@@ -81,8 +77,6 @@ public class StockServiceAndCommandTest {
         String output = outputStream.toString();
         assertTrue(output.contains(StockConstants.ITEM_EXISTS));
     }
-
-    // ---------- Service: Delete ----------
 
     @Test
     @DisplayName("handleDeleteItem - item not found should show not found message and not delete anything")
@@ -116,8 +110,6 @@ public class StockServiceAndCommandTest {
         assertTrue(output.contains("cancel"));
     }
 
-    // ---------- Service: Search ----------
-
     @Test
     @DisplayName("handleSearchItem - existing code should print item details")
     void handleSearchItem_found_shouldPrintDetails() {
@@ -141,8 +133,6 @@ public class StockServiceAndCommandTest {
         String output = outputStream.toString();
         assertTrue(output.contains(StockConstants.ITEM_NOT_FOUND));
     }
-
-    // ---------- Service: Modify ----------
 
     @Test
     @DisplayName("handleModifyItem - not found should display error and no change")
@@ -176,8 +166,6 @@ public class StockServiceAndCommandTest {
         assertEquals(20, itemOpt.get().getQuantityInStock());
     }
 
-    // ---------- Service: Display ----------
-
     @Test
     @DisplayName("handleDisplayItems - should print table with codes")
     void handleDisplayItems_shouldPrintList() {
@@ -187,8 +175,6 @@ public class StockServiceAndCommandTest {
         assertTrue(output.contains("Code"));
         assertTrue(output.contains("I001"));
     }
-
-    // ---------- Confirmation helper ----------
 
     @Test
     @DisplayName("getConfirmation - invalid then yes")
@@ -202,8 +188,6 @@ public class StockServiceAndCommandTest {
         String output = outputStream.toString();
         assertTrue(output.contains(StockConstants.ERROR_YES_NO_ONLY));
     }
-
-    // ---------- CommandFactory & AddItemCommand ----------
 
     @Test
     @DisplayName("CommandFactory should map menu option to correct command type")
@@ -238,12 +222,9 @@ public class StockServiceAndCommandTest {
         assertTrue(controller.getInventory().exists("I160"));
     }
 
-    // ====================== 下面是新增：专门 cover 其他 Command ======================
-
     @Test
     @DisplayName("DeleteItemCommand execute() should delete item when user confirms yes")
     void deleteItemCommand_execute_shouldDelete() {
-        // 确保 I001 存在
         assertTrue(controller.getInventory().exists("I001"));
 
         String input = "I001\nyes\n";

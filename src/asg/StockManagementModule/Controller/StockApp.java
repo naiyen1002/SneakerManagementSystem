@@ -7,32 +7,35 @@ import asg.StockManagementModule.View.StockView;
 
 import java.util.Scanner;
 
-/**
- * Main menu / Invoker for Command pattern.
- */
 public class StockApp {
 
-    public static void main(String[] args) {
-        // Inventory & controller
+    private final StockService service;
+    private final StockView view;
+
+    public StockApp(Scanner scanner) {
         StockItemController inventory = new StockItemController();
         inventory.initializeDefaultStock();
+
         StockController controller = new StockController(inventory);
 
-        // IO
-        Scanner scanner = new Scanner(System.in);
-        StockView view = new StockView(scanner);
+        this.view = new StockView(scanner);
+        this.service = new StockService(view, controller);
+    }
 
-        // Service (Receiver)
-        StockService service = new StockService(view, controller);
-
+    public void run() {
         boolean exit = false;
+
         while (!exit) {
+
             view.displayMenu();
+
             int choice = view.readInt(StockConstants.PROMPT_CHOICE);
+
             StockMenuOption option = StockMenuOption.fromCode(choice);
 
             StockCommand cmd = StockCommandFactory.fromOption(option, service);
             if (cmd == null) {
+
                 view.displayErrorMessage(StockConstants.INVALID_CHOICE);
                 continue;
             }
@@ -43,7 +46,14 @@ public class StockApp {
                 exit = true;
             }
         }
+    }
 
-        scanner.close();
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        new StockApp(scanner).run();
+    }
+
+    public static void main() {
+        main(new String[0]);
     }
 }

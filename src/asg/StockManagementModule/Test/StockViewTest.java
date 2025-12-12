@@ -1,4 +1,4 @@
-package asg.StockManagementModule.TestCases;
+package asg.StockManagementModule.Test;
 
 import asg.StockManagementModule.Model.StockItem;
 import asg.StockManagementModule.View.StockView;
