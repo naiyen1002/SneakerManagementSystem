@@ -1,8 +1,8 @@
-package asg;
+package asg.Login.Model;
 
 public class IdLogin {
-    protected String username;
-    protected String password;
+    private String username;
+    private String password;
 
     public IdLogin(String username, String password) {
         this.username = username;
@@ -24,6 +24,5 @@ public class IdLogin {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    
+
 }
