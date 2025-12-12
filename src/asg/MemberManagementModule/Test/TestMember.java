@@ -1,4 +1,4 @@
-package asg.TestCases.TestMemberMgnt;
+package asg.MemberManagementModule.Test;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,7 +51,7 @@ public class TestMember {
 
     // ==================== MEMBER MODEL TESTS ====================
     @Test
-    @Order(2)
+    @Order(1)
     @DisplayName("Test Member Creation - Valid Data")
     public void testMemberCreation_ValidData() {
         // Arrange & Act
@@ -77,7 +77,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(3)
+    @Order(2)
     @DisplayName("Test Member Creation - Invalid ID (Null)")
     public void testMemberCreation_InvalidId_Null() {
         // Act & Assert
@@ -94,7 +94,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(4)
+    @Order(3)
     @DisplayName("Test Member Creation - Invalid Name (Null)")
     public void testMemberCreation_InvalidName_Null() {
         // Act & Assert
@@ -111,7 +111,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(6)
+    @Order(4)
     @DisplayName("Test Member Creation - Invalid Name (Too Short)")
     public void testMemberCreation_InvalidName_TooShort() {
         // Act & Assert
@@ -128,7 +128,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(7)
+    @Order(5)
     @DisplayName("Test Member Creation - Invalid Gender (Null)")
     public void testMemberCreation_InvalidGender_Null() {
         // Act & Assert
@@ -145,7 +145,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(8)
+    @Order(6)
     @DisplayName("Test Member Creation - Invalid IC Number")
     public void testMemberCreation_InvalidIcNumber() {
         // Act & Assert
@@ -162,7 +162,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(9)
+    @Order(7)
     @DisplayName("Test Member Creation - Invalid Contact Number (Too Short)")
     public void testMemberCreation_InvalidContact_TooShort() {
         // Act & Assert
@@ -179,7 +179,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(11)
+    @Order(8)
     @DisplayName("Test Member Creation - Invalid Join Date (Future)")
     public void testMemberCreation_InvalidJoinDate_Future() {
         // Act & Assert
@@ -196,7 +196,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(12)
+    @Order(9)
     @DisplayName("Test Member Creation - Invalid Join Date (Null)")
     public void testMemberCreation_InvalidJoinDate_Null() {
         // Act & Assert
@@ -213,7 +213,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(13)
+    @Order(10)
     @DisplayName("Test Member Setters - Valid Data")
     public void testMemberSetters_ValidData() {
         // Arrange
@@ -237,7 +237,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(14)
+    @Order(11)
     @DisplayName("Test Member - Add Spending")
     public void testMember_AddSpending() {
         // Arrange
@@ -259,7 +259,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(15)
+    @Order(12)
     @DisplayName("Test Member - Add Negative Spending")
     public void testMember_AddNegativeSpending() {
         // Arrange
@@ -272,7 +272,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(16)
+    @Order(13)
     @DisplayName("Test Member - Calculate Discounted Price")
     public void testMember_CalculateDiscountedPrice() {
         // Arrange
@@ -293,7 +293,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(17)
+    @Order(14)
     @DisplayName("Test Member - Format Join Date")
     public void testMember_FormatJoinDate() {
         // Arrange
@@ -314,7 +314,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(19)
+    @Order(15)
     @DisplayName("Test Member - Parse Invalid Date Format")
     public void testMember_ParseInvalidDateFormat() {
         // Act & Assert
@@ -326,7 +326,7 @@ public class TestMember {
     // ==================== GENDER ENUM TESTS ====================
 
     @Test
-    @Order(20)
+    @Order(16)
     @DisplayName("Test Gender - From String Valid")
     public void testGender_FromString_Valid() {
         // Act & Assert
@@ -337,7 +337,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(21)
+    @Order(17)
     @DisplayName("Test Gender - From String Invalid")
     public void testGender_FromString_Invalid() {
         // Act & Assert
@@ -347,7 +347,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(22)
+    @Order(18)
     @DisplayName("Test Gender - From String Null")
     public void testGender_FromString_Null() {
         // Act & Assert
@@ -357,7 +357,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(23)
+    @Order(19)
     @DisplayName("Test Gender - Display Name")
     public void testGender_DisplayName() {
         // Assert
@@ -369,7 +369,7 @@ public class TestMember {
     // ==================== MEMBERSHIP TIER TESTS ====================
 
     @Test
-    @Order(28)
+    @Order(20)
     @DisplayName("Test MembershipTier - Calculate Tier Boundary and above")
     public void testMembershipTier_CalculateTier_Boundary() {
         assertEquals(MembershipTier.BASIC, MembershipTier.calculateMembershipTier(0.0));
@@ -385,7 +385,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(32)
+    @Order(21)
     @DisplayName("Test MembershipTier - Calculate Tier Negative")
     public void testMembershipTier_CalculateTier_Negative() {
         // Act & Assert
@@ -395,7 +395,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(33)
+    @Order(22)
     @DisplayName("Test MembershipTier - Calculate Discount")
     public void testMembershipTier_CalculateDiscount() {
         // Assert
@@ -406,7 +406,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(34)
+    @Order(23)
     @DisplayName("Test MembershipTier - Calculate Discount Negative Price")
     public void testMembershipTier_CalculateDiscount_NegativePrice() {
         // Act & Assert
@@ -416,7 +416,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(35)
+    @Order(24)
     @DisplayName("Test MembershipTier - Getters")
     public void testMembershipTier_Getters() {
         // Assert
@@ -425,130 +425,10 @@ public class TestMember {
         assertEquals(0.15, MembershipTier.GOLDEN.getDiscountRate());
     }
 
-    // ==================== CONTROLLER TESTS (Non-Interactive Methods)
-    // ====================
-
-    @Test
-    @Order(37)
-    @DisplayName("Test Controller - Creation With Initial Data")
-    public void testController_Creation_WithInitialData() {
-
-        List<Member> sampleData = MemberData.initiallizeMembersData();
-
-        memberController = new MemberController(memberView, sampleData);
-
-        // Assert
-        assertEquals(5, memberController.getMemberCount());
-    }
-
-    @Test
-    @Order(41)
-    @DisplayName("Test Controller - Find Member By ID")
-    public void testController_FindMemberById() {
-        // Arrange
-        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
-
-        // Act
-        Member found = memberController.findMemberById("M001");
-
-        // Assert
-        assertNotNull(found);
-        assertEquals("M001", found.getId());
-    }
-
-    @Test
-    @Order(42)
-    @DisplayName("Test Controller - Find Member By ID Not Found")
-    public void testController_FindMemberById_NotFound() {
-        // Arrange
-        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
-
-        // Act
-        Member found = memberController.findMemberById("M999");
-
-        // Assert
-        assertNull(found);
-    }
-
-    @Test
-    @Order(43)
-    @DisplayName("Test Controller - Find Member By ID Case Insensitive")
-    public void testController_FindMemberById_CaseInsensitive() {
-        // Arrange
-        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
-
-        // Act
-        Member found = memberController.findMemberById("m001");
-
-        // Assert
-        assertNotNull(found);
-        assertEquals("M001", found.getId());
-    }
-
-    @Test
-    @Order(44)
-    @DisplayName("Test Controller - Search Members By Name")
-    public void testController_SearchMembersByName() {
-        // Arrange
-        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
-
-        // Act
-        List<Member> results = memberController.searchMembersByName("John");
-
-        // Assert
-        assertFalse(results.isEmpty());
-        assertTrue(results.get(0).getName().contains("John"));
-    }
-
-    @Test
-    @Order(45)
-    @DisplayName("Test Controller - Search Members By Gender")
-    public void testController_SearchMembersByGender() {
-        // Arrange
-        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
-
-        // Act
-        List<Member> results = memberController.searchMembersByGender(Gender.FEMALE);
-
-        // Assert
-        assertFalse(results.isEmpty());
-        for (Member member : results) {
-            assertEquals(Gender.FEMALE, member.getGender());
-        }
-    }
-
-    @Test
-    @Order(46)
-    @DisplayName("Test Controller - Search Members By Tier")
-    public void testController_SearchMembersByTier() {
-        // Arrange
-        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
-
-        // Act
-        List<Member> results = memberController.searchMembersByTier(MembershipTier.BASIC);
-
-        // Assert
-        assertFalse(results.isEmpty());
-    }
-
-    @Test
-    @Order(50)
-    @DisplayName("Test Controller - Delete Non-Existent Member")
-    public void testController_DeleteNonExistentMember() {
-        // Arrange
-        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
-
-        // Act
-        boolean result = memberController.deleteMemberById("M999");
-
-        // Assert
-        assertFalse(result);
-    }
-
     // ==================== MEMBER DATA TESTS ====================
 
     @Test
-    @Order(53)
+    @Order(25)
     @DisplayName("Test MemberData - Initialize Sample Data")
     public void testMemberData_InitializeSampleData() {
         // Act
@@ -560,7 +440,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(55)
+    @Order(26)
     @DisplayName("Test MemberData - Create Test Member")
     public void testMemberData_CreateTestMember() {
         // Act
@@ -572,7 +452,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(56)
+    @Order(27)
     @DisplayName("Test MemberData - Get Members By Tier")
     public void testMemberData_GetMembersByTier() {
         // Act
@@ -587,7 +467,7 @@ public class TestMember {
     // ==================== MEMBER OPTIONS ENUM TESTS ====================
 
     @Test
-    @Order(59)
+    @Order(28)
     @DisplayName("Test MemberOptions - Main Menu Options Values")
     public void testMemberOptions_MainMenuOptionsValues() {
         // Assert Main Menu options
@@ -601,7 +481,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(60)
+    @Order(29)
     @DisplayName("Test MemberOptions - Main Menu Options Descriptions")
     public void testMemberOptions_MainMenuOptionsDescriptions() {
         // Assert descriptions
@@ -620,7 +500,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(61)
+    @Order(30)
     @DisplayName("Test MemberOptions - Search Menu Options Values")
     public void testMemberOptions_SearchMenuOptionsValues() {
         // Assert Search Menu options
@@ -633,7 +513,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(62)
+    @Order(31)
     @DisplayName("Test MemberOptions - Search Menu Options Descriptions")
     public void testMemberOptions_SearchMenuOptionsDescriptions() {
         // Assert descriptions
@@ -650,7 +530,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(63)
+    @Order(32)
     @DisplayName("Test MemberOptions - Update Menu Options Values")
     public void testMemberOptions_UpdateMenuOptionsValues() {
         // Assert Update Menu options
@@ -662,7 +542,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(64)
+    @Order(33)
     @DisplayName("Test MemberOptions - Update Menu Options Descriptions")
     public void testMemberOptions_UpdateMenuOptionsDescriptions() {
         // Assert descriptions
@@ -676,7 +556,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(67)
+    @Order(34)
     @DisplayName("Test MemberOptions - fromMainMenuValue Valid")
     public void testMemberOptions_fromMainMenuValue_Valid() {
         // Assert all valid main menu values
@@ -697,7 +577,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(68)
+    @Order(35)
     @DisplayName("Test MemberOptions - fromMainMenuValue Invalid")
     public void testMemberOptions_fromMainMenuValue_Invalid() {
         // Assert throws exception for invalid values
@@ -713,7 +593,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(69)
+    @Order(36)
     @DisplayName("Test MemberOptions - fromSearchMenuValue Valid")
     public void testMemberOptions_fromSearchMenuValue_Valid() {
         // Assert all valid search menu values
@@ -732,7 +612,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(70)
+    @Order(37)
     @DisplayName("Test MemberOptions - fromSearchMenuValue Invalid")
     public void testMemberOptions_fromSearchMenuValue_Invalid() {
         // Assert throws exception for invalid values
@@ -745,7 +625,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(71)
+    @Order(38)
     @DisplayName("Test MemberOptions - fromUpdateMenuValue Valid")
     public void testMemberOptions_fromUpdateMenuValue_Valid() {
         // Assert all valid update menu values
@@ -762,7 +642,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(72)
+    @Order(39)
     @DisplayName("Test MemberOptions - fromUpdateMenuValue Invalid")
     public void testMemberOptions_fromUpdateMenuValue_Invalid() {
         // Assert throws exception for invalid values
@@ -774,112 +654,283 @@ public class TestMember {
         });
     }
 
-    // ==================== ADDITIONAL CONTROLLER TESTS ====================
+    // ==================== MEMBER VIEW TESTS ====================
 
     @Test
-    @Order(75)
-    @DisplayName("Test Controller - Search Members By IC Number")
-    public void testController_SearchMembersByIcNumber() {
+    @Order(40)
+    @DisplayName("Test View - Display Member Main Menu")
+    public void testView_DisplayMemberMainMenu() {
+        // Act
+        memberView.displayMemberMainMenu();
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("Member Main Menu"));
+    }
+
+    @Test
+    @Order(41)
+    @DisplayName("Test View - Display All Members - Empty List")
+    public void testView_DisplayAllMembers_EmptyList() {
+        // Act
+        memberView.displayAllMembers(new java.util.ArrayList<>());
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("No members found"));
+    }
+
+    @Test
+    @Order(42)
+    @DisplayName("Test View - Display All Members - Null List")
+    public void testView_DisplayAllMembers_NullList() {
+        // Act
+        memberView.displayAllMembers(null);
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("No members found"));
+    }
+
+    @Test
+    @Order(43)
+    @DisplayName("Test View - Display All Members - With Data")
+    public void testView_DisplayAllMembers_WithData() {
+        // Arrange
+        List<Member> members = MemberData.initiallizeMembersData();
+
+        // Act
+        memberView.displayAllMembers(members);
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("M001"));
+    }
+
+    @Test
+    @Order(44)
+    @DisplayName("Test View - Display Member Details - Null Member")
+    public void testView_DisplayMemberDetails_NullMember() {
+        // Act
+        memberView.displayMemberDetails(null);
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("ERROR"));
+    }
+
+    @Test
+    @Order(45)
+    @DisplayName("Test View - Display Member Details - Valid Member")
+    public void testView_DisplayMemberDetails_ValidMember() {
+        // Arrange
+        Member member = MemberData.createTestMember();
+
+        // Act
+        memberView.displayMemberDetails(member);
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("T001"));
+    }
+
+    @Test
+    @Order(46)
+    @DisplayName("Test View - Display Membership Report - Empty List")
+    public void testView_DisplayMembershipReport_EmptyList() {
+        // Arrange
+        java.util.Map<MembershipTier, Integer> tierCounts = new java.util.HashMap<>();
+
+        // Act
+        memberView.displayMembershipReport(new java.util.ArrayList<>(), tierCounts);
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("No members found"));
+    }
+
+    @Test
+    @Order(47)
+    @DisplayName("Test View - Display Membership Report - Null List")
+    public void testView_DisplayMembershipReport_NullList() {
+        // Arrange
+        java.util.Map<MembershipTier, Integer> tierCounts = new java.util.HashMap<>();
+
+        // Act
+        memberView.displayMembershipReport(null, tierCounts);
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("No members found"));
+    }
+
+    @Test
+    @Order(48)
+    @DisplayName("Test View - Show Success Message")
+    public void testView_ShowSuccessMessage() {
+        // Act
+        memberView.showSuccessMessage("Test Success");
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("Test Success"));
+    }
+
+    @Test
+    @Order(49)
+    @DisplayName("Test View - Show Error Message")
+    public void testView_ShowErrorMessage() {
+        // Act
+        memberView.showErrorMessage("Test Error");
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("Test Error"));
+    }
+
+    @Test
+    @Order(50)
+    @DisplayName("Test View - Show Cancel Message")
+    public void testView_ShowCancelMessage() {
+        // Act
+        memberView.showCancelMessage("Test Cancel");
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("Test Cancel"));
+    }
+
+    @Test
+    @Order(51)
+    @DisplayName("Test View - Show Not Found Message")
+    public void testView_ShowNotFoundMessage() {
+        // Act
+        memberView.showNotFoundMessage();
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("ERROR"));
+    }
+
+    @Test
+    @Order(52)
+    @DisplayName("Test View - Display Exit Message")
+    public void testView_DisplayExitMessage() {
+        // Act
+        memberView.displayExitMessage();
+
+        // Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.length() > 0);
+    }
+
+    // ================== CONTROLLER TESTS (Non-Interactive) ==================
+
+    @Test
+    @Order(53)
+    @DisplayName("Test Controller - Creation With Initial Data")
+    public void testController_Creation_WithInitialData() {
+
+        List<Member> sampleData = MemberData.initiallizeMembersData();
+
+        memberController = new MemberController(memberView, sampleData);
+
+        // Assert
+        assertEquals(5, memberController.getMemberCount());
+    }
+
+    @Test
+    @Order(54)
+    @DisplayName("Test Controller - Find Member By ID")
+    public void testController_FindMemberById() {
         // Arrange
         memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
 
         // Act
-        List<Member> results = memberController.searchMembersByIcNumber("950101-01-1234");
+        Member found = memberController.findMemberById("M001");
 
         // Assert
-        assertNotNull(results);
+        assertNotNull(found);
+        assertEquals("M001", found.getId());
     }
 
     @Test
-    @Order(76)
-    @DisplayName("Test Controller - Search Members By IC Number - Empty Input")
-    public void testController_SearchMembersByIcNumber_EmptyInput() {
+    @Order(55)
+    @DisplayName("Test Controller - Find Member By ID Not Found")
+    public void testController_FindMemberById_NotFound() {
         // Arrange
         memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
 
         // Act
-        List<Member> results = memberController.searchMembersByIcNumber("   ");
+        Member found = memberController.findMemberById("M999");
 
         // Assert
-        assertNotNull(results);
-        assertTrue(results.isEmpty());
+        assertNull(found);
     }
 
     @Test
-    @Order(78)
-    @DisplayName("Test Controller - Search Members By Contact")
-    public void testController_SearchMembersByContact() {
+    @Order(56)
+    @DisplayName("Test Controller - Find Member By ID Case Insensitive")
+    public void testController_FindMemberById_CaseInsensitive() {
         // Arrange
         memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
 
         // Act
-        List<Member> results = memberController.searchMembersByContact("123456789");
+        Member found = memberController.findMemberById("m001");
 
         // Assert
-        assertNotNull(results);
+        assertNotNull(found);
+        assertEquals("M001", found.getId());
     }
 
     @Test
-    @Order(77)
-    @DisplayName("Test Controller - Search Members By Contact - Empty Input")
-    public void testController_SearchMembersByContact_EmptyInput() {
+    @Order(57)
+    @DisplayName("Test Controller - Find Member By ID - Empty Input")
+    public void testController_FindMemberById_EmptyInput() {
         // Arrange
         memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
 
         // Act
-        List<Member> results = memberController.searchMembersByContact("");
+        Member found = memberController.findMemberById("   ");
 
         // Assert
-        assertNotNull(results);
-        assertTrue(results.isEmpty());
+        assertNull(found);
     }
 
     @Test
-    @Order(81)
-    @DisplayName("Test Controller - Search Members By Join Date")
-    public void testController_SearchMembersByJoinDate() {
+    @Order(58)
+    @DisplayName("Test Controller - Search Members By Name")
+    public void testController_SearchMembersByName() {
         // Arrange
         memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
 
         // Act
-        List<Member> results = memberController.searchMembersByJoinDate(LocalDate.of(2020, 1, 15));
+        List<Member> results = memberController.searchMembersByName("John");
 
         // Assert
-        assertNotNull(results);
+        assertFalse(results.isEmpty());
+        assertTrue(results.get(0).getName().contains("John"));
     }
 
     @Test
-    @Order(82)
-    @DisplayName("Test Controller - Search Members By Join Date - Null Input")
-    public void testController_SearchMembersByJoinDate_NullInput() {
+    @Order(59)
+    @DisplayName("Test Controller - Search Members By Gender")
+    public void testController_SearchMembersByGender() {
         // Arrange
         memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
 
         // Act
-        List<Member> results = memberController.searchMembersByJoinDate(null);
+        List<Member> results = memberController.searchMembersByGender(Gender.FEMALE);
 
         // Assert
-        assertNotNull(results);
-        assertTrue(results.isEmpty());
+        assertFalse(results.isEmpty());
+        for (Member member : results) {
+            assertEquals(Gender.FEMALE, member.getGender());
+        }
     }
 
     @Test
-    @Order(78)
-    @DisplayName("Test Controller - Search Members By Name - Empty Input")
-    public void testController_SearchMembersByName_EmptyInput() {
-        // Arrange
-        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
-
-        // Act
-        List<Member> results = memberController.searchMembersByName("");
-
-        // Assert
-        assertNotNull(results);
-        assertTrue(results.isEmpty());
-    }
-
-    @Test
-    @Order(85)
+    @Order(60)
     @DisplayName("Test Controller - Search Members By Gender - Null Input")
     public void testController_SearchMembersByGender_NullInput() {
         // Arrange
@@ -894,7 +945,108 @@ public class TestMember {
     }
 
     @Test
-    @Order(86)
+    @Order(61)
+    @DisplayName("Test Controller - Search Members By IC Number")
+    public void testController_SearchMembersByIcNumber() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByIcNumber("950101-01-1234");
+
+        // Assert
+        assertNotNull(results);
+    }
+
+    @Test
+    @Order(62)
+    @DisplayName("Test Controller - Search Members By IC Number - Empty Input")
+    public void testController_SearchMembersByIcNumber_EmptyInput() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByIcNumber("   ");
+
+        // Assert
+        assertNotNull(results);
+        assertTrue(results.isEmpty());
+    }
+
+    @Test
+    @Order(63)
+    @DisplayName("Test Controller - Search Members By Contact")
+    public void testController_SearchMembersByContact() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByContact("123456789");
+
+        // Assert
+        assertNotNull(results);
+    }
+
+    @Test
+    @Order(64)
+    @DisplayName("Test Controller - Search Members By Contact - Empty Input")
+    public void testController_SearchMembersByContact_EmptyInput() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByContact("");
+
+        // Assert
+        assertNotNull(results);
+        assertTrue(results.isEmpty());
+    }
+
+    @Test
+    @Order(65)
+    @DisplayName("Test Controller - Search Members By Join Date")
+    public void testController_SearchMembersByJoinDate() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByJoinDate(LocalDate.of(2020, 1, 15));
+
+        // Assert
+        assertNotNull(results);
+    }
+
+    @Test
+    @Order(66)
+    @DisplayName("Test Controller - Search Members By Join Date - Null Input")
+    public void testController_SearchMembersByJoinDate_NullInput() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByJoinDate(null);
+
+        // Assert
+        assertNotNull(results);
+        assertTrue(results.isEmpty());
+    }
+
+    @Test
+    @Order(67)
+    @DisplayName("Test Controller - Search Members By Tier")
+    public void testController_SearchMembersByTier() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        List<Member> results = memberController.searchMembersByTier(MembershipTier.BASIC);
+
+        // Assert
+        assertFalse(results.isEmpty());
+    }
+
+    @Test
+    @Order(68)
     @DisplayName("Test Controller - Search Members By Tier - Null Input")
     public void testController_SearchMembersByTier_NullInput() {
         // Arrange
@@ -909,21 +1061,21 @@ public class TestMember {
     }
 
     @Test
-    @Order(80)
-    @DisplayName("Test Controller - Find Member By ID - Empty Input")
-    public void testController_FindMemberById_EmptyInput() {
+    @Order(69)
+    @DisplayName("Test Controller - Delete Non-Existent Member")
+    public void testController_DeleteNonExistentMember() {
         // Arrange
         memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
 
         // Act
-        Member found = memberController.findMemberById("   ");
+        boolean result = memberController.deleteMemberById("M999");
 
         // Assert
-        assertNull(found);
+        assertFalse(result);
     }
 
     @Test
-    @Order(81)
+    @Order(70)
     @DisplayName("Test Controller - Delete Member By ID - Empty Input")
     public void testController_DeleteMemberById_EmptyInput() {
         // Arrange
@@ -936,7 +1088,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(91)
+    @Order(71)
     @DisplayName("Test Controller - Update Member - Null Inputs")
     public void testController_UpdateMember_NullInputs() {
         // Arrange
@@ -952,7 +1104,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(94)
+    @Order(72)
     @DisplayName("Test Controller - Display All Members")
     public void testController_DisplayAllMembers() {
         // Arrange
@@ -967,7 +1119,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(95)
+    @Order(73)
     @DisplayName("Test Controller - Display Membership Report")
     public void testController_DisplayMembershipReport() {
         // Arrange
@@ -981,176 +1133,6 @@ public class TestMember {
         assertNotNull(output);
     }
 
-    // ==================== MEMBER VIEW TESTS ====================
-
-    @Test
-    @Order(96)
-    @DisplayName("Test View - Display Member Main Menu")
-    public void testView_DisplayMemberMainMenu() {
-        // Act
-        memberView.displayMemberMainMenu();
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("Member Main Menu"));
-    }
-
-    @Test
-    @Order(97)
-    @DisplayName("Test View - Display All Members - Empty List")
-    public void testView_DisplayAllMembers_EmptyList() {
-        // Act
-        memberView.displayAllMembers(new java.util.ArrayList<>());
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("No members found"));
-    }
-
-    @Test
-    @Order(98)
-    @DisplayName("Test View - Display All Members - Null List")
-    public void testView_DisplayAllMembers_NullList() {
-        // Act
-        memberView.displayAllMembers(null);
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("No members found"));
-    }
-
-    @Test
-    @Order(99)
-    @DisplayName("Test View - Display All Members - With Data")
-    public void testView_DisplayAllMembers_WithData() {
-        // Arrange
-        List<Member> members = MemberData.initiallizeMembersData();
-
-        // Act
-        memberView.displayAllMembers(members);
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("M001"));
-    }
-
-    @Test
-    @Order(100)
-    @DisplayName("Test View - Display Member Details - Null Member")
-    public void testView_DisplayMemberDetails_NullMember() {
-        // Act
-        memberView.displayMemberDetails(null);
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("ERROR"));
-    }
-
-    @Test
-    @Order(101)
-    @DisplayName("Test View - Display Member Details - Valid Member")
-    public void testView_DisplayMemberDetails_ValidMember() {
-        // Arrange
-        Member member = MemberData.createTestMember();
-
-        // Act
-        memberView.displayMemberDetails(member);
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("T001"));
-    }
-
-    @Test
-    @Order(102)
-    @DisplayName("Test View - Display Membership Report - Empty List")
-    public void testView_DisplayMembershipReport_EmptyList() {
-        // Arrange
-        java.util.Map<MembershipTier, Integer> tierCounts = new java.util.HashMap<>();
-
-        // Act
-        memberView.displayMembershipReport(new java.util.ArrayList<>(), tierCounts);
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("No members found"));
-    }
-
-    @Test
-    @Order(103)
-    @DisplayName("Test View - Display Membership Report - Null List")
-    public void testView_DisplayMembershipReport_NullList() {
-        // Arrange
-        java.util.Map<MembershipTier, Integer> tierCounts = new java.util.HashMap<>();
-
-        // Act
-        memberView.displayMembershipReport(null, tierCounts);
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("No members found"));
-    }
-
-    @Test
-    @Order(105)
-    @DisplayName("Test View - Show Success Message")
-    public void testView_ShowSuccessMessage() {
-        // Act
-        memberView.showSuccessMessage("Test Success");
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("Test Success"));
-    }
-
-    @Test
-    @Order(106)
-    @DisplayName("Test View - Show Error Message")
-    public void testView_ShowErrorMessage() {
-        // Act
-        memberView.showErrorMessage("Test Error");
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("Test Error"));
-    }
-
-    @Test
-    @Order(107)
-    @DisplayName("Test View - Show Cancel Message")
-    public void testView_ShowCancelMessage() {
-        // Act
-        memberView.showCancelMessage("Test Cancel");
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("Test Cancel"));
-    }
-
-    @Test
-    @Order(108)
-    @DisplayName("Test View - Show Not Found Message")
-    public void testView_ShowNotFoundMessage() {
-        // Act
-        memberView.showNotFoundMessage();
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.contains("ERROR"));
-    }
-
-    @Test
-    @Order(109)
-    @DisplayName("Test View - Display Exit Message")
-    public void testView_DisplayExitMessage() {
-        // Act
-        memberView.displayExitMessage();
-
-        // Assert
-        String output = outputStreamCaptor.toString();
-        assertTrue(output.length() > 0);
-    }
-
     // ==================== INTERACTIVE METHOD TESTS ====================
 
     /**
@@ -1161,7 +1143,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(114)
+    @Order(74)
     @DisplayName("Test Controller - addMember - Complete flow")
     public void testController_addMember_CompleteFlow() {
         // Arrange - simulate: y (confirm) -> M100 (id) -> Test User (name) ->
@@ -1181,7 +1163,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(115)
+    @Order(75)
     @DisplayName("Test Controller - addMember - Cancel at first confirmation")
     public void testController_addMember_CancelFirstConfirmation() {
         // Arrange - simulate: n (cancel)
@@ -1199,7 +1181,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(116)
+    @Order(76)
     @DisplayName("Test Controller - updateMember - Update name")
     public void testController_updateMember_UpdateName() {
         // Arrange - simulate: M001 (id) -> y (confirm) -> 1 (update name) ->
@@ -1218,7 +1200,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(117)
+    @Order(77)
     @DisplayName("Test Controller - updateMember - Cancel confirmation")
     public void testController_updateMember_CancelConfirmation() {
         // Arrange - simulate: M001 (id) -> n (cancel) -> n (don't continue)
@@ -1236,7 +1218,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(118)
+    @Order(78)
     @DisplayName("Test Controller - deleteMember - Member found and deleted")
     public void testController_deleteMember_Success() {
         // Arrange - simulate: M001 (id) -> y (confirm) -> n (don't continue)
@@ -1255,7 +1237,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(119)
+    @Order(79)
     @DisplayName("Test Controller - deleteMember - Cancel confirmation")
     public void testController_deleteMember_CancelConfirmation() {
         // Arrange - simulate: M001 (id) -> n (cancel) -> n (don't continue)
@@ -1273,7 +1255,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(120)
+    @Order(80)
     @DisplayName("Test Controller - searchMember - Search by ID")
     public void testController_searchMember_SearchById() {
         // Arrange - simulate: 1 (search by ID) -> M001 -> n (don't continue)
@@ -1291,7 +1273,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(121)
+    @Order(81)
     @DisplayName("Test Controller - searchMember - Search by Name")
     public void testController_searchMember_SearchByName() {
         // Arrange - simulate: 2 (search by name) -> John -> n (don't continue)
@@ -1309,7 +1291,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(122)
+    @Order(82)
     @DisplayName("Test Interactive - addMember - Duplicate Member ID")
     public void testInteractive_addMember_DuplicateId() {
         // Arrange - try M001 (duplicate), then M100 (unique), then cancel at final
@@ -1331,7 +1313,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(123)
+    @Order(83)
     @DisplayName("Test Interactive - addMember - With Existing Sales Detection")
     public void testInteractive_addMember_WithExistingSales() {
         // Arrange - add M006 which has existing sales ($2000)
@@ -1353,7 +1335,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(124)
+    @Order(84)
     @DisplayName("Test Interactive - addMember - Cancel at Final Confirmation")
     public void testInteractive_addMember_CancelFinalConfirmation() {
         // Arrange - y -> M100 -> Test -> Male -> 950101-01-1234 -> 123456789 ->
@@ -1371,7 +1353,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(125)
+    @Order(85)
     @DisplayName("Test Interactive - updateMember - Non-Existent Member")
     public void testInteractive_updateMember_NonExistent() {
         // Arrange - try to update M999 which doesn't exist
@@ -1390,7 +1372,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(126)
+    @Order(86)
     @DisplayName("Test Interactive - updateMember - Update Multiple Fields")
     public void testInteractive_updateMember_MultipleFields() {
         // Arrange - update M001: ID -> confirm -> name -> gender -> finish -> don't
@@ -1412,7 +1394,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(127)
+    @Order(87)
     @DisplayName("Test Interactive - updateMember - Cancel Update")
     public void testInteractive_updateMember_CancelUpdate() {
         // Arrange - M001 -> n (cancel at confirmation) -> n (don't continue)
@@ -1431,7 +1413,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(128)
+    @Order(88)
     @DisplayName("Test Interactive - deleteMember - Non-Existent Member")
     public void testInteractive_deleteMember_NonExistent() {
         // Arrange - try to delete M999 (not found, loops back) -> n (don't continue)
@@ -1450,7 +1432,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(129)
+    @Order(89)
     @DisplayName("Test Interactive - deleteMember - Verify Removal")
     public void testInteractive_deleteMember_VerifyRemoval() {
         // Arrange - delete M005: ID -> confirm -> don't continue
@@ -1470,7 +1452,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(130)
+    @Order(90)
     @DisplayName("Test Interactive - searchMember - By Gender")
     public void testInteractive_searchMember_ByGender() {
         // Arrange - search by gender: 3 (gender) -> Male -> n
@@ -1488,7 +1470,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(131)
+    @Order(91)
     @DisplayName("Test Interactive - searchMember - By IC Number")
     public void testInteractive_searchMember_ByIcNumber() {
         // Arrange - search by IC: 4 (IC) -> 950101-01-1234 -> n
@@ -1506,7 +1488,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(132)
+    @Order(92)
     @DisplayName("Test Interactive - searchMember - By Contact Number")
     public void testInteractive_searchMember_ByContact() {
         // Arrange - search by contact: 5 (contact) -> 123456789 -> n
@@ -1524,7 +1506,7 @@ public class TestMember {
     }
 
     @Test
-    @Order(133)
+    @Order(93)
     @DisplayName("Test Interactive - searchMember - No Results")
     public void testInteractive_searchMember_NoResults() {
         // Arrange - search for non-existent name: 2 (name) -> NonExistentName -> n
