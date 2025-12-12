@@ -4,13 +4,13 @@
  */
 package asg;
 
-import asg.MakeOrderModule.Model.SSdetails;
+import asg.MakeOrderModule.Model.ShoesDetails;
 
 /**
  *
  * @author ginwe
  */
-public class SalesItem extends SSdetails {
+public class SalesItem extends ShoesDetails {
     protected String salesId;
     protected String memberId;
     protected int quantitySales;

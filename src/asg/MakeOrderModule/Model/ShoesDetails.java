@@ -4,14 +4,14 @@ package asg.MakeOrderModule.Model;
  * Base class representing sneaker/shoe details.
  * Contains common attributes shared by all sneaker items in the system.
  */
-public class SSdetails {
+public class ShoesDetails {
     protected String itemCode;
     protected String brand;
     protected String itemDescription;
     protected String colour;
     protected double itemPrice;
 
-    public SSdetails(String itemCode, String brand, String itemDescription, String colour, double itemPrice) {
+    public ShoesDetails(String itemCode, String brand, String itemDescription, String colour, double itemPrice) {
         
         this.itemCode = itemCode;
         this.brand = brand;
