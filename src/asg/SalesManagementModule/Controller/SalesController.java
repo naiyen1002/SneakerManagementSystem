@@ -76,7 +76,6 @@ public class SalesController {
         char choice;
 
         do {
-            view.clearScreen();
             view.displayMainMenu();
             choice = view.getMenuChoice();
 
@@ -258,7 +257,6 @@ public class SalesController {
         do {
             view.displaySearchMenu();
             char choice = view.getMenuChoice();
-            view.clearScreen();
 
             if (choice >= '1' && choice <= '8') {
                 int index = choice - '1';
