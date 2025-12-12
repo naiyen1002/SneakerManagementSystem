@@ -26,7 +26,7 @@ import asg.MemberManagementModule.Model.Member;
 import asg.MemberManagementModule.Model.MembershipTier;
 import asg.MemberManagementModule.View.MemberView;
 
-public class TestMember {
+public class MemberControllerTest {
     private MemberView memberView;
     private MemberController memberController;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
