@@ -28,7 +28,7 @@ public final class MemberConstants {
     public static final String ERROR_INVALID_IC = "IC Number must be in format: xxxxxx-xx-xxxx";
     public static final String ERROR_INVALID_CONTACT = "Contact number must be 9-11 digits";
     public static final String ERROR_INVALID_GENDER = "Invalid Gender... Please enter Male, Female, or Other";
-    public static final String ERROR_INVALID_DATE_FORMAT = "Invalid date format!  Please enter format: DD/MM/YYYY";
+    public static final String ERROR_INVALID_DATE_FORMAT = "Invalid date or date format!  Please enter format: DD/MM/YYYY";
     public static final String ERROR_MEMBER_NOT_FOUND = "Member not found with ID: ";
     public static final String ERROR_DUPLICATE_ID = "Member ID already exists: ";
     public static final String ERROR_NEGATIVE_SPENDING = "Spending amount cannot be negative";
@@ -72,7 +72,7 @@ public final class MemberConstants {
     public static final String HEADER_UPDATE_MEMBER = "\n--------------------------------\n   Update Member Information\n--------------------------------";
     public static final String HEADER_DELETE_MEMBER = "\n--------------------------------\n   Delete Member Records\n--------------------------------";
     public static final String HEADER_DISPLAY_ALL = "\n--------------------------------\n     All Member Information\n--------------------------------";
-    public static final String HEADER_MEMBERSHIP_REPORT = "\n\n--------------------------------------------\n          Monthly Report Of Member\n--------------------------------------------\n";
+    public static final String HEADER_MEMBERSHIP_REPORT = "\n--------------------------------------------\n          Monthly Report Of Member\n--------------------------------------------\n";
 
     // ==================== MENU OPTIONS ====================
     public static final String MENU_OPTION_1 = "1. Display All Members Details";
@@ -117,7 +117,7 @@ public final class MemberConstants {
     public static final String DETAIL_CONTACT = "Contact Number (+60) : %s\n";
     public static final String DETAIL_JOIN_DATE = "Date Become Member   : %s\n";
     public static final String DETAIL_MEMBERSHIP_TIER = "Membership Tier      : %s\n";
-    public static final String DETAIL_TOTAL_SPENDING = "Total Spending       : RM %.2f\n";
+    public static final String DETAIL_TOTAL_SPENDING = "Total Spending       : RM %.2f";
 
     // ==================== MEMBERSHIP REPORT DISPLAY ====================
     public static final String REPORT_TABLE_HEADER = "%-11s %-20s\t%-25s\t%-20s\n";
@@ -156,7 +156,7 @@ public final class MemberConstants {
     public static final String TOTAL_MEMBERS_FORMAT = "\n<<< Total %d Member(s) >>>\n";
     public static final String INVALID_MENU_RANGE = "\nYou Can Only Choose From %d - %d Only.. .\n";
     public static final String INVALID_INPUT_DIGIT = "\nEnter Digit Only...  Please enter a number between %d and %d.\n";
-    public static final String INVALID_RESPONSE = "\nINVALID RESPONSE!  Please Enter y=Yes or n=No";
+    public static final String INVALID_RESPONSE = "INVALID RESPONSE!  Please Enter y=Yes or n=No";
     public static final String NO_INPUT_PROVIDED = "\nNo input provided.. .";
     public static final String CONFIRM_ACTION_FORMAT = "\nAre You Sure Want To %s Record(s) (y=Yes/n=No)? :";
     public static final String ASK_CONTINUE_FORMAT = "\n%s (y=Yes/n=No): ";
