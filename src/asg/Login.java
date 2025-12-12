@@ -15,10 +15,12 @@ public class Login {
         boolean isLoggedIn = false;
         ArrayList<IdLogin> userCredentials = new ArrayList<>();
 
-        userCredentials.add(new IdLogin("ed", "ed1234"));
-        userCredentials.add(new IdLogin("js", "2004"));
-        userCredentials.add(new IdLogin("wh", "wh04"));
-        userCredentials.add(new IdLogin("gw", "gw04"));
+        userCredentials.add(new IdLogin("ed", "ed6767"));
+        userCredentials.add(new IdLogin("jh", "jh2004"));
+        userCredentials.add(new IdLogin("ny", "ny1002"));
+        userCredentials.add(new IdLogin("jo", "jo1337"));
+        userCredentials.add(new IdLogin("sy", "sy1234"));
+
 
         System.out.printf("\n\n\t\t\t██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗");
         System.out.printf("\n\t\t\t██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝");
