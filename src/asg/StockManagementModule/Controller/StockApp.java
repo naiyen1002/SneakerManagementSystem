@@ -5,6 +5,9 @@ import asg.StockManagementModule.Constants.StockMenuOption;
 import asg.StockManagementModule.Service.StockService;
 import asg.StockManagementModule.View.StockView;
 
+/**
+ * Stock Management Module Menu Options.
+ */
 import java.util.Scanner;
 
 public class StockApp {
