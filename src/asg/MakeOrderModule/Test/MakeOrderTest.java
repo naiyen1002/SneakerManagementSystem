@@ -853,5 +853,286 @@ public class MakeOrderTest {
         
         System.setOut(System.out);
     }
+
+    // ==================== MODEL SETTER TESTS ====================
+
+    // -------------------- ShoesDetails Setter Tests --------------------
+
+    @Test
+    @DisplayName("ShoesDetails - setItemCode updates item code")
+    void testShoesDetails_SetItemCode() {
+        asg.MakeOrderModule.Model.ShoesDetails shoes = new asg.MakeOrderModule.Model.ShoesDetails(
+            "I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        shoes.setItemCode("I999");
+        
+        assertEquals("I999", shoes.getItemCode(), "Item code should be updated");
+    }
+
+    @Test
+    @DisplayName("ShoesDetails - setBrand updates brand")
+    void testShoesDetails_SetBrand() {
+        asg.MakeOrderModule.Model.ShoesDetails shoes = new asg.MakeOrderModule.Model.ShoesDetails(
+            "I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        shoes.setBrand("PUMA");
+        
+        assertEquals("PUMA", shoes.getBrand(), "Brand should be updated");
+    }
+
+    @Test
+    @DisplayName("ShoesDetails - setItemDescription updates description")
+    void testShoesDetails_SetItemDescription() {
+        asg.MakeOrderModule.Model.ShoesDetails shoes = new asg.MakeOrderModule.Model.ShoesDetails(
+            "I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        shoes.setItemDescription("Updated Description");
+        
+        assertEquals("Updated Description", shoes.getItemDescription(), "Description should be updated");
+    }
+
+    @Test
+    @DisplayName("ShoesDetails - setColour updates colour")
+    void testShoesDetails_SetColour() {
+        asg.MakeOrderModule.Model.ShoesDetails shoes = new asg.MakeOrderModule.Model.ShoesDetails(
+            "I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        shoes.setColour("Red/White");
+        
+        assertEquals("Red/White", shoes.getColour(), "Colour should be updated");
+    }
+
+    @Test
+    @DisplayName("ShoesDetails - setItemPrice updates price")
+    void testShoesDetails_SetItemPrice() {
+        asg.MakeOrderModule.Model.ShoesDetails shoes = new asg.MakeOrderModule.Model.ShoesDetails(
+            "I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        shoes.setItemPrice(599.99);
+        
+        assertEquals(599.99, shoes.getItemPrice(), 0.01, "Price should be updated");
+    }
+
+    @Test
+    @DisplayName("ShoesDetails - toString returns formatted string")
+    void testShoesDetails_ToString() {
+        asg.MakeOrderModule.Model.ShoesDetails shoes = new asg.MakeOrderModule.Model.ShoesDetails(
+            "I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        String result = shoes.toString();
+        
+        assertTrue(result.contains("I001"), "toString should contain item code");
+        assertTrue(result.contains("NIKE"), "toString should contain brand");
+        assertTrue(result.contains("Air Max 90"), "toString should contain description");
+        assertTrue(result.contains("Black"), "toString should contain colour");
+        assertTrue(result.contains("480"), "toString should contain price");
+    }
+
+    // -------------------- StockItem Setter Tests --------------------
+
+    @Test
+    @DisplayName("StockItem - setQuantityInStock updates quantity")
+    void testStockItem_SetQuantityInStock() {
+        StockItem item = new StockItem("I001", "NIKE", "Air Max 90", "Black", 480.00, 10);
+        
+        item.setQuantityInStock(25);
+        
+        assertEquals(25, item.getQuantityInStock(), "Quantity should be updated");
+    }
+
+    @Test
+    @DisplayName("StockItem - setQuantityInStock to zero makes isInStock false")
+    void testStockItem_SetQuantityToZero() {
+        StockItem item = new StockItem("I001", "NIKE", "Air Max 90", "Black", 480.00, 10);
+        assertTrue(item.isInStock(), "Should initially be in stock");
+        
+        item.setQuantityInStock(0);
+        
+        assertFalse(item.isInStock(), "Should not be in stock after setting to 0");
+    }
+
+    @Test
+    @DisplayName("StockItem - inherited setItemCode works")
+    void testStockItem_InheritedSetItemCode() {
+        StockItem item = new StockItem("I001", "NIKE", "Air Max 90", "Black", 480.00, 10);
+        
+        item.setItemCode("I999");
+        
+        assertEquals("I999", item.getItemCode(), "Inherited setter should work");
+    }
+
+    @Test
+    @DisplayName("StockItem - inherited setBrand works")
+    void testStockItem_InheritedSetBrand() {
+        StockItem item = new StockItem("I001", "NIKE", "Air Max 90", "Black", 480.00, 10);
+        
+        item.setBrand("ADIDAS");
+        
+        assertEquals("ADIDAS", item.getBrand(), "Inherited setter should work");
+    }
+
+    @Test
+    @DisplayName("StockItem - inherited setItemDescription works")
+    void testStockItem_InheritedSetItemDescription() {
+        StockItem item = new StockItem("I001", "NIKE", "Air Max 90", "Black", 480.00, 10);
+        
+        item.setItemDescription("New Description");
+        
+        assertEquals("New Description", item.getItemDescription(), "Inherited setter should work");
+    }
+
+    @Test
+    @DisplayName("StockItem - inherited setColour works")
+    void testStockItem_InheritedSetColour() {
+        StockItem item = new StockItem("I001", "NIKE", "Air Max 90", "Black", 480.00, 10);
+        
+        item.setColour("Blue/Red");
+        
+        assertEquals("Blue/Red", item.getColour(), "Inherited setter should work");
+    }
+
+    @Test
+    @DisplayName("StockItem - inherited setItemPrice works")
+    void testStockItem_InheritedSetItemPrice() {
+        StockItem item = new StockItem("I001", "NIKE", "Air Max 90", "Black", 480.00, 10);
+        
+        item.setItemPrice(350.50);
+        
+        assertEquals(350.50, item.getItemPrice(), 0.01, "Inherited setter should work");
+    }
+
+    // -------------------- OrderDetails Setter Tests --------------------
+
+    @Test
+    @DisplayName("OrderDetails - setOrderCode updates order code")
+    void testOrderDetails_SetOrderCode() {
+        OrderDetails order = new OrderDetails("I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        order.setOrderCode("I999");
+        
+        assertEquals("I999", order.getOrderCode(), "Order code should be updated");
+    }
+
+    @Test
+    @DisplayName("OrderDetails - setOrderBrand updates brand")
+    void testOrderDetails_SetOrderBrand() {
+        OrderDetails order = new OrderDetails("I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        order.setOrderBrand("PUMA");
+        
+        assertEquals("PUMA", order.getOrderBrand(), "Order brand should be updated");
+    }
+
+    @Test
+    @DisplayName("OrderDetails - setOrderDescription updates description")
+    void testOrderDetails_SetOrderDescription() {
+        OrderDetails order = new OrderDetails("I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        order.setOrderDescription("Updated Description");
+        
+        assertEquals("Updated Description", order.getOrderDescription(), "Order description should be updated");
+    }
+
+    @Test
+    @DisplayName("OrderDetails - setOrderColor updates color")
+    void testOrderDetails_SetOrderColor() {
+        OrderDetails order = new OrderDetails("I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        order.setOrderColor("Red/White");
+        
+        assertEquals("Red/White", order.getOrderColor(), "Order color should be updated");
+    }
+
+    @Test
+    @DisplayName("OrderDetails - setOrderPrice updates price")
+    void testOrderDetails_SetOrderPrice() {
+        OrderDetails order = new OrderDetails("I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        order.setOrderPrice(599.99);
+        
+        assertEquals(599.99, order.getOrderPrice(), 0.01, "Order price should be updated");
+    }
+
+    @Test
+    @DisplayName("OrderDetails - all setters work together")
+    void testOrderDetails_AllSettersWorkTogether() {
+        OrderDetails order = new OrderDetails("I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        order.setOrderCode("I999");
+        order.setOrderBrand("ADIDAS");
+        order.setOrderDescription("Superstar");
+        order.setOrderColor("White/Gold");
+        order.setOrderPrice(350.00);
+        
+        assertEquals("I999", order.getOrderCode());
+        assertEquals("ADIDAS", order.getOrderBrand());
+        assertEquals("Superstar", order.getOrderDescription());
+        assertEquals("White/Gold", order.getOrderColor());
+        assertEquals(350.00, order.getOrderPrice(), 0.01);
+    }
+
+    @Test
+    @DisplayName("StockItem - all setters work together")
+    void testStockItem_AllSettersWorkTogether() {
+        StockItem item = new StockItem("I001", "NIKE", "Air Max 90", "Black", 480.00, 10);
+        
+        item.setItemCode("I999");
+        item.setBrand("PUMA");
+        item.setItemDescription("Suede Classic");
+        item.setColour("Blue");
+        item.setItemPrice(250.00);
+        item.setQuantityInStock(50);
+        
+        assertEquals("I999", item.getItemCode());
+        assertEquals("PUMA", item.getBrand());
+        assertEquals("Suede Classic", item.getItemDescription());
+        assertEquals("Blue", item.getColour());
+        assertEquals(250.00, item.getItemPrice(), 0.01);
+        assertEquals(50, item.getQuantityInStock());
+        assertTrue(item.isInStock());
+    }
+
+    // -------------------- Edge Case Tests --------------------
+
+    @Test
+    @DisplayName("OrderDetails - setOrderPrice with zero value")
+    void testOrderDetails_SetOrderPriceZero() {
+        OrderDetails order = new OrderDetails("I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        order.setOrderPrice(0.0);
+        
+        assertEquals(0.0, order.getOrderPrice(), 0.01, "Price can be set to zero");
+    }
+
+    @Test
+    @DisplayName("StockItem - setQuantityInStock with negative value")
+    void testStockItem_SetQuantityNegative() {
+        StockItem item = new StockItem("I001", "NIKE", "Air Max 90", "Black", 480.00, 10);
+        
+        item.setQuantityInStock(-5);
+        
+        assertEquals(-5, item.getQuantityInStock(), "Quantity can be negative (no validation)");
+        assertFalse(item.isInStock(), "Negative quantity should not be in stock");
+    }
+
+    @Test
+    @DisplayName("OrderDetails - setOrderCode with empty string")
+    void testOrderDetails_SetOrderCodeEmpty() {
+        OrderDetails order = new OrderDetails("I001", "NIKE", "Air Max 90", "Black", 480.00);
+        
+        order.setOrderCode("");
+        
+        assertEquals("", order.getOrderCode(), "Code can be set to empty string");
+    }
+
+    @Test
+    @DisplayName("StockItem - setItemPrice with large value")
+    void testStockItem_SetItemPriceLarge() {
+        StockItem item = new StockItem("I001", "NIKE", "Air Max 90", "Black", 480.00, 10);
+        
+        item.setItemPrice(99999.99);
+        
+        assertEquals(99999.99, item.getItemPrice(), 0.01, "Large price should be accepted");
+    }
 }
 
