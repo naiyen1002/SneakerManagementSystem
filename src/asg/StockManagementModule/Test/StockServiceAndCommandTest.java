@@ -1,5 +1,6 @@
 package asg.StockManagementModule.Test;
 
+import asg.MakeOrderModule.Model.StockItem;
 import asg.StockManagementModule.Constants.StockConstants;
 import asg.StockManagementModule.Constants.StockMenuOption;
 import asg.StockManagementModule.Controller.*;
@@ -150,20 +151,64 @@ public class StockServiceAndCommandTest {
     }
 
     @Test
-    @DisplayName("handleModifyItem - valid update should change fields")
+    @DisplayName("handleModifyItem - valid update (menu flow) should change fields")
     void handleModifyItem_valid() {
-        String userInput = "I001\nNewBrand\nNewDesc\nNewColor\n300.0\n20\n";
-        StockService service = createServiceWithInput(userInput);
+        // New flow: code -> choose field -> new value -> ... -> save
+        String userInput = "I001\n" +
+                "1\nNewBrand\n" +
+                "2\nNewDesc\n" +
+                "3\nNewColor\n" +
+                "4\n300.0\n" +
+                "5\n20\n" +
+                "6\n";
 
+        StockService service = createServiceWithInput(userInput);
         service.handleModifyItem();
 
         var itemOpt = controller.getInventory().findByCode("I001");
         assertTrue(itemOpt.isPresent());
-        assertEquals("Newbrand", itemOpt.get().getBrand());
+        assertEquals("Newbrand", itemOpt.get().getBrand()); // toTitleCase
         assertEquals("NewDesc", itemOpt.get().getItemDescription());
-        assertEquals("Newcolor", itemOpt.get().getColour());
+        assertEquals("Newcolor", itemOpt.get().getColour()); // toTitleCase
         assertEquals(300.0, itemOpt.get().getItemPrice(), 0.001);
         assertEquals(20, itemOpt.get().getQuantityInStock());
+
+        String output = outputStream.toString();
+        assertTrue(output.contains(StockConstants.ITEM_MODIFIED));
+    }
+
+    @Test
+    @DisplayName("handleModifyItem - invalid menu choice then cancel should not update")
+    void handleModifyItem_invalidChoiceThenCancel_shouldNotUpdate() {
+        var beforeOpt = controller.getInventory().findByCode("I001");
+        assertTrue(beforeOpt.isPresent());
+        asg.StockManagementModule.Model.StockItem before = beforeOpt.get();
+
+        String beforeBrand = before.getBrand();
+        String beforeDesc = before.getItemDescription();
+        String beforeColour = before.getColour();
+        double beforePrice = before.getItemPrice();
+        int beforeQty = before.getQuantityInStock();
+
+        String userInput = "I001\n" +
+                "A\n" + // invalid choice
+                "0\n"; // cancel
+
+        StockService service = createServiceWithInput(userInput);
+        service.handleModifyItem();
+
+        var afterOpt = controller.getInventory().findByCode("I001");
+        assertTrue(afterOpt.isPresent());
+
+        assertEquals(beforeBrand, afterOpt.get().getBrand());
+        assertEquals(beforeDesc, afterOpt.get().getItemDescription());
+        assertEquals(beforeColour, afterOpt.get().getColour());
+        assertEquals(beforePrice, afterOpt.get().getItemPrice(), 0.001);
+        assertEquals(beforeQty, afterOpt.get().getQuantityInStock());
+
+        String output = outputStream.toString();
+        assertTrue(output.contains(StockConstants.INVALID_CHOICE));
+        assertTrue(output.toLowerCase().contains("cancel"));
     }
 
     @Test
@@ -187,6 +232,71 @@ public class StockServiceAndCommandTest {
 
         String output = outputStream.toString();
         assertTrue(output.contains(StockConstants.ERROR_YES_NO_ONLY));
+    }
+
+    @Test
+    @DisplayName("getValidPrice - negative token then valid number should reject and accept")
+    void getValidPrice_negativeThenValid_shouldWork() {
+        String input = "-0\n10\n";
+        StockService service = createServiceWithInput(input);
+
+        double price = service.getValidPrice(false);
+        assertEquals(10.0, price, 0.001);
+
+        String output = outputStream.toString();
+        assertTrue(output.contains(StockConstants.INVALID_PRICE));
+    }
+
+    @Test
+    @DisplayName("getValidPrice - invalid number then valid number should retry")
+    void getValidPrice_invalidNumberThenValid_shouldWork() {
+        String input = "abc\n15.5\n";
+        StockService service = createServiceWithInput(input);
+
+        double price = service.getValidPrice(false);
+        assertEquals(15.5, price, 0.001);
+
+        String output = outputStream.toString();
+        assertTrue(output.contains(StockConstants.INVALID_NUMBER));
+    }
+
+    @Test
+    @DisplayName("getValidQuantity - negative token then valid int should reject and accept")
+    void getValidQuantity_negativeThenValid_shouldWork() {
+        String input = "-1\n5\n";
+        StockService service = createServiceWithInput(input);
+
+        int qty = service.getValidQuantity(false);
+        assertEquals(5, qty);
+
+        String output = outputStream.toString();
+        assertTrue(output.contains(StockConstants.INVALID_QTY));
+    }
+
+    @Test
+    @DisplayName("getValidQuantity - invalid number then valid int should retry")
+    void getValidQuantity_invalidNumberThenValid_shouldWork() {
+        String input = "abc\n7\n";
+        StockService service = createServiceWithInput(input);
+
+        int qty = service.getValidQuantity(false);
+        assertEquals(7, qty);
+
+        String output = outputStream.toString();
+        assertTrue(output.contains(StockConstants.INVALID_NUMBER));
+    }
+
+    @Test
+    @DisplayName("getValidBrand - digit brand then valid brand should retry and title-case")
+    void getValidBrand_digitThenValid_shouldWork() {
+        String input = "Nike123\nadidas\n";
+        StockService service = createServiceWithInput(input);
+
+        String brand = service.getValidBrand(false);
+        assertEquals("Adidas", brand);
+
+        String output = outputStream.toString();
+        assertTrue(output.contains(StockConstants.INVALID_BRAND));
     }
 
     @Test
@@ -267,9 +377,16 @@ public class StockServiceAndCommandTest {
     }
 
     @Test
-    @DisplayName("ModifyItemCommand execute() should update item via service")
+    @DisplayName("ModifyItemCommand execute() should update item via service (menu flow)")
     void modifyItemCommand_execute_shouldModify() {
-        String input = "I001\nBrandX\nDescX\nColorX\n250.0\n15\n";
+        String input = "I001\n" +
+                "1\nBrandX\n" +
+                "2\nDescX\n" +
+                "3\nColorX\n" +
+                "4\n250.0\n" +
+                "5\n15\n" +
+                "6\n";
+
         StockService service = createServiceWithInput(input);
 
         StockCommand cmd = new ModifyItemCommand(service);
@@ -277,9 +394,9 @@ public class StockServiceAndCommandTest {
 
         var itemOpt = controller.getInventory().findByCode("I001");
         assertTrue(itemOpt.isPresent());
-        assertEquals("Brandx", itemOpt.get().getBrand());
+        assertEquals("Brandx", itemOpt.get().getBrand()); // toTitleCase
         assertEquals("DescX", itemOpt.get().getItemDescription());
-        assertEquals("Colorx", itemOpt.get().getColour());
+        assertEquals("Colorx", itemOpt.get().getColour()); // toTitleCase
         assertEquals(250.0, itemOpt.get().getItemPrice(), 0.001);
         assertEquals(15, itemOpt.get().getQuantityInStock());
     }

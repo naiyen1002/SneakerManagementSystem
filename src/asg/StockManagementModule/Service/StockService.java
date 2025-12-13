@@ -73,14 +73,76 @@ public class StockService {
         view.displayInfoMessage("Existing item:");
         view.printItemDetails(existing);
 
-        String brand = getValidBrand(true);
-        String desc = getValidDescription(true);
-        String colour = getValidColour(true);
-        double price = getValidPrice(true);
-        int qty = getValidQuantity(true);
+        String brand = existing.getBrand();
+        String desc = existing.getItemDescription();
+        String colour = existing.getColour();
+        double price = existing.getItemPrice();
+        int qty = existing.getQuantityInStock();
 
-        boolean ok = controller.updateItem(code, brand, desc, colour, price, qty);
-        view.displayInfoMessage(ok ? StockConstants.ITEM_MODIFIED : StockConstants.INVALID_CHOICE);
+        while (true) {
+
+            view.displayInfoMessage("");
+            view.displayInfoMessage("What do you want to modify?");
+            view.displayInfoMessage("1. Brand");
+            view.displayInfoMessage("2. Description");
+            view.displayInfoMessage("3. Color");
+            view.displayInfoMessage("4. Price");
+            view.displayInfoMessage("5. Quantity");
+            view.displayInfoMessage("6. Save & Finish");
+            view.displayInfoMessage("0. Cancel");
+
+            String choice = readLine("Enter your choice: ").trim();
+
+            boolean changed = false;
+
+            switch (choice) {
+                case "1" -> {
+                    brand = getValidBrand(true);
+                    changed = true;
+                }
+                case "2" -> {
+                    desc = getValidDescription(true);
+                    changed = true;
+                }
+                case "3" -> {
+                    colour = getValidColour(true);
+                    changed = true;
+                }
+                case "4" -> {
+                    price = getValidPrice(true);
+                    changed = true;
+                }
+                case "5" -> {
+                    qty = getValidQuantity(true);
+                    changed = true;
+                }
+
+                case "6" -> {
+                    boolean ok = controller.updateItem(code, brand, desc, colour, price, qty);
+                    view.displayInfoMessage(ok ? StockConstants.ITEM_MODIFIED : StockConstants.INVALID_CHOICE);
+                    return;
+                }
+
+                case "0" -> {
+                    view.displayInfoMessage("Modify action cancelled.");
+                    return;
+                }
+
+                default -> {
+                    view.displayErrorMessage(StockConstants.INVALID_CHOICE);
+                    continue;
+                }
+            }
+
+            if (changed) {
+                view.displayInfoMessage("Updated (preview):");
+                view.displayInfoMessage("Brand: " + brand);
+                view.displayInfoMessage("Description: " + desc);
+                view.displayInfoMessage("Color: " + colour);
+                view.displayInfoMessage("Price: " + price);
+                view.displayInfoMessage("Quantity: " + qty);
+            }
+        }
     }
 
     // =================== Use case: Display ===================
@@ -180,27 +242,75 @@ public class StockService {
         }
     }
 
+    private boolean isNegativeToken(String raw) {
+        return raw != null && raw.startsWith("-");
+    }
+
     public double getValidPrice(boolean isModify) {
         String prompt = isModify ? "Enter new item price: " : StockConstants.PROMPT_PRICE;
         while (true) {
-            double price = view.readDouble(prompt);
-            if (!controller.isValidPrice(price)) {
+            String raw = readLine(prompt);
+
+            if (raw == null || raw.trim().isEmpty()) {
+                view.displayErrorMessage(StockConstants.INVALID_NUMBER);
+                continue;
+            }
+
+            raw = raw.trim();
+
+            // Reject negative input (including "-0" or "-0.0")
+            if (isNegativeToken(raw)) {
                 view.displayErrorMessage(StockConstants.INVALID_PRICE);
                 continue;
             }
-            return price;
+
+            try {
+                double price = Double.parseDouble(raw);
+
+                if (!controller.isValidPrice(price)) {
+                    view.displayErrorMessage(StockConstants.INVALID_PRICE);
+                    continue;
+                }
+
+                return price;
+
+            } catch (NumberFormatException e) {
+                view.displayErrorMessage(StockConstants.INVALID_NUMBER);
+            }
         }
     }
 
     public int getValidQuantity(boolean isModify) {
         String prompt = isModify ? "Enter new quantity in stock: " : StockConstants.PROMPT_QTY;
         while (true) {
-            int qty = view.readInt(prompt);
-            if (!controller.isValidQuantity(qty)) {
+            String raw = readLine(prompt);
+
+            if (raw == null || raw.trim().isEmpty()) {
+                view.displayErrorMessage(StockConstants.INVALID_NUMBER);
+                continue;
+            }
+
+            raw = raw.trim();
+
+            // Reject negative input (including "-0")
+            if (isNegativeToken(raw)) {
                 view.displayErrorMessage(StockConstants.INVALID_QTY);
                 continue;
             }
-            return qty;
+
+            try {
+                int qty = Integer.parseInt(raw);
+
+                if (!controller.isValidQuantity(qty)) {
+                    view.displayErrorMessage(StockConstants.INVALID_QTY);
+                    continue;
+                }
+
+                return qty;
+
+            } catch (NumberFormatException e) {
+                view.displayErrorMessage(StockConstants.INVALID_NUMBER);
+            }
         }
     }
 
