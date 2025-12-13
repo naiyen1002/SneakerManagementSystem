@@ -70,7 +70,7 @@ public class LoginController {
             if (validateCredentials(username, password)) {
                 isLoggedIn = true;
                 view.displayLoginSuccess(username);
-                SneakerMainSystem.main();
+                SneakerMainSystem.showMainMenu();  // Call showMainMenu() instead of main()
             } else {
                 loginAttempts++;
                 view.displayLoginFailure(MAX_LOGIN_ATTEMPTS - loginAttempts);
@@ -83,11 +83,5 @@ public class LoginController {
         }
 
         view.close();
-    }
-
-    // Entry point
-    public static void main(String[] args) {
-        LoginController controller = new LoginController();
-        controller.startLogin();
     }
 }
