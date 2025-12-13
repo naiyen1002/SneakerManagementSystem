@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import asg.MemberManagementModule.Constants.MemberData;
 import asg.MemberManagementModule.Model.Gender;
 import asg.MemberManagementModule.Model.Member;
 import asg.MemberManagementModule.Model.MembershipTier;
@@ -30,8 +31,18 @@ public class MemberService {
     /**
      * Constructor with empty member list
      */
-    public MemberService() {
-        this.memberList = new ArrayList<>();
+    // public MemberService() {
+    // this.memberList = new ArrayList<>();
+    // }
+
+    private static MemberService instance;
+
+    public static MemberService getInstance() {
+        if (instance == null) {
+            instance = new MemberService();
+            instance.memberList = new ArrayList<>(MemberData.initiallizeMembersData());
+        }
+        return instance;
     }
 
     /**
@@ -39,9 +50,10 @@ public class MemberService {
      * 
      * @param initialData Initial list of members
      */
-    public MemberService(List<Member> initialData) {
-        this.memberList = initialData != null ? new ArrayList<>(initialData) : new ArrayList<>();
-    }
+    // public MemberService(List<Member> initialData) {
+    // this.memberList = initialData != null ? new ArrayList<>(initialData) : new
+    // ArrayList<>();
+    // }
 
     // ==================== MEMBER CRUD OPERATIONS ====================
 
