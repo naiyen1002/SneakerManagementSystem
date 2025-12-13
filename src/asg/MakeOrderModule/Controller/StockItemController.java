@@ -73,4 +73,28 @@ public class StockItemController {
     public static void clearStock() {
         stockItems.clear();
     }
+
+    /**
+     * Deducts stock quantity for an item.
+     * @param itemCode The item code to deduct from
+     * @param quantity The quantity to deduct
+     * @return true if deduction successful, false if item not found or insufficient stock
+     */
+    public static boolean deductStock(String itemCode, int quantity) {
+        if (itemCode == null || itemCode.trim().isEmpty() || quantity <= 0) {
+            return false;
+        }
+        
+        StockItem item = findStockItemByCode(itemCode);
+        if (item == null) {
+            return false;
+        }
+        
+        if (item.getQuantityInStock() < quantity) {
+            return false;  // Insufficient stock
+        }
+        
+        item.setQuantityInStock(item.getQuantityInStock() - quantity);
+        return true;
+    }
 }
