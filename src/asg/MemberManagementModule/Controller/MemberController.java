@@ -25,12 +25,12 @@ public class MemberController {
 
     public MemberController(MemberView memberView) {
         this.memberView = memberView;
-        this.memberService = new MemberService();
+        this.memberService = MemberService.getInstance();
     }
 
     public MemberController(MemberView memberView, List<Member> initialMembers) {
         this.memberView = memberView;
-        this.memberService = new MemberService(initialMembers);
+        this.memberService = MemberService.getInstance();
     }
 
     // ==================== DISPLAY OPERATIONS ====================
