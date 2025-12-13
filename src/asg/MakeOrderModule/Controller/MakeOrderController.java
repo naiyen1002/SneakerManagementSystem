@@ -95,8 +95,13 @@ public class MakeOrderController {
 
             if (foundItem == null) {
                 System.out.println("\nItem Code's NOT MATCH!!!");
+            } else if (!foundItem.isInStock()) {
+                // Check if item is out of stock
+                System.out.println("\nSorry, this item is OUT OF STOCK!");
+                System.out.printf("Current Stock: %d\n", foundItem.getQuantityInStock());
             } else {
                 MenuDisplay.displayItemDetails(foundItem);
+                System.out.printf("Available Stock: %d\n", foundItem.getQuantityInStock());
 
                 yesNoValidator.setStrategy(new YesNoValidator());
                 char confirmAdd = yesNoValidator.execute(scanner,
@@ -215,7 +220,17 @@ public class MakeOrderController {
             System.out.println("\nYour basket is empty. Nothing to checkout.");
             return;
         }
+        
+        // Print receipt
         ReceiptPrinter.printReceipt(service.getCartItems());
+        
+        // Deduct stock for all items in cart
+        service.deductStockForCart();
+        System.out.println("\nStock has been updated.");
+        
+        // Clear the cart after successful checkout
+        service.clearCart();
+        System.out.println("Order completed! Thank you for your purchase.\n");
     }
     
 
