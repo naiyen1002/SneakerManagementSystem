@@ -5,6 +5,7 @@ import java.util.Scanner;
 import asg.StaffManagementModule.Controller.StaffController;
 import asg.StockManagementModule.Controller.StockApp;
 import asg.MakeOrderModule.Controller.MakeOrderController;
+import asg.MemberManagementModule.MemberManagementApp;
 import asg.SalesManagementModule.Controller.SalesController;
 
 public class SneakerMainSystem {
@@ -65,7 +66,7 @@ public class SneakerMainSystem {
                     StaffController.main();
                     break;
                 case 2:
-                    // OldMemberManagement.main();
+                    MemberManagementApp.main();
                     break;
                 case 3:
                     SalesController.main();
