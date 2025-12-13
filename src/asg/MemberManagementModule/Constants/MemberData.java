@@ -62,10 +62,6 @@ public final class MemberData {
         return memberList;
     }
 
-    public static List<Member> getEmptyList() {
-        return new ArrayList<>();
-    }
-
     /**
      * Create a single test member for unit testing
      * 

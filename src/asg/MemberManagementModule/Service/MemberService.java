@@ -352,14 +352,6 @@ public class MemberService {
     }
 
     /**
-     * Clear all members
-     * Use with caution - typically for testing
-     */
-    public void clearAllMembers() {
-        memberList.clear();
-    }
-
-    /**
      * Replace entire member list
      * Use with caution - typically for data import
      * 
