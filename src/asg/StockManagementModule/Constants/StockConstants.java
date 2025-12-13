@@ -5,7 +5,6 @@ public final class StockConstants {
     private StockConstants() {
     }
 
-    // 共用缩进，让文字大致在中间
     public static final String INDENT = "\n\t\t\t\t\t";
 
     // UI
@@ -50,6 +49,5 @@ public final class StockConstants {
 
     public static final String ERROR_YES_NO_ONLY = INDENT + "Please enter 'yes' or 'no' only.";
 
-    // Validation rule for code (regex 本身不要缩进)
     public static final String ITEM_CODE_REGEX = "I\\d{3}";
 }

@@ -3,6 +3,9 @@ package asg.StockManagementModule.Controller;
 import asg.StockManagementModule.Constants.StockMenuOption;
 import asg.StockManagementModule.Service.StockService;
 
+/**
+ * Factory to create StockCommand based on StockMenuOption.
+ */
 public final class StockCommandFactory {
 
     private StockCommandFactory() {
