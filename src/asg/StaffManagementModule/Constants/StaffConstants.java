@@ -4,7 +4,7 @@ public class StaffConstants {
 
     /**
      * Staff module menu
-     */
+     */ 
     public static final String STAFF_MENU_HEADER = "\n\t\t\t\t\t====================================";
     public static final String STAFF_MENU_TITLE = "\n\t\t\t\t\t       STAFF MANAGEMENT MENU        ";
     public static final String STAFF_MENU_ENDER = "\t\t\t\t\t====================================\n\n";

@@ -8,9 +8,6 @@ import asg.StockManagementModule.View.StockView;
 
 import java.util.List;
 
-/**
- * Service layer: input + validation flow (类似 StaffService 的风格)
- */
 public class StockService {
 
     private final StockView view;
@@ -21,6 +18,13 @@ public class StockService {
         this.view = view;
         this.controller = controller;
         this.inventory = controller.getInventory();
+    }
+
+    private void showCurrentStock() {
+        List<StockItem> items = inventory.getAllItems();
+        view.displayInfoMessage("Current Stock Items:");
+        view.printItemTable(items);
+        System.out.println();
     }
 
     // =================== Use case: Add ===================
@@ -40,6 +44,9 @@ public class StockService {
     // =================== Use case: Search ===================
 
     public void handleSearchItem() {
+
+        showCurrentStock();
+
         String code = readLine(StockConstants.PROMPT_SEARCH_CODE);
 
         inventory.findByCode(code)
@@ -51,6 +58,9 @@ public class StockService {
     // =================== Use case: Modify ===================
 
     public void handleModifyItem() {
+
+        showCurrentStock();
+
         String code = readLine(StockConstants.PROMPT_MODIFY_CODE);
 
         var found = inventory.findByCode(code);
@@ -76,13 +86,16 @@ public class StockService {
     // =================== Use case: Display ===================
 
     public void handleDisplayItems() {
-        List<StockItem> items = inventory.getAllItems();
-        view.printItemTable(items);
+
+        showCurrentStock();
     }
 
     // =================== Use case: Delete ===================
 
     public void handleDeleteItem() {
+
+        showCurrentStock();
+
         String code = readLine(StockConstants.PROMPT_DELETE_CODE);
 
         if (!inventory.exists(code)) {
@@ -103,13 +116,13 @@ public class StockService {
         view.displayInfoMessage(ok ? StockConstants.ITEM_DELETED : StockConstants.INVALID_CHOICE);
     }
 
-    // =================== 输入 + 验证 helper ===================
+    // =================== INPUT VALIDATION HELPERS ===================
 
     public String getValidItemCodeForAdd() {
         String code;
 
         String suggestion = getNextAvailableCode();
-        view.displayInfoMessage("\n[ Suggested next available code: " + suggestion + " ]");
+        view.displayInfoMessage("\n\t\t\t\t\t[ Suggested next available code: " + suggestion + " ]");
 
         while (true) {
             code = readLine(StockConstants.PROMPT_CODE);
@@ -190,8 +203,6 @@ public class StockService {
             return qty;
         }
     }
-
-    // ==== 供 Service 内部使用的小 helper ====
 
     public String readLine(String prompt) {
         return view.readLine(prompt);
