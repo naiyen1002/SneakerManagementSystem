@@ -15,16 +15,27 @@ import asg.SalesManagementModule.Service.SearchStrategy;
 
 /**
  * Unit tests for SearchStrategy implementations.
- * Tests all 8 search strategies demonstrating polymorphism.
- * Target: 100% coverage of strategy classes.
+ * 
+ * This test class validates all 8 search strategy classes:
+ * - BySalesId, ByMemberId, ByItemCode
+ * - ByBrand, ByDescription, ByColour
+ * - ByPrice, ByQuantity
+ * 
+ * Demonstrates Strategy Pattern with polymorphic behavior.
+ * Each strategy is tested for matching and non-matching cases.
  */
 public class SearchStrategyTest {
 
+    // Test item with known values for all strategies
     private SalesItem testItem;
 
+    // ==================== Setup ====================
+
+    /**
+     * Creates a test item with known values before each test.
+     */
     @BeforeEach
     public void setUp() {
-        // Create a test item with known values
         testItem = new SalesItem(
                 "S001", // salesId
                 "M101", // memberId
@@ -37,8 +48,11 @@ public class SearchStrategyTest {
         );
     }
 
-    // ==================== SearchBySalesId Tests ====================
+    // ==================== BySalesId Tests ====================
 
+    /**
+     * Tests BySalesId strategy matches correct ID (case-insensitive).
+     */
     @Test
     @Order(1)
     @DisplayName("Test Search By Sales ID - Matches Returns True")
@@ -47,10 +61,13 @@ public class SearchStrategyTest {
         SearchStrategy strategy = new SearchStrategies.BySalesId();
 
         // Assert
-        assertTrue(strategy.matches(testItem, "S001"), "Expected match for S001");
-        assertTrue(strategy.matches(testItem, "s001"), "Expected case-insensitive match");
+        assertTrue(strategy.matches(testItem, "S001"), "Should match S001");
+        assertTrue(strategy.matches(testItem, "s001"), "Should match case-insensitive");
     }
 
+    /**
+     * Tests BySalesId strategy returns false for non-matching ID.
+     */
     @Test
     @Order(2)
     @DisplayName("Test Search By Sales ID - No Match Returns False")
@@ -59,11 +76,14 @@ public class SearchStrategyTest {
         SearchStrategy strategy = new SearchStrategies.BySalesId();
 
         // Assert
-        assertFalse(strategy.matches(testItem, "S999"), "Expected no match for S999");
+        assertFalse(strategy.matches(testItem, "S999"), "Should not match S999");
     }
 
-    // ==================== SearchByMemberId Tests ====================
+    // ==================== ByMemberId Tests ====================
 
+    /**
+     * Tests ByMemberId strategy matches correct Member ID.
+     */
     @Test
     @Order(3)
     @DisplayName("Test Search By Member ID - Matches Returns True")
@@ -72,9 +92,12 @@ public class SearchStrategyTest {
         SearchStrategy strategy = new SearchStrategies.ByMemberId();
 
         // Assert
-        assertTrue(strategy.matches(testItem, "M101"), "Expected match for M101");
+        assertTrue(strategy.matches(testItem, "M101"), "Should match M101");
     }
 
+    /**
+     * Tests ByMemberId strategy returns false for non-matching ID.
+     */
     @Test
     @Order(4)
     @DisplayName("Test Search By Member ID - No Match Returns False")
@@ -83,11 +106,14 @@ public class SearchStrategyTest {
         SearchStrategy strategy = new SearchStrategies.ByMemberId();
 
         // Assert
-        assertFalse(strategy.matches(testItem, "M999"), "Expected no match for M999");
+        assertFalse(strategy.matches(testItem, "M999"), "Should not match M999");
     }
 
-    // ==================== SearchByItemCode Tests ====================
+    // ==================== ByItemCode Tests ====================
 
+    /**
+     * Tests ByItemCode strategy matches correct Item Code.
+     */
     @Test
     @Order(5)
     @DisplayName("Test Search By Item Code - Matches Returns True")
@@ -96,11 +122,14 @@ public class SearchStrategyTest {
         SearchStrategy strategy = new SearchStrategies.ByItemCode();
 
         // Assert
-        assertTrue(strategy.matches(testItem, "I001"), "Expected match for I001");
+        assertTrue(strategy.matches(testItem, "I001"), "Should match I001");
     }
 
-    // ==================== SearchByBrand Tests ====================
+    // ==================== ByBrand Tests ====================
 
+    /**
+     * Tests ByBrand strategy matches correct Brand (case-insensitive).
+     */
     @Test
     @Order(6)
     @DisplayName("Test Search By Brand - Matches Returns True")
@@ -109,11 +138,14 @@ public class SearchStrategyTest {
         SearchStrategy strategy = new SearchStrategies.ByBrand();
 
         // Assert
-        assertTrue(strategy.matches(testItem, "Nike"), "Expected match for Nike");
-        assertTrue(strategy.matches(testItem, "NIKE"), "Expected case-insensitive match");
-        assertTrue(strategy.matches(testItem, "nike"), "Expected case-insensitive match");
+        assertTrue(strategy.matches(testItem, "Nike"), "Should match Nike");
+        assertTrue(strategy.matches(testItem, "NIKE"), "Should match NIKE (case-insensitive)");
+        assertTrue(strategy.matches(testItem, "nike"), "Should match nike (case-insensitive)");
     }
 
+    /**
+     * Tests ByBrand strategy returns false for non-matching Brand.
+     */
     @Test
     @Order(7)
     @DisplayName("Test Search By Brand - No Match Returns False")
@@ -122,11 +154,14 @@ public class SearchStrategyTest {
         SearchStrategy strategy = new SearchStrategies.ByBrand();
 
         // Assert
-        assertFalse(strategy.matches(testItem, "Adidas"), "Expected no match for Adidas");
+        assertFalse(strategy.matches(testItem, "Adidas"), "Should not match Adidas");
     }
 
-    // ==================== SearchByDescription Tests ====================
+    // ==================== ByDescription Tests ====================
 
+    /**
+     * Tests ByDescription strategy matches partial strings (contains).
+     */
     @Test
     @Order(8)
     @DisplayName("Test Search By Description - Partial Match Returns True")
@@ -134,14 +169,17 @@ public class SearchStrategyTest {
         // Arrange
         SearchStrategy strategy = new SearchStrategies.ByDescription();
 
-        // Assert - Partial match (contains)
-        assertTrue(strategy.matches(testItem, "Air"), "Expected partial match for Air");
-        assertTrue(strategy.matches(testItem, "Jordan"), "Expected partial match for Jordan");
-        assertTrue(strategy.matches(testItem, "air jordan"), "Expected case-insensitive match");
+        // Assert: Uses contains() for partial matching
+        assertTrue(strategy.matches(testItem, "Air"), "Should match partial 'Air'");
+        assertTrue(strategy.matches(testItem, "Jordan"), "Should match partial 'Jordan'");
+        assertTrue(strategy.matches(testItem, "air jordan"), "Should match case-insensitive");
     }
 
-    // ==================== SearchByColour Tests ====================
+    // ==================== ByColour Tests ====================
 
+    /**
+     * Tests ByColour strategy matches correct Colour (case-insensitive).
+     */
     @Test
     @Order(9)
     @DisplayName("Test Search By Colour - Matches Returns True")
@@ -150,12 +188,15 @@ public class SearchStrategyTest {
         SearchStrategy strategy = new SearchStrategies.ByColour();
 
         // Assert
-        assertTrue(strategy.matches(testItem, "Black"), "Expected match for Black");
-        assertTrue(strategy.matches(testItem, "black"), "Expected case-insensitive match");
+        assertTrue(strategy.matches(testItem, "Black"), "Should match Black");
+        assertTrue(strategy.matches(testItem, "black"), "Should match case-insensitive");
     }
 
-    // ==================== SearchByPrice Tests ====================
+    // ==================== ByPrice Tests ====================
 
+    /**
+     * Tests ByPrice strategy matches exact price.
+     */
     @Test
     @Order(10)
     @DisplayName("Test Search By Price - Matches Returns True")
@@ -164,9 +205,12 @@ public class SearchStrategyTest {
         SearchStrategy strategy = new SearchStrategies.ByPrice();
 
         // Assert
-        assertTrue(strategy.matches(testItem, "199.99"), "Expected match for 199.99");
+        assertTrue(strategy.matches(testItem, "199.99"), "Should match 199.99");
     }
 
+    /**
+     * Tests ByPrice strategy handles invalid number input gracefully.
+     */
     @Test
     @Order(11)
     @DisplayName("Test Search By Price - Invalid Number Returns False")
@@ -175,11 +219,14 @@ public class SearchStrategyTest {
         SearchStrategy strategy = new SearchStrategies.ByPrice();
 
         // Assert
-        assertFalse(strategy.matches(testItem, "invalid"), "Expected false for invalid number");
+        assertFalse(strategy.matches(testItem, "invalid"), "Should return false for invalid number");
     }
 
-    // ==================== SearchByQuantity Tests ====================
+    // ==================== ByQuantity Tests ====================
 
+    /**
+     * Tests ByQuantity strategy matches exact quantity.
+     */
     @Test
     @Order(12)
     @DisplayName("Test Search By Quantity - Matches Returns True")
@@ -188,9 +235,12 @@ public class SearchStrategyTest {
         SearchStrategy strategy = new SearchStrategies.ByQuantity();
 
         // Assert
-        assertTrue(strategy.matches(testItem, "5"), "Expected match for quantity 5");
+        assertTrue(strategy.matches(testItem, "5"), "Should match quantity 5");
     }
 
+    /**
+     * Tests ByQuantity strategy handles invalid number input gracefully.
+     */
     @Test
     @Order(13)
     @DisplayName("Test Search By Quantity - Invalid Number Returns False")
@@ -199,16 +249,20 @@ public class SearchStrategyTest {
         SearchStrategy strategy = new SearchStrategies.ByQuantity();
 
         // Assert
-        assertFalse(strategy.matches(testItem, "invalid"), "Expected false for invalid number");
+        assertFalse(strategy.matches(testItem, "invalid"), "Should return false for invalid number");
     }
 
-    // ==================== Strategy Field Name Tests ====================
+    // ==================== Field Name Tests ====================
 
+    /**
+     * Tests that all strategies return correct field names.
+     * These names are used in search prompts.
+     */
     @Test
     @Order(14)
     @DisplayName("Test Get Field Name - Returns Correct Names")
     public void testGetFieldName_ReturnsCorrectNames() {
-        // Assert
+        // Assert: Verify all field names
         assertEquals("Sales ID", new SearchStrategies.BySalesId().getFieldName());
         assertEquals("Member ID", new SearchStrategies.ByMemberId().getFieldName());
         assertEquals("Item Code", new SearchStrategies.ByItemCode().getFieldName());

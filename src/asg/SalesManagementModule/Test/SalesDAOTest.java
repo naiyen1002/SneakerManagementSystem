@@ -17,13 +17,24 @@ import asg.SalesManagementModule.Service.SalesDAO;
 
 /**
  * Unit tests for SalesDAO class.
- * Tests CRUD operations for the Singleton data access object.
- * Target: 80%+ coverage of data access logic.
+ * 
+ * This test class validates the Singleton Data Access Object including:
+ * - Singleton pattern implementation
+ * - CRUD operations (Create, Read, Update, Delete)
+ * - Existence checking methods
+ * 
+ * Tests reset the Singleton instance before/after each test for isolation.
  */
 public class SalesDAOTest {
 
+    // DAO instance for testing
     private SalesDAO dao;
 
+    // ==================== Setup and Teardown ====================
+
+    /**
+     * Resets Singleton and creates fresh DAO instance before each test.
+     */
     @BeforeEach
     public void setUp() {
         SalesDAO.resetInstance();
@@ -31,6 +42,9 @@ public class SalesDAOTest {
         dao.clearAll();
     }
 
+    /**
+     * Cleans up DAO data and resets Singleton after each test.
+     */
     @AfterEach
     public void tearDown() {
         dao.clearAll();
@@ -39,6 +53,10 @@ public class SalesDAOTest {
 
     // ==================== Singleton Tests ====================
 
+    /**
+     * Tests that getInstance() always returns the same instance.
+     * Verifies the Singleton pattern is correctly implemented.
+     */
     @Test
     @Order(1)
     @DisplayName("Test Singleton - Get Instance Returns Same Instance")
@@ -47,12 +65,15 @@ public class SalesDAOTest {
         SalesDAO instance1 = SalesDAO.getInstance();
         SalesDAO instance2 = SalesDAO.getInstance();
 
-        // Assert
-        assertTrue(instance1 == instance2, "Expected same instance (Singleton)");
+        // Assert: Same object reference
+        assertTrue(instance1 == instance2, "Should return same Singleton instance");
     }
 
     // ==================== Save Tests ====================
 
+    /**
+     * Tests saving a new item successfully.
+     */
     @Test
     @Order(2)
     @DisplayName("Test Save - New Item Returns True")
@@ -64,10 +85,13 @@ public class SalesDAOTest {
         boolean result = dao.save(item);
 
         // Assert
-        assertTrue(result, "Expected save to return true");
-        assertEquals(1, dao.count(), "Expected count to be 1");
+        assertTrue(result, "Save should return true for new item");
+        assertEquals(1, dao.count(), "Count should be 1 after save");
     }
 
+    /**
+     * Tests that saving an item with duplicate ID fails.
+     */
     @Test
     @Order(3)
     @DisplayName("Test Save - Duplicate ID Returns False")
@@ -79,12 +103,15 @@ public class SalesDAOTest {
         boolean result = dao.save(createTestItem("T001"));
 
         // Assert
-        assertFalse(result, "Expected save to return false for duplicate");
-        assertEquals(1, dao.count(), "Expected count to still be 1");
+        assertFalse(result, "Save should return false for duplicate ID");
+        assertEquals(1, dao.count(), "Count should still be 1");
     }
 
     // ==================== Find Tests ====================
 
+    /**
+     * Tests finding an existing item by ID.
+     */
     @Test
     @Order(4)
     @DisplayName("Test Find By ID - Existing ID Returns Item")
@@ -96,10 +123,13 @@ public class SalesDAOTest {
         Optional<SalesItem> result = dao.findById("T001");
 
         // Assert
-        assertTrue(result.isPresent(), "Expected to find item");
-        assertEquals("T001", result.get().getSalesId(), "Expected correct ID");
+        assertTrue(result.isPresent(), "Should find existing item");
+        assertEquals("T001", result.get().getSalesId(), "ID should match");
     }
 
+    /**
+     * Tests that finding a non-existent item returns empty Optional.
+     */
     @Test
     @Order(5)
     @DisplayName("Test Find By ID - Non-Existing ID Returns Empty")
@@ -108,11 +138,14 @@ public class SalesDAOTest {
         Optional<SalesItem> result = dao.findById("XXXX");
 
         // Assert
-        assertFalse(result.isPresent(), "Expected empty result");
+        assertFalse(result.isPresent(), "Should return empty for non-existent ID");
     }
 
     // ==================== Delete Tests ====================
 
+    /**
+     * Tests successfully deleting an existing item.
+     */
     @Test
     @Order(6)
     @DisplayName("Test Delete - Existing ID Returns True")
@@ -124,10 +157,13 @@ public class SalesDAOTest {
         boolean result = dao.delete("T001");
 
         // Assert
-        assertTrue(result, "Expected delete to return true");
-        assertEquals(0, dao.count(), "Expected count to be 0");
+        assertTrue(result, "Delete should return true for existing item");
+        assertEquals(0, dao.count(), "Count should be 0 after delete");
     }
 
+    /**
+     * Tests that deleting a non-existent item fails.
+     */
     @Test
     @Order(7)
     @DisplayName("Test Delete - Non-Existing ID Returns False")
@@ -136,11 +172,14 @@ public class SalesDAOTest {
         boolean result = dao.delete("XXXX");
 
         // Assert
-        assertFalse(result, "Expected delete to return false");
+        assertFalse(result, "Delete should return false for non-existent ID");
     }
 
     // ==================== Update Tests ====================
 
+    /**
+     * Tests successfully updating an existing item.
+     */
     @Test
     @Order(8)
     @DisplayName("Test Update - Existing ID Returns True")
@@ -153,12 +192,15 @@ public class SalesDAOTest {
         boolean result = dao.update("T001", updated);
 
         // Assert
-        assertTrue(result, "Expected update to return true");
-        assertTrue(dao.findById("T002").isPresent(), "Expected to find updated item");
+        assertTrue(result, "Update should return true");
+        assertTrue(dao.findById("T002").isPresent(), "Updated item should exist with new ID");
     }
 
     // ==================== Exists Tests ====================
 
+    /**
+     * Tests existsById() returns true for existing item.
+     */
     @Test
     @Order(9)
     @DisplayName("Test Exists By ID - Existing ID Returns True")
@@ -167,19 +209,28 @@ public class SalesDAOTest {
         dao.save(createTestItem("T001"));
 
         // Assert
-        assertTrue(dao.existsById("T001"), "Expected existsById to return true");
+        assertTrue(dao.existsById("T001"), "Should return true for existing ID");
     }
 
+    /**
+     * Tests existsById() returns false for non-existent item.
+     */
     @Test
     @Order(10)
     @DisplayName("Test Exists By ID - Non-Existing ID Returns False")
     public void testExistsById_NonExistingId_ReturnsFalse() {
         // Assert
-        assertFalse(dao.existsById("XXXX"), "Expected existsById to return false");
+        assertFalse(dao.existsById("XXXX"), "Should return false for non-existent ID");
     }
 
     // ==================== Helper Methods ====================
 
+    /**
+     * Creates a standard test SalesItem for reuse across tests.
+     * 
+     * @param salesId The unique Sales ID for the item
+     * @return A new SalesItem with default test values
+     */
     private SalesItem createTestItem(String salesId) {
         return new SalesItem(salesId, "M001", "I001", "Nike", "Test", "Black", 99.99, 1);
     }
