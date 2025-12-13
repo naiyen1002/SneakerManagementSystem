@@ -58,7 +58,7 @@ public class MemberController {
      * 
      * @return Unique member ID
      */
-    private String inputUniqueMemberId() {
+    public String inputUniqueMemberId() {
         String memberId;
         while (true) {
             memberId = memberView.inputMemberId();
@@ -84,7 +84,7 @@ public class MemberController {
      * @param memberId ID to check
      * @return true if exists, false otherwise
      */
-    private boolean isMemberIdExists(String memberId) {
+    public boolean isMemberIdExists(String memberId) {
         return memberService.isMemberIdExists(memberId);
     }
 
