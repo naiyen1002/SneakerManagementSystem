@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import asg.StaffManagementModule.Controller.StaffController;
 import asg.StockManagementModule.Controller.StockApp;
+import asg.Login.Controller.LoginController;
 import asg.MakeOrderModule.Controller.MakeOrderController;
 import asg.MemberManagementModule.MemberManagementApp;
 import asg.SalesManagementModule.Controller.SalesController;
@@ -11,7 +12,14 @@ import asg.SalesManagementModule.Controller.SalesController;
 public class SneakerMainSystem {
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void main() {
+    public static void main(String[] args) {
+        // Start with login first
+        LoginController loginController = new LoginController();
+        loginController.startLogin();
+    }
+
+    // Called by LoginController after successful login
+    public static void showMainMenu() {
         int choice = 0;
         boolean invalidChoice;
 

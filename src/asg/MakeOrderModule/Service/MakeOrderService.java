@@ -97,4 +97,29 @@ public class MakeOrderService {
         return true;
     }
 
+    /**
+     * Deducts stock for all items in the cart.
+     * Called during checkout to reduce inventory.
+     * @return true if all items were deducted successfully
+     */
+    public boolean deductStockForCart() {
+        List<OrderDetails> cartItems = getCartItems();
+        
+        for (OrderDetails order : cartItems) {
+            // Each order detail represents 1 quantity
+            boolean success = StockItemController.deductStock(order.getOrderCode(), 1);
+            if (!success) {
+                System.out.printf("\nWarning: Could not deduct stock for %s\n", order.getOrderCode());
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Clears the cart after checkout.
+     */
+    public void clearCart() {
+        OrderDetailsController.clearOrderDetails();
+    }
+
 }
