@@ -1045,4 +1045,70 @@ public class MemberControllerTest {
         assertNotNull(results);
         assertTrue(results.isEmpty());
     }
+
+    @Test
+    @Order(60)
+    @DisplayName("Test Controller - isMemberIdExists - Member Exists")
+    public void testController_isMemberIdExists_MemberExists() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        boolean exists = memberController.isMemberIdExists("M001");
+
+        // Assert
+        assertTrue(exists);
+    }
+
+    @Test
+    @Order(61)
+    @DisplayName("Test Controller - isMemberIdExists - Member Does Not Exist")
+    public void testController_isMemberIdExists_MemberNotExists() {
+        // Arrange
+        memberController = new MemberController(memberView, MemberData.initiallizeMembersData());
+
+        // Act
+        boolean exists = memberController.isMemberIdExists("M999");
+
+        // Assert
+        assertFalse(exists);
+    }
+
+    @Test
+    @Order(62)
+    @DisplayName("Test Controller - inputUniqueMemberId - Unique ID")
+    public void testController_inputUniqueMemberId_UniqueId() {
+        // Arrange - simulate input: M100 (unique ID)
+        String input = "M100\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView, MemberData.initiallizeMembersData());
+
+        // Act
+        String memberId = memberController.inputUniqueMemberId();
+
+        // Assert
+        assertEquals("M100", memberId);
+    }
+
+    @Test
+    @Order(63)
+    @DisplayName("Test Controller - inputUniqueMemberId - Duplicate Then Unique ID")
+    public void testController_inputUniqueMemberId_DuplicateThenUnique() {
+        // Arrange - simulate input: M001 (duplicate) -> M100 (unique)
+        String input = "M001\nM100\n";
+        Scanner testScanner = createTestScanner(input);
+        MemberView testView = new MemberView(testScanner);
+        memberController = new MemberController(testView, MemberData.initiallizeMembersData());
+
+        // Act
+        String memberId = memberController.inputUniqueMemberId();
+
+        // Assert
+        assertEquals("M100", memberId);
+
+        // Verify error message was shown for duplicate
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("duplicate") || output.contains("Duplicate") || output.contains("exists"));
+    }
 }
